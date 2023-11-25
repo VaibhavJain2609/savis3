@@ -1,8 +1,6 @@
 .outer{
     height: 100vh;
     background-color: #fff2eb;
-
-
 }
 
 .panel-heading{
@@ -10,12 +8,14 @@
     margin-bottom: 10px;
     color: #54c242;
 }
+
 .title{
     text-align: center;
     padding: 17px;
     color: #54c242;
     
 }
+
 .header, .footer {
     background-color: #333;
     height: 100px;
@@ -26,6 +26,7 @@
     text-align: center;
     color: #54c242;
   }
+
 #forget{
     min-width: 100px;
     margin-left: auto;
@@ -37,11 +38,13 @@ A:hover{
     text-decoration: none;
 
 }
+
 .form-inline label{
     padding-left: 10px;
     margin: 0;
     cursor: pointer;
 }
+
 .btn{
     margin-top: 20px;
     border: none;
@@ -50,6 +53,7 @@ A:hover{
     
 
 }
+
 .panel{
     box-shadow: 20px 20px 80px rgb(84, 194, 66);
     border-radius: 12px;
@@ -66,11 +70,13 @@ A:hover{
     border: 1px solid #ddd;
     color: #54c242;
 }
+
 .input-field.error{
     border: 1px solid red;
     color: red;
 
 }
+
 input[type='email'],input[type='password'], input[type='text']{
     border: none;
     outline: none;
