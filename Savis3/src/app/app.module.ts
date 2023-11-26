@@ -23,6 +23,7 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/scatter-plot.component';
 import { ChartsModule } from 'ng2-charts';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-up
     HomepageComponent,
     ScatterPlotComponent,
     CsvFileUploadComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
