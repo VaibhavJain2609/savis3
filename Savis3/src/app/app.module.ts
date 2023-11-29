@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { AngularFireModule } from '@angular/fire';
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OneProportionComponent } from './features/one-proportion/one-proportion.component';
@@ -24,6 +24,7 @@ import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/
 import { ChartsModule } from 'ng2-charts';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
 import { AboutComponent } from './components/about/about.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { AboutComponent } from './components/about/about.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes, { enableTracing: true }),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     ChartsModule
   ],
   providers: [
