@@ -1,5 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js'; // Change this line
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { ChartDataSets, ChartOptions, ChartType, Chart } from 'chart.js'; // Change this line
+import { errorBarsPlugin } from '../../../Utils/chartjs-plugin';
+import { BaseChartDirective } from 'ng2-charts';
+
+declare module 'chart.js' {
+  interface ChartDataSets {
+    errorBarsY1?: boolean;
+  }
+}
 
 @Component({
   selector: 'app-scatter-plot',
@@ -12,13 +20,43 @@ export class ScatterPlotComponent implements OnChanges {
   @Input() scatterChartOptions: ChartOptions = {};
   @Input() scatterChartLegend: boolean = true;
   @Input() scatterChartType: ChartType = 'scatter'; // Change this line
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   leastSquares: number = 0
+  private slope: number = 0
+  private intercept: number = 0
+
+  constructor() {
+    Chart.plugins.register(errorBarsPlugin)
+    this.scatterChartOptions = {
+      scales: {
+        yAxes: [{
+          id: 'y-axis-0',
+        }],
+        xAxes: [{
+          id: 'x-axis-0',
+        }]
+      }
+    };
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['dataPoints']) {
+      this.updateRegressionParameters();
+      
       this.updateChartData();
       this.leastSquares = this.calculateLeastSquares();
+      
+      this.scatterChartData.push(this.calculateErrorBars());
     }
+
+    if(this.chart && this.chart.chart) {
+      this.chart.chart.update()
+    }
+  }
+
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnDestroy(): void {
+    Chart.plugins.unregister(errorBarsPlugin)
   }
 
   private updateChartData(): void {
@@ -122,5 +160,51 @@ export class ScatterPlotComponent implements OnChanges {
   
     return sumSquaredResiduals;
   }  
+
+  private calculateErrorBars(): ChartDataSets {
+    const errorBarsData = this.dataPoints.map(point => {
+      const regressionY = this.calculateRegressionY(point.x)
+      const errorMargin = Math.abs(point.y - regressionY)
+
+      console.log(`Data Point - x: ${point.x}, y: ${point.y}, y1 (regressionY): ${regressionY}`)
+
+      return {
+        x: point.x,
+        y: regressionY,
+        y1: point.y
+      }
+    })
+
+    return {
+      type: 'line',
+      label: 'Error Bars',
+      data: errorBarsData,
+      showLine: false,
+      pointRadius: 0,
+      borderColor: 'rgba(23, 12, 233, 1)',
+      borderWidth: 2,
+      errorBarsY1: true
+    }
+  }
+
+  private updateRegressionParameters(): void {
+    const n = this.dataPoints.length
+    const meanX = this.mean(this.dataPoints.map(p => p.x))
+    const meanY = this.mean(this.dataPoints.map(p => p.y))
+
+    const numerator = this.dataPoints.reduce((sum, point) => sum + (point.x - meanX) * (point.y - meanY), 0)
+    const denominator = this.dataPoints.reduce((sum, point) => sum + Math.pow(point.x - meanX, 2), 0)
+
+    this.slope = numerator / denominator
+    this.intercept = meanY - this.slope * meanX
+  }
+
+  private calculateRegressionY(x: number): number {
+    return this.slope * x + this.intercept
+  }
+
+  private mean(values: number[]): number {
+    return values.reduce((a, b) => a + b, 0) / values.length
+  }
   
 }
