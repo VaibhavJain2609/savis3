@@ -1,1 +1,144 @@
-<p>two-proportions-ci works!</p>
+<!-- <p>two-proportions-ci works! updated</p> -->
+<nav id="navbar">
+  <h1 class="logo"><a href="./../../" class="text-primary">SAVIS</a></h1>
+  <ul>
+    <li><a href="./../two-proportions-ci.component.html">Home</a></li>
+    <li><a href="./../about/two-proportions-ci.component.html">About</a></li>
+    <li><a href="https://www.csus.edu/faculty/d/rdiaz/">Download</a></li>
+    <li><a href="https://www.csus.edu/faculty/d/rdiaz/">User Manual</a></li>
+  </ul>
+</nav>
+
+<div id="main-content">
+  <div id="two-proportions">
+    <h1>Two Proportions Confidence Interval</h1>
+    <h2>1. Enter Data:</h2>
+    <input type="checkbox" style="float:right" checked/>
+    <div id="input-section" class="section">
+      <div class="lhs">
+        <table>
+          <thead>
+            <tr>
+              <td></td>
+              <td class="desc">Group A</td>
+              <td class="desc">Group B</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="desc">Successes</td>
+              <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"></td>
+              <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"></td>
+            </tr>
+            <tr>
+              <td class="desc">Failures</td>
+              <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"></td>
+              <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <button class="btn" (click)="loadData()">Load Data</button>
+        <!-- Rest of your content remains unchanged -->
+      </div>
+      <!-- Right Hand Side (RHS) content -->
+      <!-- ... -->
+    </div>
+    <!-- Additional sections go here -->
+  
+
+
+<!-- Run Simulations Section -->
+<h2>2. Run Simulations</h2>
+<input type="checkbox" style="float:right" checked/>
+<div class="section">
+  <div class="lhs">
+    <label>Number of Simulations:
+      <input id="num-simulations" type="number" min="1" [(ngModel)]="numSimulations" max="1000"/>
+    </label>
+    <button class="btn" [disabled]="!isDataLoaded" (click)="runSimulations()">Run Simulations</button>
+    <div class="stats">
+      <div>
+        <span>Proportion of Randomized to Group A (p<sub>A</sub>):</span>
+        <span>{{ sampleProportionA }}</span>
+      </div>
+      <div>
+        <span>Proportion of Randomized to Group B (p<sub>B</sub>):</span>
+        <span>{{ sampleProportionB }}</span>
+      </div>
+      <div>
+        <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
+        <span>{{ sampleProportionDiff }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="rhs">
+    <h3 style="margin-left: 3em">Most Recent Draw</h3>
+    <table style="margin-left: 3em">
+      <tr>
+        <td style="text-align: right"><span>{{ sampleAFailure }}</span> Failures</td>
+        <td rowspan="2" colspan="2">
+          <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
+        </td>
+        <td><span>{{ sampleBFailure }}</span> Failures</td>
+      </tr>
+      <tr>
+        <td style="text-align: right"><span>{{ sampleASuccess }}</span> Successes</td>
+        <td><span>{{ sampleBSuccess }}</span> Successes</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+
+
+<!-- Sampling Distribution of Difference of Proportions Section -->
+<h2>3. Sampling Distribution of Difference of Proportions</h2>
+<input type="checkbox" style="float:right" checked/>
+<div class="section flex-row">
+  <div class="lhs">
+    <div>
+      <label for="confidence-level">Confidence Level <span>{{ confidenceLevel }}</span>%</label>
+    </div>
+    <input type="range" min="1" max="100" style="width:50%" step="1" id="confidence-level" [(ngModel)]="confidenceLevel"/>
+    <button type="button" class="btn" style="width:50%" (click)="buildConfidenceInterval()" id="buildci">Build</button>
+
+    <div class="stats">
+      <div>
+        <span>Original Dataset Difference:</span>
+        <span>{{ proportionDiff }}</span>
+      </div>
+      <div>
+        <span>Mean of Sample Differences:</span>
+        <span>{{ meanSampleDiffs }}</span>
+      </div>
+      <div>
+        <span>Standard Deviation:</span>
+        <span>{{ stddevSampleDiffs }}</span>
+      </div>
+      <div>
+        <span>Lower Bound:</span>
+        <span>{{ lowerBound }}</span>
+      </div>
+      <div>
+        <span>Upper Bound:</span>
+        <span>{{ upperBound }}</span>
+      </div>
+      <div>
+        <span>Total Number of Samples:</span>
+        <span>{{ totalSamples }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="rhs">
+    <canvas id="ci-chart" style="height:300px"></canvas>
+  </div>
+</div>
+
+<footer id="main-footer" class="bg-dark text-center py-1">
+  <div class="container">
+    <p>Copyright ©2019 CSUS. All Rights Reserved.</p>
+  </div>
+</footer>
+
+
