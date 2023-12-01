@@ -3,39 +3,43 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class CsvService {
+export class CSVService {
 
   constructor() { }
 
-  dropTextFileOnTextArea(textAreaElement: HTMLTextAreaElement) {
-    textAreaElement.addEventListener("dragover", (e: DragEvent) => {
-      e.preventDefault();
-      textAreaElement.classList.add("dragover");
-    });
-
-    textAreaElement.addEventListener("dragleave", () => {
-      textAreaElement.classList.remove("dragover");
-    });
-
-    textAreaElement.addEventListener("drop", (e: DragEvent) => {
-      e.preventDefault();
-      textAreaElement.classList.remove("dragover");
-      let file = e.dataTransfer?.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event: ProgressEvent<FileReader>) => {
-          const target = event.target;
-          if (target && typeof target.result === 'string') {
-            textAreaElement.value = target.result;
-          }
-        };
-        reader.readAsText(file);
-      }
-    });
-
+  static dropTextFileOnTextArea(textAreaElement: HTMLTextAreaElement) {
+    if (textAreaElement) {
+      textAreaElement.addEventListener("dragover", (e: DragEvent) => {
+        e.preventDefault();
+        textAreaElement.classList.add("dragover");
+      });
+  
+      textAreaElement.addEventListener("dragleave", () => {
+        textAreaElement.classList.remove("dragover");
+      });
+  
+      textAreaElement.addEventListener("drop", (e: DragEvent) => {
+        e.preventDefault();
+        textAreaElement.classList.remove("dragover");
+        let file = e.dataTransfer?.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event: ProgressEvent<FileReader>) => {
+            const target = event.target;
+            if (target && typeof target.result === 'string') {
+              textAreaElement.value = target.result;
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+  
+    }
+    
   }
 
-  enableUploadDataFile(uploadButton: HTMLElement, fileInput: HTMLInputElement, textAreaElement: HTMLTextAreaElement) {
+  static enableUploadDataFile(uploadButton: HTMLElement, fileInput: HTMLInputElement, textAreaElement: HTMLTextAreaElement) {
+    if (uploadButton && fileInput && textAreaElement) {
     uploadButton.addEventListener('click', event => {
       fileInput.click();
       event.preventDefault();
@@ -56,8 +60,9 @@ export class CsvService {
       event.preventDefault();
     });
   }
+  }
 
-  parseCsvVariableByCol(rawData: string, columns: string[] = []): any {
+  static parseCsvVariableByCol(rawData: string, columns: string[] = []): any {
     const [Header, ...data] = rawData.split(/[\r\n]+/);
     let varNames = !columns ? Header.split(/[\t,]/).map(x => x.trim()) : columns;
     const res: { [key: string]: number[] } = varNames.reduce((acc, x) => {
@@ -79,7 +84,7 @@ export class CsvService {
     return res;
   }
 
-  parseCSVtoSingleArray(rawData: string): any[] {
+  static parseCSVtoSingleArray(rawData: string): any[] {
     const numRegex = /(-?\d+(\.\d+)?)/;
     return rawData
       .split(/[\r\n]+/)
@@ -90,7 +95,7 @@ export class CsvService {
       }));
   }
 
-  readLocalFile(filePath: string): Promise<string> {
+  static readLocalFile(filePath: string): Promise<string> {
     return fetch(filePath).then(r => r.text());
   }
 

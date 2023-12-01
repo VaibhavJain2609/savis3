@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core'
-import { Chart } from 'chart.js'
+import { Inject, ElementRef, Injectable } from '@angular/core';
+import { Chart } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -11,56 +11,41 @@ export class StackedDotChartService {
   private options: any;
   private bucketWidth: number = 0;
 
-  constructor() { }
+  constructor() { 
+  }
 
-  // New constructor for the stacked dot chart
-  initChart(domElement: any, datasets: any[], options: any = {}) {
+  initChart(domElement: any, datasets: any[], options: any = {}){
     this.domElement = domElement;
     this.datasets = [];
     for (let dataset of datasets) {
       this.datasets.push(
-        Object.assign({}, dataset, {
-          pointRadius: 8
-        })
-      );
-    }
+      Object.assign({}, dataset, {
+        pointRadius: 8
+      })
+    );
+  }
+    
+    
 
     Chart.defaults.global.defaultFontSize = 16;
     Chart.defaults.global.defaultFontStyle = 'bold';
     Chart.defaults.global.defaultFontColor = "black";
-    this.chart = new Chart(domElement, {
-      type: "scatter",
-      data: {
-        datasets: this.datasets
-      },
-      options: {
-        scales: {
-          xAxes: [{ 
-            ticks: { 
-              //beginAtZero: true,
-              fontColor: 'black',
-              fontSize: 16,
-              padding: 0,
-              min: 0,
-              max: 1 
-            },
-            scaleLabel: {
-              display: true,
-              labelString: "",
-              //fontColor: "black",
-              //fontSize: "14"
-            }
-          }],
-          yAxes: [
-            {
-              ticks: {
+    if (this.domElement) {
+      this.chart = new Chart(this.domElement.nativeElement, {
+        type: "scatter",
+        data: {
+          datasets: this.datasets
+        },
+        options: {
+          scales: {
+            xAxes: [{ 
+              ticks: { 
+                //beginAtZero: true,
                 fontColor: 'black',
                 fontSize: 16,
                 padding: 0,
-                /*min: 1, // Original
-                max:2,*/
-                min: 0, // Rafael Diaz
-                stepSize: 1
+                min: 0,
+                max: 1 
               },
               scaleLabel: {
                 display: true,
@@ -68,17 +53,37 @@ export class StackedDotChartService {
                 //fontColor: "black",
                 //fontSize: "14"
               }
-            }
-          ]
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        tooltips: {
-          backgroundColor: 'rgba(0,0,0,1.0)',
-          bodyFontStyle:'normal',
+            }],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  /*min: 1, // Original
+                  max:2,*/
+                  min: 0, // Rafael Diaz
+                  stepSize: 1
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: "",
+                  //fontColor: "black",
+                  //fontSize: "14"
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0,0,0,1.0)',
+            bodyFontStyle:'normal',
+          }
         }
-      }
-    });
+      });
+    }
+    
     options = options || {};
     this.options = {
       autoBuckets: options.autoBuckets !== undefined ? options.autoBuckets : true,
@@ -86,27 +91,100 @@ export class StackedDotChartService {
     };
   }
 
-  round(x: number, bucketSize: number): number {
-    if (bucketSize == undefined) {
-      if (this.options.autoBuckets) {
-        let scale = this.chart.scales['x-axis-1'];
-        let inScaleWidth = scale.options.ticks.max - scale.options.ticks.min;
-        let chartWidth = this.chart.width;
-        let pointRadius = this.chart.data.datasets[0].pointRadius;
-        bucketSize = Math.round(2 * pointRadius * (inScaleWidth / chartWidth) * 10000) / 10000;
-      }
-      else if (this.options.bucketWidth) {
-        bucketSize = this.bucketWidth;
-      }
-    }
-    if (bucketSize) {
-      let r = Math.floor(x / bucketSize) * bucketSize;
-      return r;
-    }
-    else {
-      return x;
-    }
-  }
+  // New constructor for the stacked dot chart
+  // initChart(domElement: any, datasets: any[], options: any = {}) {
+  //   this.domElement = domElement;
+  //   this.datasets = [];
+  //   for (let dataset of datasets) {
+  //     this.datasets.push(
+  //       Object.assign({}, dataset, {
+  //         pointRadius: 8
+  //       })
+  //     );
+  //   }
+
+  //   Chart.defaults.global.defaultFontSize = 16;
+  //   Chart.defaults.global.defaultFontStyle = 'bold';
+  //   Chart.defaults.global.defaultFontColor = "black";
+  //   this.chart = new Chart(domElement, {
+  //     type: "scatter",
+  //     data: {
+  //       datasets: this.datasets
+  //     },
+  //     options: {
+  //       scales: {
+  //         xAxes: [{ 
+  //           ticks: { 
+  //             //beginAtZero: true,
+  //             fontColor: 'black',
+  //             fontSize: 16,
+  //             padding: 0,
+  //             min: 0,
+  //             max: 1 
+  //           },
+  //           scaleLabel: {
+  //             display: true,
+  //             labelString: "",
+  //             //fontColor: "black",
+  //             //fontSize: "14"
+  //           }
+  //         }],
+  //         yAxes: [
+  //           {
+  //             ticks: {
+  //               fontColor: 'black',
+  //               fontSize: 16,
+  //               padding: 0,
+  //               /*min: 1, // Original
+  //               max:2,*/
+  //               min: 0, // Rafael Diaz
+  //               stepSize: 1
+  //             },
+  //             scaleLabel: {
+  //               display: true,
+  //               labelString: "",
+  //               //fontColor: "black",
+  //               //fontSize: "14"
+  //             }
+  //           }
+  //         ]
+  //       },
+  //       responsive: true,
+  //       maintainAspectRatio: false,
+  //       tooltips: {
+  //         backgroundColor: 'rgba(0,0,0,1.0)',
+  //         bodyFontStyle:'normal',
+  //       }
+  //     }
+  //   });
+  //   options = options || {};
+  //   this.options = {
+  //     autoBuckets: options.autoBuckets !== undefined ? options.autoBuckets : true,
+  //     bucketWidth: options.bucketWidth,
+  //   };
+  // }
+
+  // round(x: number, bucketSize: number): number {
+  //   if (bucketSize == undefined) {
+  //     if (this.options.autoBuckets) {
+  //       let scale = this.chart.scales['x-axis-1'];
+  //       let inScaleWidth = scale.options.ticks.max - scale.options.ticks.min;
+  //       let chartWidth = this.chart.width;
+  //       let pointRadius = this.chart.data.datasets[0].pointRadius;
+  //       bucketSize = Math.round(2 * pointRadius * (inScaleWidth / chartWidth) * 10000) / 10000;
+  //     }
+  //     else if (this.options.bucketWidth) {
+  //       bucketSize = this.bucketWidth;
+  //     }
+  //   }
+  //   if (bucketSize) {
+  //     let r = Math.floor(x / bucketSize) * bucketSize;
+  //     return r;
+  //   }
+  //   else {
+  //     return x;
+  //   }
+  // }
 
   rawToScatter(arrs: any[]): any[] {
     let faceted = [];
@@ -114,8 +192,6 @@ export class StackedDotChartService {
     for (let arr of arrs) {
       let scatter = [];
       for (let item of arr) {
-        //item = this.round(item);
-        //item = Math.round(item);
         let y = (counts[item] = (counts[item] || 0) + 1);
         scatter.push({ x: item, y: y/*, n:*/ });
       }
@@ -130,7 +206,6 @@ export class StackedDotChartService {
     }
     this.chart.options.scales.xAxes[0].ticks.min = 0;
     this.chart.options.scales.xAxes[0].ticks.max = 1;
-    //this.chart.options.scales.yAxes[0].ticks.max = 2;
   }
 
   setDataFromRaw(rawDataArrays: any[]): void {
@@ -144,24 +219,11 @@ export class StackedDotChartService {
         max = Math.max(max, item.y);
       }
     }
-    /*this.chart.options.scales.yAxes[0].ticks.stepSize = Math.pow(
-      10,
-      Math.floor(Math.log10(max))
-    );*/
   }
 
   setScale(start: number, end: number): void {
-    //this.chart.options.scales.xAxes[0].ticks.min = this.round(start);
-    //this.chart.options.scales.xAxes[0].ticks.max = 2*end - this.round(end);
-    // CAMBIOS 09/07/2023
-    // - Solicitado por FELIPE TUZ PARA QUE NO SE AMONTONEN BASTANTES PUNTOS
-    // REMOVIDO A PETICION DE RAFAEL DIAZ
-    //this.chart.options.scales.xAxes[0].ticks.min = (start%1 === 0)? start-1 : Math.floor(start);
-    //this.chart.options.scales.xAxes[0].ticks.max = (end%1 === 0)? end+1 : Math.ceil(end);
     this.chart.options.scales.xAxes[0].ticks.min = (Math.floor(start))? Math.floor(start) : 0;
     this.chart.options.scales.xAxes[0].ticks.max = Math.ceil(end) + 1;
-
-
   }
 
   setAxisLabels(xLabel: string, yLabel: string){
@@ -184,45 +246,27 @@ export class StackedDotChartService {
       }
     }
     
-    // Cambios 09/07/2023
-    /*const step =  Math.ceil((max - 1) * 0.2)
-    const fuStep = function (num, div) {
-      for (let it = 0; !(num%div); it++) div+=1;
-      return div;
-    }*/
-    //this.chart.options.scales.yAxes[0].ticks.stepSize = max //? fuStep(max, step) : 1;  //09/07/2023
-    
-    // Cambios 13/08/2023
-    // Por solicitud de LUCÍ, se cambia el tamaño de los pasos del eje Y
     this.chart.options.scales.yAxes[0].ticks.stepSize = (max>10)? Math.ceil(max * 0.2) : 1;
     if (max>1000)  this.chart.options.scales.yAxes[0].ticks.min = 0
-    //let { top, bottom } = this.chart.chartArea;
-    //let chartHeight = bottom - top;
-    //let pointRadius = this.chart.data.datasets[0].pointRadius;
-    /*if (max<10) this.chart.options.scales.yAxes[0].ticks.max = 10;
-    else if (max<=100) this.chart.options.scales.yAxes[0].ticks.max = max + ( 10 - (max%10) );
-    else this.chart.options.scales.yAxes[0].ticks.max = max + ( 100 - (max%100) );
-    this.chart.options.scales.yAxes[0].ticks.max = Math.max(
-      max,
-      this.chart.options.scales.yAxes[0].ticks.min +
-        (chartHeight / pointRadius) * 0.5
-    );*/
   }
 
   updateLabelName(datasetIndex: number, labelName:string) {
     this.datasets[datasetIndex].label = labelName;
   }
 
-  changeDotAppearance(pointRadius: number, stepSize: number) {
+  changeDotAppearance(pointRadius: number) {
     this.chart.data.datasets.forEach((x: any) => {
       x.pointRadius = pointRadius;
     });
-    /*this.chart.options.scales.yAxes.forEach(x => {
-      x.ticks.stepSize = stepSize;
-    });*/
   }
 
   setAnimationDuration(duration: number) {
-    this.chart.options.animation.duration = duration;
+    if (this.chart) {
+      this.chart.options.animation.duration = duration;
+    }
+  }
+
+  public getChart(): any {
+    return this.chart;
   }
 }

@@ -7,7 +7,7 @@ export class MathService {
 
   constructor() { }
 
-  mean(itr: number[]): number {
+  static mean(itr: any): number {
     let sum = 0;
     let count = 0;
     for (let item of itr) {
@@ -17,11 +17,11 @@ export class MathService {
     return sum / count;
   }
 
-  stddev(itr: number[]): number {
+  static stddev(itr: number[]): number {
     return Math.sqrt(this.variance(itr));
   }
 
-  sampleStddev(itr: number[]): number {
+  static sampleStddev(itr: number[]): number {
     const n = itr.length;
     if (n <= 1) return NaN;
     const sampleMean = this.mean(itr);
@@ -31,7 +31,7 @@ export class MathService {
     return Math.sqrt(devSquare / (n - 1));
   }
 
-  variance(itr: number[]): number {
+  static variance(itr: number[]): number {
     let sum = 0;
     let count = 0;
     let sumOfSquares = 0;
@@ -44,26 +44,26 @@ export class MathService {
     return sumOfSquares / count - mean * mean;
   }
 
-  roundToPlaces(value: number, places: number): number {
+  static roundToPlaces(value: number, places: number): number {
     let pow10 = Math.pow(10, places);
     return Math.round(value * pow10) / pow10;
   }
 
-  minInArray(arr: number[]): number {
+  static minInArray(arr: number[]): number {
     if (!arr || arr.length === 0) return NaN;
     return arr.reduce((acc, x) => {
       return acc < x ? acc : x;
     }, arr[0]);
   }
 
-  maxInArray(arr: number[]): number {
+  static maxInArray(arr: number[]): number {
     if (!arr || arr.length === 0) return NaN;
     return arr.reduce((acc, x) => {
       return acc > x ? acc : x;
     }, arr[0]);
   }
 
-  countWhere(itr: any[], p: (item: any) => boolean): number {
+  static countWhere(itr: any[], p: (item: any) => boolean): number {
     if (itr === undefined || p === undefined) {
       throw new Error("Missing parameter");
     }
@@ -76,7 +76,7 @@ export class MathService {
     return res;
   }
 
-  z_value(probability: number): number {
+  static z_value(probability: number): number {
     var Z_MAX = 6;
     let p = probability
     var Z_EPSILON = 0.000001;     /* Accuracy of z approximation */
@@ -99,13 +99,13 @@ export class MathService {
     return zval
   }
 
-  z_score_alpha_2(confidenceLevel: number): number {
+  static z_score_alpha_2(confidenceLevel: number): number {
     const alpha = (confidenceLevel / 100.0)
     const alpha_over_2 = (1 - alpha) / 2.0
     return Math.abs(this.roundToPlaces(this.z_value(alpha_over_2), 2))
   }
 
-  getOneMeanConfidenceInterval(confidenceLevel: number, sampleMean: number, populationStd: number, sampleSize: number): [number, number] {
+  static getOneMeanConfidenceInterval(confidenceLevel: number, sampleMean: number, populationStd: number, sampleSize: number): [number, number] {
     const z_alpha_2 = this.z_score_alpha_2(confidenceLevel)
     const sampleStd = (populationStd + 0.0) / Math.sqrt(sampleSize)
     const leftBound = sampleMean - (z_alpha_2 * sampleStd)
@@ -113,7 +113,7 @@ export class MathService {
     return [leftBound, rightBound]
   }
 
-  getCutOffInterval(confidenceLevel: number, totalSize: number): [number, number] {
+  static getCutOffInterval(confidenceLevel: number, totalSize: number): [number, number] {
     confidenceLevel = confidenceLevel / 100.0
     const alpha2 = (1 - confidenceLevel)/ 2.0
     let lowerBound = alpha2 * totalSize;
@@ -123,7 +123,7 @@ export class MathService {
     return [lowerBound, upperBound]
   }
 
-  private poz(z: number): number {
+  static poz(z: number): number {
     var Z_MAX = 6;
 
     var y, x, w;
