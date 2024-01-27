@@ -32,6 +32,15 @@ export class SignupComponent implements OnInit {
   }
 
   private validateAllFormFields(formGroup: FormGroup) {
+    if (formGroup.valid) return;
+
+    if(formGroup.value.password) { 
+      if(formGroup.value.password.length < 8) {
+        alert("password must be at least 8 characters")
+        return;
+      }
+    }
+
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
