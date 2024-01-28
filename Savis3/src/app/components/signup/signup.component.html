@@ -16,14 +16,14 @@
                         <form [formGroup]="signUpForm">
                             <div class="form-group pt-3">
                                 <small *ngIf="signUpForm.controls['firstName'].dirty && signUpForm.hasError('required','firstName')"class ="text-danger">First Name is required</small>
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="signUpForm.controls['firstName'].dirty && signUpForm.hasError('required','firstName')">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="firstName"type ="text"placeholder="First Name">
                                 </div>                                
                             </div>
                             <div class="form-group pt-3">
                                 <small *ngIf="signUpForm.controls['lastName'].dirty && signUpForm.hasError('required','lastName')" class ="text-danger">Last Name is required</small>
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="signUpForm.controls['lastName'].dirty && signUpForm.hasError('required','lastName')">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="lastName"type ="text"placeholder="Last Name">
                                 </div>                                
@@ -31,7 +31,7 @@
 
                             <div class="form-group pt-3">
                                 <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')"class ="text-danger">Email is required</small>
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="email"type ="email"placeholder="Email Address">
                                 </div>                                
@@ -39,7 +39,7 @@
 
                             <div class ="form-group pt-3">
                                 <small *ngIf="signUpForm?.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty" class="text-danger"> Password must be at least 8 characters, have one number, and one lower & uppercase letter.</small>
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="signUpForm.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty">
                                     <span class="fa fa-lock p-2"></span>
                                     <input id="password" formControlName="password"type="password"placeholder="Password" (input)="preventSpaces($event)">
                                     <span class="fa fa-eye-slash"></span>
@@ -48,7 +48,7 @@
 
                             <div class ="form-group pt-3">
                                 <small *ngIf="signUpForm.errors?.matchPassword && signUpForm.get('confirmPassword')?.touched" class="text-danger"> Password does not match</small>
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="signUpForm.errors?.matchPassword && signUpForm.get('confirmPassword')?.touched">
                                     <span class="fa fa-lock p-2"></span>
                                     <input id="confirmPassword" formControlName="confirmPassword" type="password"placeholder="Re-enter Password" (input)="preventSpaces($event)">
                                     <span class="fa fa-eye-slash"></span>
@@ -58,6 +58,7 @@
                             <div class="signUpButton">
                                 <button (click)="onSignUp()" type="submit" class="button" >Sign Up</button>
                                 <small *ngIf="errorMessage" class="signUpErrorMessage">{{errorMessage}}</small>
+                                <small *ngIf="successMessage" class="signUpSuccessMessage">{{successMessage}}</small>
                             </div>
                             <div class="loginButton">Already Have an account <a id="forget" routerLink="/login">Login</a></div>
                         </form>
