@@ -35,7 +35,7 @@ export class SignupComponent implements OnInit {
     this.signUpForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required], [EmailValidator.valid]],
       password: ['', [Validators.required], [PasswordValidator.strong]],
       confirmPassword: ['', [Validators.required]],
     }, 
@@ -157,5 +157,37 @@ export class PasswordValidator {
     }
 
     return password === confirmPassword ? null : { matchPassword: true };
+  }
+}
+/**
+ * Custom email validator interface
+ */
+export interface emailValidator {
+  [key: string]: boolean;
+}
+
+/**
+ * Custom email validator
+ */
+export class EmailValidator {
+  /**
+   * Validates an email address (checks for @ and .)
+   * @param control form controls
+   * @returns form validation field for valid email
+   */
+  public static valid(control: FormControl): Promise<ValidationErrors | null> {
+    return new Promise(resolve => {
+      let hasAt = /@/.test(control.value);
+      let hasDot = /\./.test(control.value);
+      const valid = hasAt && hasDot;
+
+      setTimeout(() => {
+        if (!valid) {
+          resolve({ valid: true });
+        } else {
+          resolve(null);
+        }
+      }, 1000);
+    });
   }
 }

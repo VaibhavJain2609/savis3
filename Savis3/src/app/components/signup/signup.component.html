@@ -30,16 +30,16 @@
                             </div>
 
                             <div class="form-group pt-3">
-                                <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')"class ="text-danger">Email is required</small>
-                                <div class="input-field" [class.error]="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')">
+                                <small *ngIf="(signUpForm.controls['email'].dirty && signUpForm.hasError('required', 'email')) || (signUpForm.controls['email'].dirty && signUpForm.get('email')?.hasError('valid'))"class ="text-danger">Email is required & must be a valid email</small>
+                                <div class="input-field" [class.error]="(signUpForm.controls['email'].dirty && signUpForm.hasError('required', 'email')) || (signUpForm.controls['email'].dirty && signUpForm.get('email')?.hasError('valid'))">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="email"type ="email"placeholder="Email Address">
                                 </div>                                
                             </div>
 
                             <div class ="form-group pt-3">
-                                <small *ngIf="signUpForm?.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty" class="text-danger"> Password must be at least 8 characters, have one number, and one lower & uppercase letter.</small>
-                                <div class="input-field" [class.error]="signUpForm.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty">
+                                <small *ngIf="(signUpForm?.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty) || (signUpForm.controls['password'].dirty && signUpForm.hasError('required', 'password'))" class="text-danger"> Password is required, must be at least 8 characters, have one number, and one lower & uppercase letter.</small>
+                                <div class="input-field" [class.error]="(signUpForm.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty) || (signUpForm.hasError('required', 'password') && signUpForm.controls['password'].dirty)">
                                     <span class="fa fa-lock p-2"></span>
                                     <input id="password" formControlName="password"type="password"placeholder="Password" (input)="preventSpaces($event)">
                                     <span class="fa fa-eye-slash"></span>
