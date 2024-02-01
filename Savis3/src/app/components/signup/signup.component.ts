@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -19,9 +20,12 @@ export class SignupComponent implements OnInit {
    */
   errorMessage!: string;
 
+  successMessage!: string;
+
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
+    private router: Router
   ) {}
 
   /**
@@ -45,8 +49,18 @@ export class SignupComponent implements OnInit {
   onSignUp() {
     if (this.signUpForm.valid) {
       this.afAuth.createUserWithEmailAndPassword(this.signUpForm.value.email, this.signUpForm.value.password).then((userCredential) => {
-        console.log('Sign up successfully!', userCredential.user);
-        alert("Sign up successfully!")
+
+        // Send email verification
+        userCredential.user?.sendEmailVerification().then(() => {
+          this.successMessage = 'Please check your email for verification of account creation, you will be redirected to the login page in 5 seconds.'
+        }).catch((error) => {
+          this.errorMessage = error.message
+        })
+
+        setTimeout(() => {
+          this.router.navigate(['/login'])
+        }, 5000)
+        
       }).catch((error) => {
         this.errorMessage = error.message
       })
@@ -73,7 +87,6 @@ export class SignupComponent implements OnInit {
    * @param event contains the event to check if the user is entering a space in the password or confirm passworld field
    */
   preventSpaces(event: any): void {
-    console.log(event)
     if(event.target.id === 'password'){
       const input = event.target;
       input.value = input.value.replace(/\s/g, '');
@@ -133,8 +146,6 @@ export class PasswordValidator {
     if(!group){
       return null
     }
-
-    console.log(group.value)
 
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
