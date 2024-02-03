@@ -22,7 +22,7 @@
                                     <input formControlName ="username" type ="text"placeholder="Username">
                                 </div>                                
                             </div>
-                            <small *ngIf="loginForm.controls['username'].dirty && loginForm.hasError('required','username')" class="text-danger">*Username is required</small>
+                            <small *ngIf="loginForm.controls['username'].dirty && loginForm.hasError('required','username')" class="text-danger small-error">*Username is required</small>
                             <div class ="form-group pt-3">
                                 <div class="input-field" [class.error]="loginForm.controls['password'].dirty && loginForm.hasError('required','password')">
                                     <span class="fa fa-lock p-2"></span>
@@ -33,7 +33,7 @@
                             <small *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required','password')" class="text-danger">*Password is required</small>
 
                             <div class="form-incline fr mt-4">
-                                <a id="forget" class="font-weight-bold">Forget Password ?</a>
+                                <a id="forget" class="font-weight-bold" routerLink="/forgotpassword">Forget Password ?</a>
                             </div>
                             <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">Login</button>
                             <div class="text-center pt-4 text-muted">Don't Have an account <a id="forget" routerLink="/signup">Sign Up</a></div>

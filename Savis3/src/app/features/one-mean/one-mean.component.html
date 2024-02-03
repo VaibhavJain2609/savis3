@@ -1,1 +1,85 @@
 <p>one-mean works!</p>
+<div id="one-mean">
+  <h1 id="page-title"> One Mean Hypothesis Testing</h1>
+  <h3 class = 'subtitle'>1. Enter Data:<input type="checkbox" class='toggle-box' checked="checked"></h3>
+  <div class="chart-input-form">
+    <div class="data-form">
+      <select id="sample-data" placeholder="Select Sample Data">
+      </select>
+      <textarea rows="8" id="csv-input" placeholder="Please enter data or drop columns from csv file here (no column titles - see example data in dropdown menu)"></textarea>
+      <button class="btn" id="load-data-btn">Load Data</button>
+      <button class="btn" id="reset-btn">Reset</button>
+      <button class = "btn" id = "upload-btn"> Upload</button>
+      <input type = "file" id = "fileInput"  style  = "display: none;">
+      <br>
+    </div>
+    <div class="data-form">
+      <textarea rows="10" id="original-data-display" readonly></textarea>
+      <p>Mean: </p>
+      <p class = 'center-num' id ="original-mean">{{"oneMean.noData"}}</p>
+      <p>Standard Deviation: </p>
+      <p class = 'center-num' id="original-std" >{{"oneMean.noData"}}</p>
+      <p>Size <i>N</i>:</p>
+      <p class = 'center-num' id = 'originalsize'>{{"oneMean.noData"}}</p>
+    </div>
+    <div class="chart-wrap"><canvas id="original-data-chart"></canvas></div>
+  </div>
+  <hr> 
+ 
+  <h3>2. Sim Section<input type="checkbox" class='toggle-box' checked="checked"></h3>
+  <div class="chart-input-form">
+    <div class="data-form">
+      <label for="sample-size"> Sample Size</label>
+      <input type="number" min="1" step="1" id="sample-size" value="10"/>
+      <label for="no-of-sample"> Number of Simulations</label>
+      <input type="number" min="1" step="1" id="no-of-sample" value="1"/>
+      <br>
+      <button class="btn" id="run-sim-btn">Run Simulation</button>
+      <p id ="run-sim-error-msg"></p>
+    </div>
+    <div class="data-form">
+      <textarea rows="10" readonly id="most-recent-sample-display"></textarea>
+      <p>Mean <i>x&#772;</i>:</p>
+      <p class = 'center-num' id ="sample-mean">oneMean.noData</p>
+      <p>Standard Deviation <i>s</i>:</p>
+      <p class="center-num" id="drawsample-std">{{"oneMean.noData"}}</p>
+    </div>
+    <div class="chart-wrap"><canvas id="sample-data-chart"></canvas></div>
+  </div>
+  <hr>
+
+  <h3>3. {{"oneMean.chartTitle4"}} <input type="checkbox" class='toggle-box' checked="checked"></h3>
+  <div class="chart-input-form">
+    <div class="data-form">
+      <p>{{"oneMean.descripInterval"}}</p>
+
+      <label for="min-tailValue">Set Min</label>
+      <input type="number" id="min-tailValue" value="0">
+      <label for="min-tailValue">Inlcude Min<input type="checkbox" id="includeMin"></label>
+      <br>
+
+      <label for="max-tailValue">Set Max</label>
+      <input type="number" id="max-tailValue" value="1">
+      <label for="min-tailValue">Include Max<input type="checkbox" id="includeMax"></label>
+      <br>
+      <p>Proportion Chosen</p>
+      <p class = "center-num" id="chosen-sample-means">{{"oneMean.noData"}}</p>
+      <p>Proportion Unchosen</p>
+      <p class = "center-num"  id="unchosen-sample-means">{{"oneMean.noData"}}</p>
+    </div>
+    <div class="data-form">
+      <textarea rows="10" readonly id="samples-mean-display"></textarea>
+      <p>Mean Of Sample Means</p>
+      <p class = "center-num" id ="samples-mean">{{"oneMean.noData"}}</p>
+      <p>STD Of Means</p>
+      <p class = "center-num" id ="samplemeans-std">{{"oneMean.noData"}}</p>
+      <p>Total Samples</p>
+      <p class="center-num" id="total-samples">{{"oneMean.noData"}}</p>
+    </div>
+    <div class="chart-wrap"><canvas id="statistic-data-chart"></canvas></div>
+  </div>
+</div>
+
+<script src="{{base}}../lib/Chart.bundle.min.js"></script>
+<script src="./oneMeanEntry.js" type="module"></script>
+<script src="./oneMean.bundle.js"></script>

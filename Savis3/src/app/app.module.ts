@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { AngularFireModule } from '@angular/fire';
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OneProportionComponent } from './features/one-proportion/one-proportion.component';
@@ -20,6 +20,12 @@ import { LinearRegressionComponent } from './features/linear-regression/linear-r
 import { BivariantComponent } from './features/bivariant/bivariant.component';
 import { CorrelationComponent } from './features/correlation/correlation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
+import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/scatter-plot.component';
+import { ChartsModule } from 'ng2-charts';
+import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
+import { AboutComponent } from './components/about/about.component';
+import { environment } from 'src/environments/environment';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +44,10 @@ import { HomepageComponent } from './components/homepage/homepage.component';
     BivariantComponent,
     CorrelationComponent,
     HomepageComponent,
+    ScatterPlotComponent,
+    CsvFileUploadComponent,
+    AboutComponent,
+    ForgotpasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +55,8 @@ import { HomepageComponent } from './components/homepage/homepage.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes, { enableTracing: true }),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    ChartsModule
   ],
   providers: [
     CalculationService

@@ -14,6 +14,9 @@ import { LinearRegressionComponent } from './features/linear-regression/linear-r
 import { BivariantComponent } from './features/bivariant/bivariant.component';
 import { CorrelationComponent } from './features/correlation/correlation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
+import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
+import { AboutComponent } from './components/about/about.component';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,10 +30,13 @@ export const routes: Routes = [
   { path: 'twomeansCI', component: TwoMeansCIComponent },
   { path: 'twoproportionsCI', component: TwoProportionsCIComponent },
   { path: 'oneproportionCI', component: OneProportionCIComponent },
-  { path: 'linearRegression', component: LinearRegressionComponent },
+  { path: 'LR', component: LinearRegressionComponent },
   { path: 'bivariant', component: BivariantComponent },
   { path: 'correlation', component: CorrelationComponent },
-  { path: 'homepage', component: HomepageComponent }
+  { path: 'homepage', component: HomepageComponent },
+  { path: 'csv', component: CsvFileUploadComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'forgotpassword', component: ForgotpasswordComponent }
 ];
 
 @NgModule({

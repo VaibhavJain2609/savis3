@@ -1,0 +1,15 @@
+<div>
+    <div>
+      <h2>Regression Line and Confidence Intervals</h2>
+      <div>
+        Least Squares Area: {{ leastSquares }}
+      </div>
+      <div>
+        <canvas baseChart
+                [datasets]="scatterChartData"
+                [options]="scatterChartOptions"
+                [chartType]="scatterChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>

@@ -8,11 +8,11 @@ export class SamplingService {
 
   constructor() { }
 
-  randomInt(from: number, to: number): number {
+  static randomInt(from: number, to: number): number {
     return Math.floor((to - from) * Math.random()) + from;
   }
 
-  shuffle(arr: any[]): any[] {
+  static shuffle(arr: any[]): any[] {
     let clone = arr.concat([]);
     const swap = (i: number, j: number) => {
       let tmp = clone[i];
@@ -26,7 +26,7 @@ export class SamplingService {
     return clone;
   }
 
-  randomSubset(itr: any, n: number): { chosen: any[], unchosen: any[] } {
+   static randomSubset(itr: any, n: number): { chosen: any[], unchosen: any[] } {
     let result = Array(n);
     let unchosen = [];
     let seen = 0;
@@ -48,7 +48,7 @@ export class SamplingService {
     return { chosen: result, unchosen };
   }
 
-  splitUsing(itr: any, callback: Function): [any[], any[]] {
+  static splitUsing(itr: any, callback: Function): [any[], any[]] {
     const chosen: any[] = [];
     let unchosen: any[] = [];
     itr.forEach((obj: any, index: number) => {
@@ -61,7 +61,7 @@ export class SamplingService {
     return [chosen, unchosen];
   }
 
-  splitByPredicate(itr: any, fn: Function | null): { chosen: any[], unchosen: any[] } {
+  static splitByPredicate(itr: any, fn: Function | null): { chosen: any[], unchosen: any[] } {
     const chosen: any[] = [];
     let unchosen = [];
     if (fn === null) unchosen = itr;

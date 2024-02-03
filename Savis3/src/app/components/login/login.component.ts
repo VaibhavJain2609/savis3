@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import{FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { FormControl } from '@angular/forms';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,7 +12,11 @@ import { FormControl } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private afAuth: AngularFireAuth,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loginForm =this.fb.group({
@@ -19,15 +25,25 @@ export class LoginComponent implements OnInit {
 
     })
   }
-  onSubmit(){
-    if(this.loginForm.valid){
-      console.log(this.loginForm.value)
-    }else{
-
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
+      
+      this.afAuth.signInWithEmailAndPassword(username, password)
+        .then(userCredential => {
+          console.log('Logged in successfully!', userCredential.user);
+          this.router.navigate(['/homepage']);
+        })
+        .catch(error => {
+          console.error('Login failed:', error);
+          alert('Login failed. Please check your credentials.');
+        });
+    } else {
       this.validateAllFormFields(this.loginForm);
-      alert("Your form is invalid")
+      alert('Your form is invalid');
     }
   }
+
   private validateAllFormFields(formGroup:FormGroup){
     Object.keys(formGroup.controls).forEach(field=>{
       const control = formGroup.get(field);
