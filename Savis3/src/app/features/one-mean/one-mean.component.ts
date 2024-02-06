@@ -245,7 +245,6 @@ export class OneMeanComponent {
       if (!this.originalData.length) throw this.translationData.errorNoPopulation;
       for (let i = 0; i < noOfSamples; i++) {
         const { chosen, unchosen } = SamplingService.randomSubset(
-          //this.populationData,
           this.originalData,
           sampleSize
         );
@@ -449,4 +448,10 @@ updateData(dataName: string) {
     }
 
   }
+
+
+
+
+
+  
 }
