@@ -1,0 +1,102 @@
+.outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #fff2eb;
+}
+
+.panel-heading {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #54c242;
+}
+
+.title {
+    text-align: center;
+    padding: 17px;
+    color: #54c242;
+}
+
+.header,
+.footer {
+    background-color: #333;
+    height: 100px;
+    color: #fff;
+    text-align: center;
+}
+
+.copyright {
+    text-align: center;
+    color: #54c242;
+}
+
+#forget {
+    min-width: 100px;
+    margin-left: auto;
+    text-decoration: none;
+    cursor: pointer;
+    color: #54c242; /* Added color */
+}
+
+A:hover {
+    text-decoration: none;
+}
+
+.form-inline label {
+    padding-left: 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.btn {
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    background-color: #54c242;
+    color: #fff; /* Added text color */
+    padding: 10px 20px; /* Added padding for better button appearance */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Added smooth transition */
+}
+
+.btn:hover {
+    background-color: #388e3c; /* Darker green on hover */
+}
+
+.panel {
+    box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
+    border-radius: 12px;
+    width: 300px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.input-field {
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    color: #54c242;
+    margin-bottom: 10px; /* Reduced margin-bottom for better spacing */
+}
+
+.input-field.error {
+    border: 1px solid red;
+    color: red;
+}
+
+input[type='email'],
+input[type='password'],
+input[type='text'] {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+    padding: 8px; /* Added padding for better input appearance */
+    margin-bottom: 10px; /* Added margin-bottom for better spacing */
+}
+
+/* Add more specific styles or adjust according to your design preferences */
