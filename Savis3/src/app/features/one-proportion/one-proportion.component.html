@@ -1,1 +1,71 @@
-<p>one-proportion works!</p>
+<div class="oneProportion">
+  <div class="left-container">
+    <div class="controls">
+      <div class="top">
+        <label for="probabilitySlider">Probability of Heads p: {{ probabilityOfHeads }}</label>
+        <br>
+        <input type="range" id="probabilitySlider" class="slider" min="0" max="1" step="0.01" [(ngModel)]="probabilityOfHeads">
+        <br>
+      
+        <label for="tossesInput">Tosses:</label>
+        <input type="number" id="tossesInput" min="1" [(ngModel)]="numberOfTosses" (ngModelChange)="generateLabels()" max="10000">
+  
+        <br>
+        <button (click)="reset()">Reset</button>
+        <div class="green-line"></div>
+      </div>
+
+
+
+      <br>
+      <div class="mid">
+        <label for="sampleSize">Add samples:</label>
+        <input type="number" min="1" id="sampleSize" [(ngModel)]="sampleSize">
+
+        <br>
+
+        <button (click)="drawSamples()">Draw Samples</button>
+        <div class="green-line"></div>
+      </div>
+
+      <div class="bottom">
+        <div class="stats">
+          <p>Total # of samples: {{ totalSamples }}</p>
+          <p>Mean # of heads: {{ meanHeads }}</p>
+          <p>Standard Deviation σ: {{ standardDeviation }}</p>
+        </div>
+    </div>
+  
+  
+      <div class="interval-selection">
+        <h3>Select interval for # of heads in {{ numberOfTosses }} tosses</h3>
+        <label for="minHeads">Min # of heads: {{ minHeads }}</label>
+        <input type="range" id="minHeads" min="0" [max]="numberOfTosses" step="1" [(ngModel)]="minHeads" (ngModelChange)="updateSelected()">
+  
+        <br>
+
+        <label for="maxHeads">Max # of heads: {{ maxHeads }}</label>
+        <input type="range" id="maxHeads" min="0" [max]="numberOfTosses" step="1" [(ngModel)]="maxHeads" (ngModelChange)="updateSelected()">
+
+        <br>
+        <label for="interval"># of samples in interval: {{ interval }}</label>
+        <br>
+        <label for="proportions">Proportion: {{ proportion }}</label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="right-container">
+    <h1>One Proportion Hypothesis Testing</h1>
+    <div class="chart-container">
+      <canvas baseChart
+              [datasets]="chartData"
+              [labels]="chartLabels"
+              [options]="chartOptions"
+              [chartType]="'bar'">
+      </canvas>
+    </div>
+  </div>
+
+</div>
+  
