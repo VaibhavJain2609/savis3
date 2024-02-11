@@ -25,6 +25,7 @@ import { ChartsModule } from 'ng2-charts';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
 import { AboutComponent } from './components/about/about.component';
 import { environment } from 'src/environments/environment';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { environment } from 'src/environments/environment';
     ScatterPlotComponent,
     CsvFileUploadComponent,
     AboutComponent,
+    ForgotpasswordComponent,
   ],
   imports: [
     BrowserModule,

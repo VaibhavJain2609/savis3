@@ -16,6 +16,7 @@ import { CorrelationComponent } from './features/correlation/correlation.compone
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
 import { AboutComponent } from './components/about/about.component';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,7 +35,8 @@ export const routes: Routes = [
   { path: 'correlation', component: CorrelationComponent },
   { path: 'homepage', component: HomepageComponent },
   { path: 'csv', component: CsvFileUploadComponent },
-  { path: 'about', component: AboutComponent }
+  { path: 'about', component: AboutComponent },
+  { path: 'forgotpassword', component: ForgotpasswordComponent }
 ];
 
 @NgModule({
