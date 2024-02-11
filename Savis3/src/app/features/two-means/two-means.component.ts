@@ -12,24 +12,28 @@ import * as XLS from 'xlsx';
   styleUrls: ['./two-means.component.scss']
 })
 export class TwoMeansComponent implements OnInit {
-  csv: any
+  activateSim: boolean = false
   dataSize1: number = 0
   dataSize2: number = 0
   datamean2: number = 0
   datamean1: number = 0
   mean_diff: number = 0
   numofSem: number = 1
+  samDisActive = false
+  lastSummary: any
   chart1: any
   chart2: any
   chart3: any
   chart4: any
   chart5: any
   minmax: any
-  csvraw:any
-  samDisActive = false
-
-  activateSim: boolean = false
-  lastSummary: any
+  csvraw: any
+  csv: any
+  sections: any = {
+    sectionOne: true,
+    sectionTwo: true,
+    sectionThree: true
+  }
   simsummary: any = {
     sampleMean1: NaN,
     sampleMean2: NaN,
@@ -38,8 +42,10 @@ export class TwoMeansComponent implements OnInit {
   demodata: any = [
   ]
   datasets = [
-    { label: "Group 1", backgroundColor: 'orange', data: this.demodata },
-    { label: "Group 2", backgroundColor: 'rebeccapurple', data: this.demodata },
+    { label: "Group 1", legend: true, backgroundColor: 'orange', data: this.demodata },
+    { label: "Group 2", legend: true, backgroundColor: 'rebeccapurple', data: this.demodata },
+    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
+    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
   ];
 
   chartData: ChartDataSets[] = [];
@@ -60,11 +66,12 @@ export class TwoMeansComponent implements OnInit {
   constructor(private smp: Sampling, private tail: TailchartService) {
 
   }
-
+  toggleSection(e: any, sec: string) {
+    this.sections[sec] = e.target.checked
+  }
   dataTextArea: string = '';
   data: any
   updateData(data: any) {
-    debugger
     this.dataSize1 = this.csv[0].length
     this.dataSize2 = this.csv[1].length
     this.datamean1 = Number(this.calculateMean(this.csv[0]).toFixed(3))
@@ -80,12 +87,14 @@ export class TwoMeansComponent implements OnInit {
     let rData = {
       "minmax": this.minmax,
       "data": [this.csv[0]],
-      background: "orange"
+      "label": "Group 1",
+      "backgroundColor": "orange"
     }
     let rData2 = {
       "minmax": this.minmax,
       "data": [this.csv[1]],
-      background: "green"
+      "label": "Group 2",
+      "backgroundColor": "rebeccapurple"
     }
 
     this.chart1.setScale(min, max)
@@ -105,7 +114,7 @@ export class TwoMeansComponent implements OnInit {
     const mean = sum / data.length;
     return mean;
   }
-  onResetChart(){
+  onResetChart() {
     this.chart1.clear()
     this.chart2.clear()
     this.chart3.clear()
@@ -118,21 +127,37 @@ export class TwoMeansComponent implements OnInit {
 
   async ngOnInit() {
     this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
-    this.chart2 = new chatClass("data-chart-2", this.datasets[0]);
-    this.chart3 = new chatClass("data-chart-3", this.datasets[0]);
-    this.chart4 = new chatClass("data-chart-4", this.datasets[0]);
+    this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
+    this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
+    this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
     this.chart5 = new chatClass("diff-chart", this.datasets[0]);
+   
   }
+  ngAfterContentInit(){
+    let leg = [`Differences `, `NaN`]
+    let color = [`orange `, `red`]
+    let rData2 = {
+      "minmax": [0 ,1],
+      "data": [[],[]],
+      "backgroundColor": "rebeccapurple"
+    }
+   
+    this.chart5.setDataFromRaw(rData2);
+    this.chart5.setLengend(leg,color)
 
+    this.chart5.chart.update(0) 
+  }
   loadData(): void {
-    const data = this.csv
+    this.csv = this.parseData(this.csvraw.trim());
+    console.log(this.csv);
     this.updateData(this.csv)
 
     // this.updateChart(data);
     // this.updateSummaryChart(data);
   }
 
-  updateChart(data: string): void {debugger
+  updateChart(data: string): void {
+    
     const rows = data.split('\n');
     const parsedData = rows.map(row => {
       const [group, value] = row.split(',').map(Number);
@@ -213,7 +238,6 @@ export class TwoMeansComponent implements OnInit {
   }
 
   runSim() {
-    debugger
     let numSims = this.numofSem * 1;
     let results = [];
     for (let simIdx = 0; simIdx < numSims; simIdx++) {
@@ -256,7 +280,6 @@ export class TwoMeansComponent implements OnInit {
     let a: any = []
     let b: any = []
     let facetedArrays = [a, b];
-    console.log(facetedArrays);
     for (let item of sample) {
       facetedArrays[item.datasetId].push(item.value);
     }
@@ -267,28 +290,33 @@ export class TwoMeansComponent implements OnInit {
     return rData2
   }
   selectedTest(e: any) {
-    debugger
     this.tail.setTailDirection(e.target.value)
     let data = this.tail.updateChart2(this.chart5)
     this.chart5.setDataFromRaw(data);
     this.lastSummary = this.tail.getSummary()
+    let leg = [`Differences < ${this.mean_diff}`, `Differences > = ${this.mean_diff}`]
+    let color
+    if (e.target.value == "oneTailRight") {
+      color = [`green`, `red`]
+    }
+    else{
+       color = [`red`, `green`]
+     }
+    this.chart5.setLengend(leg,color)
     this.chart5.chart.update(0)
-    console.log(this.lastSummary);
 
   }
   onFileSelected(e: any) {
-    debugger
     const files = e.target.files || e.dataTransfer?.files;
     if (files.length) {
       const file = files[0]
-      const filereader  = new  FileReader();
+      const filereader = new FileReader();
       filereader.readAsBinaryString(file)
-      filereader.onload = (event:any) =>{
-        const wb = XLS.read(filereader.result, {type:'binary'})
-        const sheets = wb.SheetNames; 
+      filereader.onload = (event: any) => {
+        const wb = XLS.read(filereader.result, { type: 'binary' })
+        const sheets = wb.SheetNames;
         if (sheets.length) {
-          const row  = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]])
-          debugger
+          const row = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]])
           this.csvraw = row
           this.csv = this.parseData(this.csvraw.trim())
         }

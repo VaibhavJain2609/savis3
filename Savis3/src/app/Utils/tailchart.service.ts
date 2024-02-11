@@ -75,9 +75,8 @@ export class TailchartService {
   updateSummary() {
     const { chosen, unchosen } = SamplingService.splitByPredicate(
       this.results,
-      this.predicateForTail(Number(this.minTailVal), (this.maxTailVal))
+      this.predicateForTail2(0)
     );
-    debugger
     this.summary = {
       total: this.results.length,
       mean: MathService.roundToPlaces(MathService.mean(this.results), 4),
@@ -131,6 +130,7 @@ export class TailchartService {
       this.chart.updateLabelName(1, "N/A");
     }
   }
+  
   getSummary() {
     return this.summary;
   }
@@ -154,7 +154,19 @@ export class TailchartService {
     } else return null;
   }
 
-
+  predicateForTail2(mean:any) {
+    let tailInput:any = this.tailInput;
+    if (this.tailDirection == null || this.tailDirection == 'null') {
+      return null;
+    } else if (this.tailDirection === "oneTailRight") {
+      return (x:any) => x >= tailInput;
+    } else if (this.tailDirection === "oneTailLeft") {
+      return (x:any) => x <= tailInput;
+    } else {
+      const distance = MathService.roundToPlaces(Math.abs(mean - tailInput), 2);
+      return (x:any) => x <= mean - distance || x >= mean + distance;
+    }
+  }
 
   updateChart(chart: any = null) {
     const { chosen, unchosen } = SamplingService.splitByPredicate(
@@ -188,7 +200,7 @@ export class TailchartService {
   updateChart2(chart: any = null) {
     const { chosen, unchosen } = SamplingService.splitByPredicate(
       this.results,
-      this.predicateForTail(Number(this.minTailVal), Number(this.maxTailVal))
+      this.predicateForTail2(0)
     );
     if (chart) {
       chart.setScale(MathService.minInArray(this.results), MathService.maxInArray(this.results));

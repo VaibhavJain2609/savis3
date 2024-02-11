@@ -19,16 +19,19 @@ export class chatClass {
             type: "scatter",
             data: {
                 datasets: [{
-                    label: 'Scatter Dataset',
+                    label: data.label,
                     data: data.data,
-                    backgroundColor: 'orange',
+                    backgroundColor: data.backgroundColor,
                     pointRadius: 8,
+
                 }]
 
 
             },
             options: {
-
+                legend:{
+                    display:data.legend,
+                },
                 scales: {
                     xAxes: [{
                         ticks: {
@@ -39,10 +42,8 @@ export class chatClass {
                             max: 75
                         },
                         scaleLabel: {
-                            display: true,
+                            display: false,
                             labelString: "",
-                            //fontColor: "black",
-                            //fontSize: "14"
                         }
                     }],
                     yAxes: [
@@ -62,12 +63,14 @@ export class chatClass {
                         }
                     ]
                 },
+
                 responsive: true,
                 maintainAspectRatio: false,
                 tooltips: {
                     backgroundColor: 'rgba(0,0,0,1.0)',
                     bodyFontStyle: 'normal',
-                }
+                },
+
             }
 
         });
@@ -106,16 +109,16 @@ export class chatClass {
         let faceted = [];
         let counts: { [key: string]: number } = {};
         for (let arr of arrs) {
-          let scatter = [];
-          for (let item of arr) {
-            item = this.round(item);
-            let y = (counts[item] = (counts[item] || 0) + 1);
-            scatter.push({ x: item, y: y });
-          }
-          faceted.push(scatter);
+            let scatter = [];
+            for (let item of arr) {
+                item = this.round(item);
+                let y = (counts[item] = (counts[item] || 0) + 1);
+                scatter.push({ x: item, y: y });
+            }
+            faceted.push(scatter);
         }
         return faceted;
-      }
+    }
 
     clear() {
         for (let dataset of this.chart.data.datasets) {
@@ -128,31 +131,39 @@ export class chatClass {
     setDataFromRaw(rawDataArrays: any) {
         if (rawDataArrays.minmax) {
             this.minmax = rawDataArrays.minmax
-            
+
         }
         let scatterArrays = this.rawToScatter(rawDataArrays.data);
-        debugger
         this.chart.data.datasets = []
         for (let idx = 0; idx < rawDataArrays.data.length; idx++) {
             this.chart.data.datasets.push(
                 {
-                    data : scatterArrays[idx],
-                    label: 'Scatter Dataset',
-                    backgroundColor: rawDataArrays?.background || idx ==0? "orange":"rebeccapurple",
+                    data: scatterArrays[idx],
+                    label: rawDataArrays.label,
+                    backgroundColor: rawDataArrays?.backgroundColor ? rawDataArrays?.backgroundColor : idx == 0 ? "orange" : "rebeccapurple",
                     pointRadius: 8,
                 }
             );
-          }
+        }
         this.stepsize(scatterArrays[0])
-        
     }
-  
+
     stepsize(dataset: any) {
         let max = 1;
         for (let item of dataset) {
             max = Math.max(max, item.y);
         }
         this.chart.options.scales.yAxes[0].ticks.stepSize = Math.pow(10, Math.floor(Math.log10(max)));
+    }
+    setLengend(leg:any[], color:any[] = []){
+        for (const [i,legend] of leg.entries()) {
+            this.chart.data.datasets[i].label = legend
+        }
+        if (color.length >0) {
+            for (const [i,legend] of color.entries()) {
+                this.chart.data.datasets[i].backgroundColor = legend
+            }
+        }
     }
 
     setScale(start: number, end: number) {

@@ -4,9 +4,9 @@
   <div class="flex justify-between">
     <h2 class="text-xl font-bold">1. Enter Data
     </h2>
-    <input type="checkbox" checked>
+    <input type="checkbox" (change)="toggleSection($event,'sectionOne')" checked>
   </div>
-  <div class="flex gap-3">
+  <div class="flex gap-3"  [ngClass]="sections.sectionOne ? '' : 'hidden'">
     <div class="w-3/12">
       <div class="w-full">
         <div class="border border-gray-300 rounded-md">
@@ -17,7 +17,7 @@
             <option value="sample2">Sample 2</option>
           </select>
           <textarea 
-          (drop)="onDrop($event)"  [value]="csvraw ? csvraw :''" class="text-sm w-full p-1.5 placeholder:text-xs focus:outline-none  " rows="5"
+          (drop)="onDrop($event)"  [(ngModel)]="csvraw" class="text-sm w-full p-1.5 placeholder:text-xs focus:outline-none  " rows="5"
             placeholder="Enter or Drop CSV with first column as group number (1 or 2) and second column as variable. No colunm names (see sample data in drop down menu)"></textarea>
         </div>
         <button (click)="loadData()"
@@ -65,9 +65,9 @@
   </div>
   <div class="flex justify-between">
     <h2 class="text-xl font-bold">2. Run Simulations</h2>
-    <input type="checkbox" checked>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionTwo')">
   </div>
-  <div class="flex gap-3">
+  <div class="flex gap-3" [ngClass]="sections.sectionTwo ? '' : 'hidden'">
     <div class="w-3/12">
       <h3 class="font-bold"># of Simulations
       </h3>
@@ -108,9 +108,9 @@
 
     <h2 class="text-xl font-bold">3. Sampling Distribution of Difference of Means
     </h2>
-    <input type="checkbox" checked>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
   </div>
-  <div class="flex gap-3">
+  <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
     <div class="w-3/12">
       <select [disabled]="!samDisActive" (change)="selectedTest($event)" class="if-disabled w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
         <option value="null" disabled selected>Type of Test

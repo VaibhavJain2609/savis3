@@ -33,7 +33,6 @@ export class StackedDotChartService {
   initChart(domElement: any, datasets: any[], options: any = {}) {
     this.domElement = domElement;
     this.datasets = datasets
-    debugger
     // for (let dataset of datasets) {
     //   this.datasets.push(
     //     Object.assign({}, dataset, {
