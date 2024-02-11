@@ -186,6 +186,7 @@ export class TwoProportionsCIComponent implements OnInit {
 
 
 import { Component, OnInit } from '@angular/core';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-two-proportions-ci',
