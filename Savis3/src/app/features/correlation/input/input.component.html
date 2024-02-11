@@ -1,0 +1,134 @@
+<div
+  class="flex gap-4 self-center items-start justify-center p-4 border-2 rounded border-black text-white bg-green-600"
+>
+  <form
+    [formGroup]="formGroupValues"
+    class="flex gap-4"
+    (ngSubmit)="calculate()"
+  >
+    <!-- Left side container part -->
+
+    <div>
+      <h2 class="text-xl font-bold">Manual Input:</h2>
+      <div>
+        <div>
+          <p>X Values</p>
+        </div>
+        <textarea
+          class="text-black"
+          id="columnX"
+          rows="5"
+          placeholder="1,2,3"
+          formControlName="xValues"
+        ></textarea>
+      </div>
+
+      <div>
+        <div>
+          <p>Y Values</p>
+        </div>
+        <textarea
+          class="text-black"
+          id="columnY"
+          rows="5"
+          placeholder="1,2,3"
+          formControlName="yValues"
+        ></textarea>
+      </div>
+
+      <b>Format of Input: 1,2,3,4, ....</b>
+      <p>Both inputs should be of the same length</p>
+      <div>
+        <button
+          (click)="calculate()"
+          class="bg-white text-black rounded-sm px-2"
+        >
+          Calculate
+        </button>
+      </div>
+    </div>
+    <!-- Right side container part -->
+    <div>
+      <h2>Upload File:</h2>
+      <div>
+        <input type="file" id="fileUpload" (change)="onFileChange($event)" />
+        <!-- Add (change) event listener to capture file -->
+        <!-- <button class="btn btn-primary mt-5 ms-3" style="width: 10vw;">Upload</button> -->
+      </div>
+
+      <b>File could be csv, xlsx</b>
+    </div>
+  </form>
+
+  <h2 class="text-xl font-bold">
+    Result of correlation: {{ correlationValue || "" }}
+  </h2>
+</div>
+
+<!-- File Data -->
+
+<div *ngIf="isFileData" class="my-20">
+  <div>
+    <h2 class="text-xl font-bold">Displaying File Data:</h2>
+
+    <!-- Check if fileData is available -->
+    <div>
+      <div>
+        <!-- Check if there are columns in fileData[0] -->
+        <ng-container>
+          <h5 class="text-sm italic text-gray-700">
+            Select any two Columns from Available Columns Names:
+          </h5>
+          <div class="flex gap-4">
+            <select [formControl]="select1">
+              <!-- Loop through columns in fileData[0] -->
+              <option *ngFor="let header of headers" [ngValue]="header">
+                {{ header }}
+              </option>
+            </select>
+            <select [formControl]="select2">
+              <!-- Loop through columns in fileData[0] -->
+              <option
+                *ngFor="let header of headers; let i = index"
+                [ngValue]="header"
+              >
+                {{ header }}
+              </option>
+            </select>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Display the table -->
+      <table class="border border-black rounded my-2">
+        <thead class="border border-black">
+          <tr>
+            <!-- Ensure that the number of th elements matches the columns in fileData[0] -->
+            <ng-container *ngFor="let header of headers">
+              <th class="border border-black">
+                <span class="font-bold">{{ header }}</span>
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of fileData; let i = index">
+            <td class="border border-black" *ngFor="let header of headers">
+              <input type="text" class="bg-gray-200" [value]="data[header]" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- "Calculate" button, conditionally displayed only if fileData is present -->
+  <div *ngIf="isFileData">
+    <button
+      (click)="calculateFile()"
+      class="bg-white border-black border text-black rounded-sm px-2"
+    >
+      Calculate
+    </button>
+  </div>
+</div>

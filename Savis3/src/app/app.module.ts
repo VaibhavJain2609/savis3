@@ -26,6 +26,9 @@ import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-up
 import { AboutComponent } from './components/about/about.component';
 import { environment } from 'src/environments/environment';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import { InputComponent } from './features/correlation/input/input.component';
+import { ChartComponent } from './features/correlation/chart/chart.component';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassw
     CsvFileUploadComponent,
     AboutComponent,
     ForgotpasswordComponent,
+    ChartComponent,
+    InputComponent,
+
   ],
   imports: [
     BrowserModule,
