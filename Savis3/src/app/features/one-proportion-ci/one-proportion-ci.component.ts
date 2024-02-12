@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OneProportionCIComponent implements OnInit {
 
+  confidenceLevel: number = 95;
   constructor() { }
-
   ngOnInit(): void {
   }
 
