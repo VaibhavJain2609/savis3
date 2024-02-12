@@ -503,7 +503,6 @@ import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 
-
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
@@ -537,7 +536,7 @@ export class OneMeanCIComponent {
   sampleMeans: any = [];
   sampleMeansMean: number = 0;
   sampleMeansStd:number = 0;
-  meanSamples: number = 1;
+  meanSamples: number = 0;
   extremeSample: number = 0;
   distributionSelected: string = "default";
 
@@ -1068,6 +1067,25 @@ export class OneMeanCIComponent {
     }];
   }
 }
-  
+// getZScore(confidenceLevel: number): number {
+//   const alpha: number = 1 - confidenceLevel;
+//   const normalDist = new NormalDistribution(0, 1); // Assuming standard normal distribution
+//   return normalDist.invCDF(1 - alpha / 2);
+// }
+// calculateBounds(sampleMeans: number[], sampleStdDev: number, confidenceLevel: number): { lowerBounds: number[], upperBounds: number[] } {
+//   const n: number = sampleMeans.length;
+//   const zScore: number = this.getZScore(confidenceLevel);
+//   const lowerBounds: number[] = [];
+//   const upperBounds: number[] = [];
 
-}
+//   for (let i = 0; i < n; i++) {
+//       const lowerBound: number = sampleMeans[i] - (zScore * (sampleStdDev / Math.sqrt(n)));
+//       const upperBound: number = sampleMeans[i] + (zScore * (sampleStdDev / Math.sqrt(n)));
+//       lowerBounds.push(lowerBound);
+//       upperBounds.push(upperBound);
+//   }
+
+//   return { lowerBounds, upperBounds };
+// }
+  
+ }
