@@ -1,0 +1,84 @@
+#one-mean #title {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+#one-mean #button-div {
+  display: flex;
+  flex-direction: column;
+  width: 179px;
+}
+#one-mean .btn {
+  color: #fff;
+  background-color: #93cb52;
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+#one-mean #data-div {
+  display: flex;
+  flex-direction: column;
+  width: 179px;
+  justify-content: center;
+  margin-left: 10px;
+}
+#one-mean .data-display {
+  height: 130px;
+  width: 175px;
+  border: 1px solid #ccc;
+  overflow-y: auto;
+}
+#one-mean #form-container {
+  display: flex;
+}
+#one-mean #mean-display {
+  margin: 0px;
+}
+#one-mean #std-display {
+  margin: 0px;
+}
+#one-mean #size-display {
+  margin: 0px;
+}
+#one-mean #p-display {
+  margin-top: 5px;
+}
+#one-mean #chart-input-form {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  margin-right: 10px;
+}
+#one-mean #display-container {
+  display: flex;
+  flex-direction: column;
+}
+#one-mean #hypothetical-output {
+  display: flex;
+}
+#one-mean #chart-wrap {
+  flex: 1;
+}
+#one-mean #sample-container {
+  display: flex;
+}
+#one-mean #p-display-3 {
+  display: flex;
+}
+#one-mean #sampling-container {
+  display: flex;
+}
+#one-mean .line-break {
+  border: none;
+  height: 3px;
+  color: green;
+  background-color: green;
+}
+#one-mean #section-4-div {
+  width: 150px;
+}
+#one-mean #sample-mean-p {
+  margin-bottom: 0px;
+}/*# sourceMappingURL=one-mean.component.css.map */

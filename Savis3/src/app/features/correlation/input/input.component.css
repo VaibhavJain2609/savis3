@@ -1,0 +1,7 @@
+.ng-invalid {
+  border: 1px solid red;
+}
+
+form.ng-invalid {
+  border: 1px solid transparent;
+}/*# sourceMappingURL=input.component.css.map */

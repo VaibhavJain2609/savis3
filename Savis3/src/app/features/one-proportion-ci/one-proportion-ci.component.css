@@ -1,0 +1,61 @@
+.header {
+  background-color: #333;
+  height: 100px;
+  color: #fff;
+  text-align: center;
+}
+.header .title {
+  text-align: center;
+  padding: 17px;
+  color: #54c242;
+}
+
+.footer {
+  background-color: #333;
+  height: 60px;
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.footer .copyright {
+  text-align: center;
+  padding: 8px;
+}
+
+.one-proportion-ci .title2 {
+  text-align: center;
+  font-size: 110%;
+}
+.one-proportion-ci .title3 {
+  font-size: 130%;
+}
+.one-proportion-ci .stats {
+  font-size: 145%;
+}
+.one-proportion-ci .lhs table {
+  width: 30%;
+  font-size: 145%;
+}
+.one-proportion-ci .chart-wrap {
+  width: 100%;
+  height: 80px;
+}
+.one-proportion-ci input {
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+.one-proportion-ci .btn {
+  width: 25%;
+  margin: 5px auto;
+  background-color: #73d564;
+  color: #fff;
+  font-size: 110%;
+}
+.one-proportion-ci label {
+  display: block;
+}
+.one-proportion-ci .center-num {
+  text-align: center;
+}/*# sourceMappingURL=one-proportion-ci.component.css.map */

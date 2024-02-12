@@ -1,0 +1,130 @@
+#one-proportion p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+#one-proportion h4 {
+  margin-top: 3px;
+}
+#one-proportion .chart-input-form {
+  display: flex;
+}
+#one-proportion .chart-input-form #control {
+  width: 300ch;
+  margin: auto;
+}
+#one-proportion .chart-input-form label {
+  display: block;
+  font-size: 12px;
+}
+#one-proportion table {
+  margin: auto;
+  font-size: 12px;
+}
+#one-proportion .right-num {
+  text-align: right;
+}
+#one-proportion .btn {
+  width: 100%;
+}
+
+.oneProportion {
+  display: flex;
+}
+.oneProportion .left-container {
+  width: 25%;
+  padding: 0 10px;
+  justify-content: center;
+  margin-top: 100px;
+  transform: translateX(25px);
+}
+.oneProportion .right-container {
+  width: 75%;
+  padding: 0 10px;
+  justify-content: center;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.controls {
+  max-width: 900px;
+  margin: auto;
+}
+.controls input, .controls button {
+  display: block;
+  margin-bottom: 1rem;
+  width: 50%;
+}
+.controls input[type=range] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  background: transparent;
+}
+.controls input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #5ebe5e;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #3c943c;
+}
+.controls input[type=range]:focus {
+  outline: none;
+}
+.controls input[type=range]::-webkit-slider-runnable-track {
+  width: 50%;
+  height: 22px;
+  background: #bfbfbf;
+  border-radius: 5px;
+  border: 1px solid #999999;
+}
+.controls input[type=range]::-moz-range-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  background: #5ebe5e;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #3c943c;
+}
+.controls input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 22px;
+  background: #bfbfbf;
+  border-radius: 5px;
+  border: 1px solid #999999;
+}
+.controls button {
+  background: linear-gradient(180deg, #9fd166, #93cb52);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.controls button:hover {
+  background: linear-gradient(180deg, #93cb52, #87c53e);
+}
+.controls input[type=number] {
+  border: 1px solid #bfbfbf;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 1rem;
+  width: 45%;
+}
+.controls body {
+  font-family: "Arial", sans-serif;
+}
+
+.green-line {
+  width: 50%;
+  height: 4px; /* Adjust this value to change the thickness of the line */
+  background-color: green;
+}/*# sourceMappingURL=one-proportion.component.css.map */
