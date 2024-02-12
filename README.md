@@ -10,14 +10,6 @@ This platform provides a myriad of visualization tools, allowing users to active
 
 
 # Timeline
-- January - March
-  + Finish migrating all features to Angular.
-  + Implement linear regression and bivariant features.
-  + Complete the user sign-up verification.
-- April - May
-  + Set up back-end routing. 
-  + Create unit tests for each feature
-  + Project will be completed before May 20th 2024
 
 # Testing 
 ### Running unit tests
