@@ -1,35 +1,21 @@
 <p>one-proportion-ci works!</p>
 
-<div class="header">
-    <div class="title">
-        <h3 class="pt-3 font-weight-bold" routerLink="/homepage">SAVIS</h3>
-    </div>
-</div>
-
 <div class="one-proportion-ci">
-    <div class="title2"><h1>One Proportion Confidence Interval Testing</h1></div>
+    <div class="title2">
+        <h1>One Proportion Confidence Interval Testing</h1>
+    </div>
     <div class="title3"><h2>1. Enter Data</h2></div>
     <input type="checkbox" style="float:right" checked/>
     <div id="input-section" class="section">
         <div class="lhs">
-            <table>
-                <thead>
-                    <tr>
-                        <td></td>
-                            <td class="desc">Data</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="desc">Successes</td>
-                        <td><input type="number" id="success" value="0" min="0" step="1"></td>
-                    </tr>
-                    <tr>
-                        <td class="desc">Failures</td>
-                        <td><input type="number" id="failure" value="0" min="0" step="1"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <p>
+                Successes
+                <input type="number" id="success" value="0" min="0" step="1">
+            </p>
+            <p>
+                Failures
+                <input type="number" id="failure" value="0" min="0" step="1">
+            </p>
             <br>
             <button class="btn" onclick="oneProportion.loadData()">LoadData</button>
             <br>
@@ -42,35 +28,28 @@
         </div>
         <div class="rhs">
             <div class="chart-wrap"><canvas id="input-bars"></canvas></div>
+            <label>Failures</label>
+            <label>Successes</label>
+            <p rowspan="2" colspan="2">
+                Increase By
+                <input type = "number" step = "1" min = "10" value = "10" id = "increment"/>
+            </p>
         </div>
     </div> 
+    <br>
     <hr>
     <div class="title3"><h2>2. Run Simulations</h2></div>
     <input type="checkbox" style="float:right" checked/>
     <div id="input-section" class="section">
         <div class="lhs">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Sample Size</td>
-                        <td><input type="number" id="sample-size" min="1" max="'1000"/></td>
-                    </tr>
-                    <tr>
-                        <!-- <label> -->
-                        <td>Number of Simulations</td>
-                        <td><input type="number" id="num-simulations" min="1" max="1000"/></td>
-                        <!-- </label> -->
-                    </tr>
-                </tbody>
-            </table>
-        <!-- <p>
-           Sample Size
-           <input id="sample-size" type="number" min="1" max="'1000" disabled="need-data"/>
-        </p> -->
-        <!-- <label>
-            Number of Simulations
-            <input id="num-simulations" type="number" min="1" max="1000" disabled="need-data"/>
-        </label> -->
+            <p>
+            Sample Size
+            <input id="sample-size" type="number" min="1" max="'1000" value="0"/>
+            </p>
+            <label>
+                Number of Simulations
+                <input id="num-simulations" type="number" min="1" max="1000" value="0"/>
+            </label>
             <br>
             <button class="btn" disabled="need-data" onclick="oneProportion.runSimulations()">Run Simulations</button>
             <br>
@@ -82,8 +61,7 @@
             </div>
         </div>
         <div class="rhs">
-            <!-- <h3 style="margin-left: 40rem">Most Recent Draw</h3> -->
-            <h3>Most Recent Draw</h3>
+            <div class="l">Most Recent Draw</div>
             <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
         </div>
     </div>
@@ -143,20 +121,13 @@
         <div class="rhs">
             <div class="chart-wrap">
                 <canvas id="custom-interval"></canvas>
-                <br><hr><br>
+                <br><br>
                 <canvas id="ci-chart"></canvas>
             </div>
         </div>
     </div>
 </div>
 
-<div class="footer">
-    <div class="copyright">
-        <p>© 2023 CSUS. All Rights Reserved.</p>
-    </div>
-  </div>
-
 <script src="{{base}}../lib/Chart.bundle.min.js"></script>
 <script src="./oneProportionsEntry.js" type="module"></script>
 <script src="./oneProportions.bundle.js"></script>
-
