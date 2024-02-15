@@ -6,8 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +43,7 @@
     "@angular-eslint/template-parser": "12.7.0",
     "@angular/cli": "~12.2.18",
     "@angular/compiler-cli": "~12.2.0",
+    "@types/jest": "^27.5.2",
     "@types/node": "^12.11.1",
     "@types/papaparse": "^5.3.14",
     "@types/xlsx": "^0.0.36",
@@ -54,6 +57,9 @@
     "fuzzy": "^0.1.3",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",
+    "jest": "^27.5.1",
+    "jest-junit": "^16.0.0",
+    "jest-preset-angular": "^9.0.7",
     "jsonc-parser": "^3.0.0",
     "open": "^7.0.3",
     "postcss": "^8.4.33",
