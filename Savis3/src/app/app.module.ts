@@ -27,6 +27,8 @@ import { InputComponent } from './features/correlation/input/input.component';
 import { ChartComponent } from './features/correlation/chart/chart.component';
 import { AppFirebaseModule } from './app-firebase.module';
 import { MathService } from './Utils/math.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 @NgModule({
@@ -52,6 +54,8 @@ import { MathService } from './Utils/math.service';
     ForgotpasswordComponent,
     ChartComponent,
     InputComponent,
+    NavbarComponent,
+    FooterComponent,
 
   ],
   imports: [
