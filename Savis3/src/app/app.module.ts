@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire';
-import { AppRoutingModule, routes } from './app-routing.module';
+import { AppRouterModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OneProportionComponent } from './features/one-proportion/one-proportion.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { CalculationService } from './features/one-proportion/service/calculcation.service';
 import { TwoProportionsComponent } from './features/two-proportions/two-proportions.component';
 import { OneMeanComponent } from './features/one-mean/one-mean.component';
@@ -28,6 +27,7 @@ import { environment } from 'src/environments/environment';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 import { InputComponent } from './features/correlation/input/input.component';
 import { ChartComponent } from './features/correlation/chart/chart.component';
+import { AppFirebaseModule } from './app-firebase.module';
 
 
 @NgModule({
@@ -57,11 +57,10 @@ import { ChartComponent } from './features/correlation/chart/chart.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    AppRouterModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes, { enableTracing: true }),
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AppFirebaseModule,
     ChartsModule
   ],
   providers: [
