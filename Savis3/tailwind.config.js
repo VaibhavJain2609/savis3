@@ -7,6 +7,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#93cb52', // Set your primary color
+        navbar: '#333',
+        green: '#93cb52',
       },
     },
   },
