@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AngularFireModule } from '@angular/fire';
 import { AppRouterModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OneProportionComponent } from './features/one-proportion/one-proportion.component';
@@ -23,11 +22,11 @@ import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/
 import { ChartsModule } from 'ng2-charts';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
 import { AboutComponent } from './components/about/about.component';
-import { environment } from 'src/environments/environment';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 import { InputComponent } from './features/correlation/input/input.component';
 import { ChartComponent } from './features/correlation/chart/chart.component';
 import { AppFirebaseModule } from './app-firebase.module';
+import { MathService } from './Utils/math.service';
 
 
 @NgModule({
@@ -64,7 +63,8 @@ import { AppFirebaseModule } from './app-firebase.module';
     ChartsModule
   ],
   providers: [
-    CalculationService
+    CalculationService,
+    MathService
   ],
   bootstrap: [AppComponent]
 })

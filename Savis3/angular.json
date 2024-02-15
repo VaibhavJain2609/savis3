@@ -87,20 +87,8 @@
           }
         },
         "test": {
-          "builder": "@angular-builders/jest:run",
-          "options": {
-            "main": "src/test-setup.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
-          }
+          "builder": "@angular-devkit/build-angular:jest",
+          "options": {}
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
