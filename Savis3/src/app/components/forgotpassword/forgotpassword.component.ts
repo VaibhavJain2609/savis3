@@ -37,14 +37,13 @@ export class ForgotpasswordComponent implements OnInit {
           this.router.navigate(['/login'])
         }, 5000)
       }).catch((error) => {
-        console.log('Error sending password reset email:', error); // Log error
         this.errorMessage = error.message
       })
     }
     return null
   }
 
-  private validateAllFormFields(formGroup:FormGroup){
+  validateAllFormFields(formGroup:FormGroup){
     Object.keys(formGroup.controls).forEach(field=>{
       const control = formGroup.get(field)
       if (control instanceof FormControl) {
