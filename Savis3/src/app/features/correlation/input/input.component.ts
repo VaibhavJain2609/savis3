@@ -118,7 +118,7 @@ export class InputComponent implements OnInit {
         case 'csv':
           // console.log('CSV File Content (input):', this.fileContent);
           this.isFileData = true;
-          this.parseCsv();
+          this.parseCsv2();
           break;
         case 'xlsx':
           // For XLSX files, use the read function from xlsx library
@@ -128,7 +128,7 @@ export class InputComponent implements OnInit {
           this.fileContent = XLSX.utils.sheet_to_csv(sheet);
           // console.log('XLSX File Content (input):', this.fileContent);
           this.isFileData = true;
-          this.parseCsv();
+          this.parseCsv2();
           break;
 
         default:
@@ -141,6 +141,31 @@ export class InputComponent implements OnInit {
     };
     reader.readAsBinaryString(file); // Read the file as binary
   }
+
+  parseCsv2() {
+    // parse csv manually
+    const rows = this.fileContent!.split('\n');
+    const headers = rows[0].split(',');
+    const data = rows.slice(1).reduce((acc: any[], row) => {
+      // row empty skip
+      if (row.trim() === '') {
+        // console.log(row);
+        return acc;
+      }
+      const values = row.split(',');
+      acc.push(
+        headers.reduce((obj: { [key: string]: number }, header, i) => {
+          obj[header] = parseInt(values[i]);
+          return obj;
+        }, {})
+      );
+      return acc;
+    }, []);
+
+    this.headers = headers;
+    this.fileData = data;
+    this.isFileData = true;
+  }
 
   parseCsv(): void {
     // console.log(this.fileContent);
