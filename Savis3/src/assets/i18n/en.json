@@ -1,0 +1,10 @@
+{
+    "TEST": "test",
+    "//about_component": "These are the translations for the About component",
+    "about_project": "Statistical Analysis Visualizations for Introductory Statistics (SAVIS) was conceived as part of a collaborative research project on statistical education between the Department of Mathematics and Statistics at California State University Sacramento (CSUS) and the School of Mathematics of the Universidad Autónoma de Yucatán (UADY). SAVIS is an educational tool to help to intuitively understand concepts of tests of statistical hypotheses and confidence intervals using visualizations based on resampling and randomization techniques. SAVIS has an online and a stand-alone version (both freely available) in English and Spanish.",
+    "about_created": "SAVIS was created in the Spring of 2019 and extended in the Spring of 2020 and Spring of 2024 by the following graduating seniors from the Department of Computer Science at CSUS under the direction of Rafael E. Diaz Escamilla, a professor in the Department of Mathematics and Statistics at CSUS:",
+    "spring2019": "Spring 2019",
+    "spring2020": "Spring 2020",
+    "spring2024": "Spring 2024",
+    "contact": "Contact"
+}

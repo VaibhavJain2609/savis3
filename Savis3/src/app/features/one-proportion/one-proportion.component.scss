@@ -57,15 +57,12 @@
   }
 }
 
-// Define your color scheme
-$primary-color: #5ebe5e; // Red color for slider
-$secondary-color: #93cb52; // Green color for buttons
+$primary-color: #5ebe5e;
+$secondary-color: #93cb52;
 $slider-active-color: #bfbfbf;
 $slider-track-color: #bfbfbf;
 
-// Base styles for form elements
 .controls {
-  // You might want to set a max-width or use a grid system to control the layout
   max-width: 900px;
   margin: auto;
 
@@ -124,7 +121,6 @@ $slider-track-color: #bfbfbf;
     }
   }
 
-  // Style for buttons
   button {
     background: linear-gradient(180deg, lighten($secondary-color, 5%), $secondary-color);
     color: white;
@@ -139,7 +135,6 @@ $slider-track-color: #bfbfbf;
     }
   }
 
-  // Style for input fields
   input[type="number"] {
     border: 1px solid $slider-active-color;
     border-radius: 4px;
@@ -148,21 +143,17 @@ $slider-track-color: #bfbfbf;
     width: 45%;
   }
 
-  // Responsive design
   @media (max-width: 768px) {
-    // Adjust form layout for small screens
   }
   
-  // Typography
   body {
     font-family: 'Arial', sans-serif;
-    // Set other typography rules as necessary
   }
  
 }
 
 .green-line {
   width: 50%;
-  height:4px; /* Adjust this value to change the thickness of the line */
+  height:4px;
   background-color: green;
 }
