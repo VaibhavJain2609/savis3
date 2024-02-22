@@ -68,6 +68,13 @@
     text-decoration: none;
     cursor: pointer;
     color: #54c242;
+    color: #54c242;
+    text-decoration: none;
+
+    &:hover {
+      color: #388e3c;
+      text-decoration: underline;
+    }
 }
 
 
