@@ -3,7 +3,6 @@ import { StackedDotChartService } from './stacked-dot-chart.service';
 import { MathService } from './math.service';
 import { SummaryService } from './summaries.service';
 import { SamplingService } from './sampling.service';
-import { TranslateService } from './translate.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,6 @@ export class TailchartService {
     private MathUtil: MathService,
     private Summaries: SummaryService,
     private Sampling: SamplingService,
-    private translation: TranslateService,
     private stackedDotChart: StackedDotChartService,
   ) { }
 
