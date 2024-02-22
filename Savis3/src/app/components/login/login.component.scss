@@ -1,13 +1,20 @@
 .outer {
-    margin: 0px;
+    margin: 5.5px;
     margin-left: 0px;
     padding: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 77vh;
+    height: 82vh;
     background-color: #fff2eb;
 }
+
+
+
+
+
+
+
 
 .panel-heading {
     font-size: 30px;
@@ -15,6 +22,9 @@
     margin-bottom: 10px;
     color: #54c242;
 }
+
+
+
 
 .title {
     font-size: 30px;
@@ -26,20 +36,29 @@
  padding: 15px;
 }
 
+
+
+
 .header,
 .footer {
     margin: 0;
     padding: 0;
     background-color: #333;
-    height: 100px;
+    height: 80px;
     color: #fff;
     text-align: center;
 }
+
+
+
 
 .copyright {
     text-align: center;
     color: #54c242;
 }
+
+
+
 
 #forget {
     padding-top: 30px;
@@ -51,15 +70,24 @@
     color: #54c242;
 }
 
+
+
+
 A:hover {
     text-decoration: none;
 }
+
+
+
 
 .form-inline label {
     padding-left: 10px;
     margin: 0;
     cursor: pointer;
 }
+
+
+
 
 .btn {
     margin-top: 25px;
@@ -76,9 +104,15 @@ A:hover {
     margin-right: auto;
 }
 
+
+
+
 .btn:hover {
     background-color: #388e3c;
 }
+
+
+
 
 .panel {
     box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
@@ -86,7 +120,11 @@ A:hover {
     width: 300px;
     background-color: #fff;
     padding: 20px;
+    margin-left: 620px;
 }
+
+
+
 
 .input-field {
     border-radius: 20px;
@@ -98,12 +136,22 @@ A:hover {
     color: #54c242;
     margin-bottom: 5px;
     margin-top: 15px;
+
+
+
+
 }
+
+
+
 
 .input-field.error {
     border: 1px solid red;
     color: red;
 }
+
+
+
 
 input[type='email'],
 input[type='password'],
@@ -117,5 +165,5 @@ input[type='text'] {
 }
 .text-danger {
     color: red;
-    
+   
 }
