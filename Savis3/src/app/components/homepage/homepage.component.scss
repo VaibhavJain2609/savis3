@@ -1,8 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap');
-
 :host {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -17,6 +12,9 @@
     min-height: 100vh;
 }
 
+
+
+
 /*SAVIS heading*/
 header {
     /* background-color: rgb(140, 169, 140); */
@@ -28,12 +26,18 @@ header {
     font-size: 155%;
 }
 
+
+
+
 nav {
     display: flex;
     justify-content: space-around;
     /* background-color: rgba(255,255,255,0.7); */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+
 
 /*home, about, download, user manual, sign out*/
 nav a {
@@ -45,63 +49,54 @@ nav a {
     font-size: 170%;
 }
 
+
+
+
 /*home hover*/
 nav a:hover {
     color: #1e6542;
 }
 
+
+
+
 .box {
-    display: flex;
-    justify-content: space-around;
+   
     padding: 100px;
     flex: 1;
     width: 310px;
     border: 5px;
     padding: 15px;
     margin: 18px;
-    margin-left: 90px;
+    margin-left: 190px;
     background-color: rgb(52, 144, 110);
     border-radius: 2px;
     font-family: 'Poppins', sans-serif;
-    color:beige; 
+    color:beige;
     text-align: center;
 }
 
+
+
+
 .tool1{
+   
     margin-top: 50px;
     color: black;
     text-align:left;
-    margin-left: 150px;
+    margin-left: 230px;
     font-family: 'Roboto Slab', serif;
     font-size: 25px;
 }
+
+
+
 
 .box2{
     width: 310px;
     border: 5px;
     padding: 15px;
-    margin-left: 640px;
-    margin-top: 20px;
-    background-color: rgb(52, 144, 110);
-    border-radius: 2px;
-    font-family: 'Poppins', sans-serif;
-    color:beige; 
-    text-align: center;
-}
-
-.tool2{
-    color: black;
-    margin-left: 730px;
-    font-family: 'Roboto Slab', serif;
-    margin-top: -332px;
-    font-size: 25px;
-}
-
-.box3{
-    width: 300px;
-    border: 5px;
-    padding: 15px;
-    margin-left: 1160px;
+    margin-left: 42%;
     margin-top: 20px;
     background-color: rgb(52, 144, 110);
     border-radius: 2px;
@@ -110,19 +105,57 @@ nav a:hover {
     text-align: center;
 }
 
-.tool3{
+
+
+
+.tool2{
+   
     color: black;
-    margin-left: 1210px;
+    margin-left: 890px;
     font-family: 'Roboto Slab', serif;
-    margin-top: -250px;
+    margin-top: -390px;
     font-size: 25px;
 }
+
+
+
+
+.box3{
+   
+    width: 300px;
+    border: 5px;
+    padding: 15px;
+    margin-left: 1400px;
+    margin-top: 20px;
+    background-color: rgb(52, 144, 110);
+    border-radius: 2px;
+    font-family: 'Poppins', sans-serif;
+    color:beige;
+    text-align: center;
+}
+
+
+
+
+.tool3{
+    color: black;
+    margin-left: 1430px;
+    font-family: 'Roboto Slab', serif;
+    margin-top: -260px;
+    font-size: 25px;
+}
+
+
+
 
 /*main topics hover*/
 .box:hover, .box2:hover, .box3:hover {
     /* Adjusted hover effect to a darker translucent green */
     background-color: rgba(109, 147, 111, 0.7);
 }
+
+
+
 
 footer{
     padding-top: 15%;
