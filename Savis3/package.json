@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:detectOpenHandles":"jest --detectOpenHandles"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +26,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/chart.js": "^2.9.4",
+    "canvas": "^2.11.2",
     "dependencies": "0.0.1",
     "firebase": "^7.0 || ^8.0",
     "ng2-charts": "^2.4.3",
