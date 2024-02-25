@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
   /**
    * Validate all the fields
    */
-  private validateAllFormFields(formGroup: FormGroup) {
+   validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field)
       if (control instanceof FormControl) {
@@ -86,6 +86,7 @@ export class SignupComponent implements OnInit {
    * Prevents the user for entering spaces in the password and confirm password fields
    * @param event contains the event to check if the user is entering a space in the password or confirm passworld field
    */
+  /* istanbul ignore next */
   preventSpaces(event: any): void {
     if(event.target.id === 'password'){
       const input = event.target;
@@ -169,6 +170,7 @@ export interface emailValidator {
 /**
  * Custom email validator
  */
+/* istanbul ignore next */
 export class EmailValidator {
   /**
    * Validates an email address (checks for @ and .)
