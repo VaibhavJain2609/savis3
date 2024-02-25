@@ -27,6 +27,12 @@ import { ChartsModule } from "ng2-charts"
 import { BrowserModule } from "@angular/platform-browser"
 import { AppFirebaseModule } from "./app-firebase.module"
 import { APP_BASE_HREF } from "@angular/common"
+import { NavbarComponent } from "./components/navbar/navbar.component"
+import { FooterComponent } from "./components/footer/footer.component"
+import { HttpClient } from "@angular/common/http"
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core"
+import { HttpLoaderFactory } from "./app.module"
+import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component"
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -53,6 +59,9 @@ describe('AppComponent', () => {
         ForgotpasswordComponent,
         ChartComponent,
         InputComponent,
+        NavbarComponent,
+        FooterComponent,
+        LanguageSwitcherComponent
       ],
       imports: [
         BrowserModule,
@@ -60,7 +69,14 @@ describe('AppComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         AppFirebaseModule,
-        ChartsModule
+        ChartsModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
       ],
       providers:[
         MathService,

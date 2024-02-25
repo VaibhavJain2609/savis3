@@ -6,6 +6,14 @@ import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 
+import { Component, ElementRef } from '@angular/core';
+import { StackedDotChartService } from 'src/app/Utils/stacked-dot-chart.service';
+import { MathService } from 'src/app/Utils/math.service';
+import { SamplingService } from 'src/app/Utils/sampling.service';
+import { CSVService } from 'src/app/Utils/csv.service';
+import { NgForm } from '@angular/forms';
+import {ChartType} from 'chart.js';
+
 
 @Component({
   selector: 'app-one-mean',

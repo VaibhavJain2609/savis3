@@ -29,7 +29,14 @@ import { AppFirebaseModule } from './app-firebase.module';
 import { MathService } from './Utils/math.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 
+export function HttpLoaderFactory(http: HttpClient){
+  return new TranslateHttpLoader(http)
+}
 
 @NgModule({
   declarations: [
@@ -56,6 +63,7 @@ import { FooterComponent } from './components/footer/footer.component';
     InputComponent,
     NavbarComponent,
     FooterComponent,
+    LanguageSwitcherComponent,
 
   ],
   imports: [
@@ -64,7 +72,15 @@ import { FooterComponent } from './components/footer/footer.component';
     FormsModule,
     ReactiveFormsModule,
     AppFirebaseModule,
-    ChartsModule
+    ChartsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     CalculationService,

@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -27,7 +30,27 @@ export class SignupComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private router: Router
   ) {}
+  /**
+   * Form Group for controling the form
+   */
+  signUpForm!: FormGroup;
 
+  /**
+   * Error message string holder
+   */
+  errorMessage!: string;
+
+  successMessage!: string;
+
+  constructor(
+    private fb: FormBuilder,
+    private afAuth: AngularFireAuth,
+    private router: Router
+  ) {}
+
+  /**
+   * Creating the form groups for all the required fields
+   */
   /**
    * Creating the form groups for all the required fields
    */
@@ -41,8 +64,17 @@ export class SignupComponent implements OnInit {
     }, 
     { validators: PasswordValidator.matchPassword } // Validates that the password and confirmPassword fields match
     );
+      email: ['', [Validators.required], [EmailValidator.valid]],
+      password: ['', [Validators.required], [PasswordValidator.strong]],
+      confirmPassword: ['', [Validators.required]],
+    }, 
+    { validators: PasswordValidator.matchPassword } // Validates that the password and confirmPassword fields match
+    );
   }
 
+  /**
+   * Create the new user if all the fields are valid
+   */
   /**
    * Create the new user if all the fields are valid
    */
@@ -74,9 +106,12 @@ export class SignupComponent implements OnInit {
    validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field)
+      const control = formGroup.get(field)
       if (control instanceof FormControl) {
         control.markAsDirty({ onlySelf: true })
+        control.markAsDirty({ onlySelf: true })
       } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control)
         this.validateAllFormFields(control)
       }
     });
