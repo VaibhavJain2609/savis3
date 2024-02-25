@@ -5,7 +5,7 @@ import { SamplingService } from 'src/app/Utils/sampling.service';
 import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
-
+import * as XLS from 'xlsx';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
@@ -21,6 +21,7 @@ export class OneMeanCIComponent {
   inputSize: number = 0;
   csvraw: any
   csv: any
+
   // 2. Hypotheis Population
   hypoValuesArray: any = [];
   originalHypoValuesArray: any = [];
@@ -307,6 +308,26 @@ export class OneMeanCIComponent {
         this.dataInput = this.csvraw;
 
       })
+  }
+
+  onFileSelected(e: any) {
+    const files = e.target.files || e.dataTransfer?.files;
+    if (files.length) {
+      const file = files[0]
+      const filereader = new FileReader();
+      filereader.readAsBinaryString(file)
+      filereader.onload = (event: any) => {
+        const wb = XLS.read(filereader.result, { type: 'binary' })
+        const sheets = wb.SheetNames;
+        if (sheets.length) {
+          const row = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]])
+          this.csvraw = row
+          this.csv = this.parseData(this.csvraw.trim())
+          this.dataInput = this.csvraw;
+        }
+      }
+    }
+
   }
 
   parseData(dataText: any) {
