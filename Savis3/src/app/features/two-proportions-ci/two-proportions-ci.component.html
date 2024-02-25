@@ -1,4 +1,5 @@
 <!-- <p>two-proportions-ci works! updated</p> -->
+
 <nav id="navbar">
   <h1 class="logo"><a href="./../../" class="text-primary">SAVIS</a></h1>
   <ul>
@@ -43,7 +44,8 @@
             <br>
             <button class="btn" (click)="loadData()">Load Data</button>
           </div>
-        </div>       
+        </div>
+      
         <!-- Right Column -->
         <div class="rhs">
           <table style="margin-left: 3em">
@@ -67,11 +69,11 @@
                   <input type="number" step="1" min="10" value="10" id="increment" style="width: 20%; text-align: center" />
                 </div>
                 <div style="width: 10%; margin: auto">
-                 <button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button>
-
-                 <!--<button class="incrementButton" id="incrementButton" (click)="applyChanges()">
-                    <span class="material-icons">add_circle</span>
-                  </button> -->
+                <!--<button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button> -->
+              
+                 <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
+                    <span class="material-icons">+</span>
+                  </button> 
 
                 </div>
               </td>
@@ -87,12 +89,12 @@
     </div>
   </div>
   
-
     <!-- Additional sections go here -->
   
 
 
     <!-- Run Simulations Section -->
+
     <h2>2. Run Simulations</h2>
     <input type="checkbox" style="float:right" checked/>
     <div class="section">
@@ -148,11 +150,6 @@
       
 
 
-
-  
-
-
-
 <!-- Sampling Distribution of Difference of Proportions Section -->
 <h2>3. Sampling Distribution of Difference of Proportions</h2>
 <input type="checkbox" style="float:right" checked/>
@@ -193,7 +190,7 @@
   </div>
   <div class="rhs">
     <div class="right-container">
-      <!--<h1>Custom Graph</h1>-->
+      <h1>Custom Graph</h1>
       <div class="chart-container">
         <canvas baseChart
                 [datasets]="customChartData"
@@ -206,13 +203,10 @@
   </div>
 </div>
 
- <!--- </div>-->
-<!--</div> -->
+
 
 <footer id="main-footer" class="bg-dark text-center py-1">
   <div class="container">
     <p>Copyright ©2019 CSUS. All Rights Reserved.</p>
   </div>
 </footer>
-
-

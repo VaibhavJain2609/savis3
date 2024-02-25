@@ -4,3 +4,21 @@
     height: 10em;
     max-width: 40em; }
 
+    .incrementButton {
+      background-color: transparent;
+      border: rgb(79, 50, 146);;
+      cursor: pointer;
+    }
+    
+    .circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%; /* Makes it circular */
+      background-color: #007bff; /* Change the color as needed */
+      color: rgb(79, 50, 146);
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
