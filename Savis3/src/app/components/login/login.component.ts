@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    private router: Router
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +26,13 @@ export class LoginComponent implements OnInit {
 
     })
   }
+  guestOnSubmit(){
+    this.router.navigate(['/homepage']);
+  }
   onSubmit() {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      
-      this.afAuth.signInWithEmailAndPassword(username, password)
+      const { email, password } = this.loginForm.value; // Destructure email and password from the form value
+      this.afAuth.signInWithEmailAndPassword(email, password)
         .then(userCredential => {
           console.log('Logged in successfully!', userCredential.user);
           this.router.navigate(['/homepage']);
@@ -44,7 +47,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  private validateAllFormFields(formGroup:FormGroup){
+validateAllFormFields(formGroup:FormGroup){
     Object.keys(formGroup.controls).forEach(field=>{
       const control = formGroup.get(field);
       if(control instanceof FormControl) {
