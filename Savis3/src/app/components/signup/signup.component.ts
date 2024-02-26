@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
   /**
    * Validate all the fields
    */
-  private validateAllFormFields(formGroup: FormGroup) {
+  validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field)
       if (control instanceof FormControl) {

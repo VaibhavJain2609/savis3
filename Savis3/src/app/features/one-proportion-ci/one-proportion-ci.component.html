@@ -5,99 +5,142 @@
         <h1>One Proportion Confidence Interval Testing</h1>
     </div>
     <div class="title3"><h2>1. Enter Data</h2></div>
-    <input type="checkbox" style="float:right" checked/>
+    <!-- <input type="checkbox" style="float:right" checked/> -->
     <div id="input-section" class="section">
         <div class="lhs">
             <p>
                 Successes
-                <input type="number" id="success" value="0" min="0" step="1">
             </p>
+            <input type="number" id="success" min="0" step="1" [(ngModel)]="success" #successInput>
             <p>
                 Failures
-                <input type="number" id="failure" value="0" min="0" step="1">
             </p>
+            <input type="number" id="failure" min="0" step="1" [(ngModel)]="failure" #failureInput>
             <br>
-            <button class="btn" onclick="oneProportion.loadData()">LoadData</button>
+            <button class="btn load-button" (click)="loadData()">LoadData</button>
+            <button class="btn reset-button" (click)="resetData()">ResetData</button>
             <br>
             <div class="stats">
                 <div>
-                  <span>Proportion of Successes (p):</span>
-                  <span summary="proportion"> NaN </span>
+                  <span>Proportion of Successes (p): </span>
+                  <span>{{ proportion | number : '1.4-4' }}</span>
                 </div>
             </div>
+            <br><br>
         </div>
         <div class="rhs">
-            <div class="chart-wrap"><canvas id="input-bars"></canvas></div>
-            <label>Failures</label>
-            <label>Successes</label>
-            <p rowspan="2" colspan="2">
+            <!-- <label><span summary="numfailure"></span>Failures</label>
+            <label><span summary="numsuccess"></span>Successes</label> -->  
+            <label>{{ numsuccess }} Successes</label>
+            <label>{{ numfailure }} Failures</label> 
+            <!-- <p rowspan="2" colspan="2"> -->
+            <div class="chart-wrap">
+                <canvas baseChart
+                    [datasets]="barChartData1"
+                    [labels]="barChartLabels1"
+                    [options]="barChartOptions1"
+                    [chartType]="barChartType1">
+                </canvas>
+            </div>
+            <!-- <div class="chart-wrap">
+                <canvas id="input-bars"
+                    [datasets]="chartData"
+                    [options]="chartOptions"
+                    [chartType]="'bar'">
+                </canvas>
+            </div> -->
+            <!-- <p>
                 Increase By
-                <input type = "number" step = "1" min = "10" value = "10" id = "increment"/>
-            </p>
+                <input type = "number" step = "1" min = "1" id = "increment" [(ngModel)]="increment"/>
+                <button class = "incrementButton" (click)="incrementt(increment)">
+                    <span class="material-icons">add_circle</span>
+                </button>
+            </p> -->
+            <!-- <div style = "width: 10%; margin: auto">
+                <button class = "incrementButton" (click)="incrementt(increment)" >
+                    <span class="material-icons">add_circle</span>
+                </button>
+            </div> -->
         </div>
     </div> 
     <br>
     <hr>
     <div class="title3"><h2>2. Run Simulations</h2></div>
-    <input type="checkbox" style="float:right" checked/>
+    <!-- <input type="checkbox" style="float:right" checked/> -->
     <div id="input-section" class="section">
         <div class="lhs">
             <p>
-            Sample Size
-            <input id="sample-size" type="number" min="1" max="'1000" value="0"/>
+                Sample Size
             </p>
-            <label>
+            <input id="sample-size" type="number" min="1" max="'1000" [(ngModel)]="sampleSize">
+            <p>
                 Number of Simulations
-                <input id="num-simulations" type="number" min="1" max="1000" value="0"/>
-            </label>
+            </p>
+            <!-- <input id="numSimulations" type="number" min="1" max="1000" [(ngModel)]="numSimulations"> -->
+            <input type="number" min="1" max="1000" [(ngModel)]="numSimulations">
             <br>
-            <button class="btn" disabled="need-data" onclick="oneProportion.runSimulations()">Run Simulations</button>
+            <button class="btn" (click)="runSimulations()">Run Simulations</button>
             <br>
             <div class="stats">
                 <div>
                     <span>Proportion of Successes of Most Recent Draw (p): </span>
-                    <span summary="sampleProp">NaN</span>
+                    <span>{{ sampleProportion | number : '1.4-4' }}</span>
                 </div>
             </div>
         </div>
         <div class="rhs">
             <div class="l">Most Recent Draw</div>
-            <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
+            <h6>{{ randomizedfailure }} Failures</h6> 
+            <h6>{{ randomizedsuccess }} Successes</h6>
+            <div class="chart-wrap2">
+                <canvas baseChart
+                    [datasets]="barChartData2"
+                    [labels]="barChartLabels2"
+                    [options]="barChartOptions2"
+                    [chartType]="barChartType1">
+                </canvas>
+            </div>
+            <!-- <div class="chart-wrap2">
+                <canvas id="last-sim-bars">
+
+                </canvas>
+            </div> -->
         </div>
     </div>
+    <br><br>
     <hr>
     <div class="title3"><h2>3. Sampling Distribution of Proportions</h2></div>
-    <input type="checkbox" style="float:right" checked/>
+    <!-- <input type="checkbox" style="float:right" checked/> -->
     <div class="section flex-row" style="display: flex; flex-wrap: wrap;">
         <div class="lhs">
             <table>
-                <label for="confidence-level">Confidence Level <span id="confidence-level-display">95</span>%</label>
+                <label for="confidence-level">Confidence Level {{confidenceLevel}} %</label>
             </table>
-            <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" value="95"/>
+            <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
             <br>
-            <button class="btn" type="button" style="width:80%" id="buildci">Build</button>
+            <button class="btn" style="width:80%" (click)="buildci()">Build</button>
             <br>  
             <br>
             <div class="stats">
                 <div>
-                     <span>Mean of Sample Diff: </span>
-                     <span id="mean-sample-diffs" class="stat" summary="mean">NaN</span>
+                     <span>Mean of Sample Proportions: </span>
+                     <span>{{ mean | number : '1.4-4'}}</span>
                  </div>
                  <div>
-                     <span>Std of Sample Diff: </span>
-                     <span id="stddev-sample-diffs" class="stat" summary="stddev">NaN</span>
+                     <span>Standard Deviation: </span>
+                     <span>{{ stddev | number : '1.4-4'}}</span>
                  </div>
                  <div>
                      <span>Lower Bound: </span>
-                     <span id="lower" class="stat" summary="lower">NaN</span>
+                     <span>{{ lower | number : '1.4-4'}}</span>
                  </div>
                  <div>
                      <span>Upper Bound: </span>
-                     <span id="upper" class="stat" summary="upper">NaN</span>
+                     <span>{{ upper | number : '1.4-4'}}</span>
                  </div>
                  <div>
                      <span>Total Samples: </span>
-                     <span id="total-samples" class="stat" summary="total" summaryint>NaN</span>
+                     <span>{{ total }}</span>
                  </div>
              </div>
             <br>      
@@ -119,10 +162,13 @@
             <br> -->
         </div>
         <div class="rhs">
-            <div class="chart-wrap">
-                <canvas id="custom-interval"></canvas>
-                <br><br>
-                <canvas id="ci-chart"></canvas>
+            <div class="chart-wrap3">
+                <canvas baseChart
+                    [datasets]="barChartData3"
+                    [labels]="barChartLabels3"
+                    [options]="barChartOptions3"
+                    [chartType]="barChartType2">
+                </canvas>
             </div>
         </div>
     </div>
@@ -131,5 +177,5 @@
 <script src="{{base}}../lib/Chart.bundle.min.js"></script>
 <script src="./oneProportionsEntry.js" type="module"></script>
 <script src="./oneProportions.bundle.js"></script>
-
+<!-- <br><br><br><br> -->
 <app-footer></app-footer>

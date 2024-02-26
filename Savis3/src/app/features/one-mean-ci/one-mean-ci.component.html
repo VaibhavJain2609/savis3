@@ -6,6 +6,11 @@
       <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
         <h3 id="subtitle">1. Enter Data</h3>
         <div>
+          <select class="sample" (change)="sampleSelect($event)">
+            <option disabled selected>Select Sample Data</option>
+            <option value="sample1">Sample 1</option>
+            <option value="sample2">Sample 2</option>
+          </select>
           <textarea rows = 8 placeholder="Please enter data in column format" [ngModel]="dataInput" name="dataFormInput"></textarea>
         </div>
         <div id="button-div">
