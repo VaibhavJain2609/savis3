@@ -29,7 +29,9 @@ export class OneMeanCIComponent {
   meanValue: number = 0;
   prevMean: number = this.meanValue;
   hypoInputMean: number = 0;
-
+  // 3. Data Filter
+  setMin: number = 0;
+  setMax: number = 0;
   // 3. Draw Sample
   sampleSize: number = 1;
   sampleSizeChange: number = 1;
