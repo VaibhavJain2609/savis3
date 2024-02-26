@@ -58,25 +58,33 @@
 }
 
 
+.font-weight-bold{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
 
 #forget {
-    padding-top: 30px;
+    padding-top: 10px;
     margin-top: 20px;
     min-width: 100px;
+    
     margin-left: auto;
     text-decoration: none;
     cursor: pointer;
     color: #54c242;
     color: #54c242;
     text-decoration: none;
-
+    
     &:hover {
       color: #388e3c;
       text-decoration: underline;
     }
 }
-
+.custom-padding {
+    padding-top: 0px; 
+}
 
 
 
@@ -124,7 +132,7 @@ A:hover {
 .panel {
     box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
     border-radius: 12px;
-    width: 300px;
+    width: 320px;
     background-color: #fff;
     padding: 20px;
     margin-left: 620px;
