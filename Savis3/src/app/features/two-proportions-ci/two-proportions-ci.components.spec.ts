@@ -26,3 +26,4 @@ describe('TwoProportionsCIComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
