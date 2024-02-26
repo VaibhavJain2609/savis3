@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType, ChartXAxe } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { FormsModule } from '@angular/forms'; // Add this import
+import { ChartsModule } from 'ng2-charts';
 
 @Component({
   selector: 'app-two-proportions-ci',
