@@ -10,7 +10,6 @@
   </ul>
 </nav>
 
-
 <div id="main-content">
   <div id="two-proportions">
     <h1>Two Proportions Confidence Interval</h1>
@@ -31,13 +30,13 @@
               <tbody>
                 <tr>
                   <td class="desc">Successes</td>
-                  <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"></td>
-                  <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"></td>
+                  <td><input type="number" id="a-success" [ngModel]="numASuccess" (ngModelChange)="numASuccess = $event" min="0" step="1"></td>
+                  <td><input type="number" id="b-success" [ngModel]="numBSuccess" (ngModelChange)="numBSuccess = $event" min="0" step="1"></td>
                 </tr>
                 <tr>
                   <td class="desc">Failures</td>
-                  <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"></td>
-                  <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"></td>
+                  <td><input type="number" id="a-failure" [ngModel]="numAFailure" (ngModelChange)="numAFailure = $event" min="0" step="1"></td>
+                  <td><input type="number" id="b-failure" [ngModel]="numBFailure" (ngModelChange)="numBFailure = $event" min="0" step="1"></td>
                 </tr>
               </tbody>
             </table>
@@ -69,12 +68,9 @@
                   <input type="number" step="1" min="10" value="10" id="increment" style="width: 20%; text-align: center" />
                 </div>
                 <div style="width: 10%; margin: auto">
-                <!--<button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button> -->
-              
-                 <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
+                  <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
                     <span class="material-icons">+</span>
                   </button> 
-
                 </div>
               </td>
               <td><span summary="numBFailure" summaryint>{{ numBFailure }}</span> Failures</td>
@@ -91,8 +87,6 @@
   
     <!-- Additional sections go here -->
   
-
-
     <!-- Run Simulations Section -->
 
     <h2>2. Run Simulations</h2>
@@ -147,8 +141,8 @@
           </tr>
         </table>
       </div>
+    </div>
       
-
 
 <!-- Sampling Distribution of Difference of Proportions Section -->
 <h2>3. Sampling Distribution of Difference of Proportions</h2>
@@ -202,8 +196,6 @@
     </div>
   </div>
 </div>
-
-
 
 <footer id="main-footer" class="bg-dark text-center py-1">
   <div class="container">
