@@ -22,6 +22,7 @@ export class InputComponent implements OnInit {
   >();
 
   isFileData: boolean = false;
+  extension: string | undefined = undefined;
   fileContent: string | null = null;
   headers: string[] | undefined = [];
   fileData: any[] = [];
@@ -44,7 +45,12 @@ export class InputComponent implements OnInit {
   }
 
   getFormValues() {
-    if (this.xValues?.value == null || this.yValues?.value == null)
+    if (
+      this.xValues?.value == null ||
+      this.yValues?.value == null ||
+      this.xValues?.value == '' ||
+      this.yValues?.value == ''
+    )
       return [[], []];
     let xValuesArray = this.xValues?.value.split(',');
     let yValuesArray = this.yValues?.value.split(',');
@@ -61,7 +67,7 @@ export class InputComponent implements OnInit {
 
   calculate() {
     let [xValuesArray, yValuesArray] = this.getFormValues();
-    console.log(xValuesArray.length);
+    // console.log(xValuesArray.length);
 
     if (xValuesArray.length != yValuesArray.length || xValuesArray < 2) {
       alert('Incorrect Inputs');
@@ -99,50 +105,55 @@ export class InputComponent implements OnInit {
     ).toFixed(2);
   }
 
-  onFileChange(event: any): void {
+  readFileMethod(file: File): Promise<string> {
+    const reader: FileReader = new FileReader();
+    reader.readAsText(file);
+    return new Promise((resolve, reject) => {
+      reader.onload = (e) => {
+        resolve(reader.result as string);
+      };
+    });
+  }
+
+  async onFileChange(event: any) {
     const file: File = event.target.files[0];
     if (file.size < 0) {
       alert('Incompatible File');
       return;
     }
+    const result = await this.readFileMethod(file);
+    this.fileContent = result as string;
 
-    const reader: FileReader = new FileReader();
+    // Check the file extension
+    this.extension = file.name.split('.').pop()?.toLowerCase();
 
-    reader.onload = () => {
-      this.fileContent = reader.result as string;
+    switch (this.extension) {
+      case 'csv':
+        // console.log('CSV File Content (input):', this.fileContent);
+        this.isFileData = true;
+        this.parseCsv();
+        break;
+      case 'xlsx':
+        // For XLSX files, use the read function from xlsx library
+        const workbook = read(this.fileContent, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        this.fileContent = XLSX.utils.sheet_to_csv(sheet);
+        // console.log('XLSX File Content (input):', this.fileContent);
+        this.isFileData = true;
+        this.parseCsv();
+        break;
 
-      // Check the file extension
-      const extension = file.name.split('.').pop()?.toLowerCase();
-
-      switch (extension) {
-        case 'csv':
-          // console.log('CSV File Content (input):', this.fileContent);
-          this.isFileData = true;
-          this.parseCsv2();
-          break;
-        case 'xlsx':
-          // For XLSX files, use the read function from xlsx library
-          const workbook = read(this.fileContent, { type: 'binary' });
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          this.fileContent = XLSX.utils.sheet_to_csv(sheet);
-          // console.log('XLSX File Content (input):', this.fileContent);
-          this.isFileData = true;
-          this.parseCsv2();
-          break;
-
-        default:
-          alert(
-            '❌ ERROR: Unsupported file type. Please upload a CSV or XLSX file.'
-          );
-          this.isFileData = false;
-          break;
-      }
-    };
-    reader.readAsBinaryString(file); // Read the file as binary
+      default:
+        alert(
+          '❌ ERROR: Unsupported file type. Please upload a CSV or XLSX file.'
+        );
+        this.isFileData = false;
+        break;
+    }
   }
 
-  parseCsv2() {
+  parseCsv() {
     // parse csv manually
     const rows = this.fileContent!.split('\n');
     const headers = rows[0].split(',');
@@ -164,26 +175,7 @@ export class InputComponent implements OnInit {
 
     this.headers = headers;
     this.fileData = data;
-    this.isFileData = true;
-  }
-
-  parseCsv(): void {
-    // console.log(this.fileContent);
-    // parse this.fileContent into rows and columns and separate headers
-    var result: ParseResult<any> = Papa.parse(this.fileContent!, {
-      header: true,
-      dynamicTyping: true,
-    });
-    console.log(result);
-    if (result.data.length < 2) {
-      alert('File should have at least two points');
-      this.fileContent = null;
-      this.isFileData = false;
-      return;
-    }
-
-    this.headers = result.meta.fields;
-    this.fileData = result.data;
+    this.isFileData = true;
   }
 
   ngOnInit(): void {
