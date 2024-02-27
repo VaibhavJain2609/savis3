@@ -27,12 +27,10 @@ export class ChartComponent implements AfterViewInit {
   @Input() valuesCheck: boolean = false;
 
   drawCorrelationChart() {
-    const ctx = this.chartCanvas.nativeElement.getContext('2d');
-
-    // Destroy existing chart if it exists
-    if (this.chart) {
-      this.chart.destroy();
+    if (this.xValues.length == 0 || this.yValues.length == 0) {
+      return;
     }
+    const ctx = this.chartCanvas.nativeElement.getContext('2d');
 
     const data = {
       datasets: [
