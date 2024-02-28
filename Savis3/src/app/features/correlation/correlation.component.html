@@ -1,11 +1,15 @@
 <app-navbar></app-navbar>
 <body>
-  <div class="container rounded-xl my-20">
-  <app-input
-    (xValuesArrayEmitter)="handleInputX($event)"
-    (yValuesArrayEmitter)="handleInputY($event)"
-  ></app-input>
-  <app-chart [xValues]="xValuesArray" [yValues]="yValuesArray"></app-chart>
-</div>
+  <div class="container rounded-xl mt-20 mb-32">
+    <app-input
+      (xValuesArrayEmitter)="handleInputX($event)"
+      (yValuesArrayEmitter)="handleInputY($event)"
+    ></app-input>
+    <app-chart
+      [xValues]="xValuesArray"
+      [yValues]="yValuesArray"
+      [valuesCheck]="valuesCheck"
+    ></app-chart>
+  </div>
 </body>
 <app-footer class="fixed inset-x-0 bottom-0"></app-footer>
