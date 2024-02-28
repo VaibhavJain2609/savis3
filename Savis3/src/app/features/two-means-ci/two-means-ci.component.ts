@@ -4,10 +4,10 @@ import { ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-two-mean-ci',
-  templateUrl: './two-mean-ci.component.html',
-  styleUrls: ['./two-mean-ci.component.scss']
+  templateUrl: './two-means-ci.component.html',
+  styleUrls: ['./two-means-ci.component.scss']
 })
-export class TwoMeanCIComponent implements OnInit {
+export class TwoMeansCIComponent implements OnInit {
   // Data for both groups
   group1Data: number[] = [];
   group2Data: number[] = [];
