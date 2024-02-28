@@ -16,7 +16,7 @@
         <div id="button-div">
           <button type="submit" class="btn">Load Data</button>
           <button type="button" class="btn" (click)="onReset(dataForm)">Reset</button>
-          <input type="file" name="dataForm-file">
+          <input type="file" name="dataForm-file" (change)="onFileSelected($event)">
         </div>
       </form>
       <div id="data-div">
