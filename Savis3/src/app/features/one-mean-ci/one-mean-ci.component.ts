@@ -6,7 +6,6 @@ import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 import * as XLS from 'xlsx';
-import * as XLS from 'xlsx';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
