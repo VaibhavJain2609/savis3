@@ -6,6 +6,7 @@ import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 import * as XLS from 'xlsx';
+import * as XLS from 'xlsx';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
@@ -21,7 +22,6 @@ export class OneMeanCIComponent {
   inputSize: number = 0;
   csvraw: any
   csv: any
-
   // 2. Hypotheis Population
   hypoValuesArray: any = [];
   originalHypoValuesArray: any = [];
@@ -29,10 +29,12 @@ export class OneMeanCIComponent {
   meanValue: number = 0;
   prevMean: number = this.meanValue;
   hypoInputMean: number = 0;
+
   // 3. Data Filter
   setMin: number = 0;
   setMax: number = 0;
   // 3. Draw Sample
+
   sampleSize: number = 1;
   sampleSizeChange: number = 1;
   sampleMean: number = 0;
@@ -46,6 +48,9 @@ export class OneMeanCIComponent {
   meanSamples: number = 0;
   extremeSample: number = 0;
   distributionSelected: string = "default";
+
+  lowerBound95:number = 0;
+  upperBounds95:number =0;
 
   // chart data
   public lineChartLegend = true;
@@ -171,6 +176,8 @@ export class OneMeanCIComponent {
     this.hypoInputMean = this.inputMean;
     // calculate the standard deviation
     this.standardDeviation = parseFloat(MathService.stddev(this.valuesArray).toFixed(2));
+    this.lowerBound95 = (this.inputMean - 2* this.standardDeviation);
+    this.upperBounds95 = (this.inputMean + 2* this.standardDeviation);
     this.inputSize = this.valuesArray.length;
     this.hypoValuesArray = this.valuesArray;
 
@@ -294,6 +301,7 @@ export class OneMeanCIComponent {
     };
 
   }
+
   sampleSelect(e: any) {
     this.csv = null
     let link = ""
