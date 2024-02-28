@@ -1,165 +1,146 @@
 <app-navbar></app-navbar>
-<div id="main-content">
-    <div id="two-proportions">
-      <h1>Two Proportions Hypothesis Testing</h1>
-      <h2>1. Enter Data:</h2>
-      <input type="checkbox" style="float:right" checked/>
-      <div id="input-section" class="section">
-        <div class="lhs">
-          <table>
-            <thead>
-              <tr>
-                <td></td>
-                <td class="desc">Group A</td>
-                <td class="desc">Group B</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="desc">Successes</td>
-                <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"></td>
-                <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"></td>
-              </tr>
-              <tr>
-                <td class="desc">Failures</td>
-                <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"></td>
-                <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"></td>
-              </tr>
-            </tbody>
-          </table>
-          <br>
-          <button class="btn" (click)="loadData()">Load Data</button>
-          <div class="stats">
-            <div>
-              <span>Proportion of Successes in Group A (p<sub>A</sub>):</span>
-              <span>{{ sampleProportionA }}</span>
-            </div>
-            <div>
-              <span>Proportion of Successes in Group B (p<sub>B</sub>):</span>
-              <span>{{ sampleProportionB }}</span>
-            </div>
-            <div>
-              <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
-              <span>{{ sampleProportionDiff }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="rhs">
-          <h3 style="margin-left: 3em">Most Recent Draw</h3>
-          <table style="margin-left: 3em">
-            
+<div class="p-4">
+  <div id="two-proportions" class="mb-4">
+    <h1 class="text-2xl font-bold mb-2">Two Proportions Hypothesis Testing</h1>
+    <h2 class="text-xl font-bold mb-2">1. Enter Data:</h2>
+    <input type="checkbox" class="float-right mr-2" checked />
+    <div id="input-section" class="section flex">
+      <div class="lhs mr-4">
+        <table class="mb-4">
+          <thead>
             <tr>
-              <td style="text-align: right"><span>{{ sampleAFailure }}</span> Failures</td>
-              <td rowspan="2" colspan="2">
-                
-                <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
-              </td>
-              <td><span>{{ sampleBFailure }}</span> Failures</td>
+              <td></td>
+              <td class="desc">Group A</td>
+              <td class="desc">Group B</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="desc">Successes</td>
+              <td><input type="number" id="a-success" v-model="numASuccess" min="0" step="1"
+                  class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
+              <td><input type="number" id="b-success" v-model="numBSuccess" min="0" step="1"
+                  class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
             </tr>
             <tr>
-              <td style="text-align: right"><span>{{ sampleASuccess }}</span> Successes</td>
-              <td><span>{{ sampleBSuccess }}</span> Successes</td>
+              <td class="desc">Failures</td>
+              <td><input type="number" id="a-failure" v-model="numAFailure" min="0" step="1"
+                  class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
+              <td><input type="number" id="b-failure" v-model="numBFailure" min="0" step="1"
+                  class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
             </tr>
-          </table>
-        </div>
-      </div>
-
-      <h2>2. Run Simulations</h2>
-      <input type="checkbox" style="float:right" checked/>
-      <div class="section">
-       <div class="lhs">
-         <label>Number of Simulations:
-          <input id="num-simulations" type="number" min="1" [(ngModel)]="numSimulations" max="1000"/>
-         </label>
-         <button class="btn" [disabled]="!isDataLoaded" (click)="runSimulations()">Run Simulations</button>
-         <div class="stats">
-          <div>
-            <span>Proportion of Successes Randomized to Group A (p<sub>A</sub>):</span>
+          </tbody>
+        </table>
+        <button (click)="loadData()" class="btn border bg-primary text-white px-4 py-2 text-sm font-medium rounded-lg mb-4">Load Data</button>
+        <div class="text-sm font-medium mb-3">
+          <div class="flex justify-between">
+            <span>Proportion of Successes in Group A (p<sub>A</sub>): </span>
             <span>{{ sampleProportionA }}</span>
           </div>
-          <div>
-            <span>Proportion of Successes Randomized to Group B (p<sub>B</sub>):</span>
+          <div class="flex justify-between">
+            <span>Proportion of Successes in Group B (p<sub>B</sub>):</span>
             <span>{{ sampleProportionB }}</span>
           </div>
-          <div>
+          <div class="flex justify-between">
             <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
             <span>{{ sampleProportionDiff }}</span>
           </div>
-         </div>
-       </div>
-       <div class="rhs">
-        <h3 style="margin-left: 3em">Most Recent Draw</h3>
-        <table style="margin-left: 3em">
-          
-          <tr>
-            <td style="text-align: right"><span>{{ sampleAFailure }}</span> Failures</td>
-            <td rowspan="2" colspan="2">
-              
-              <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
-            </td>
-            <td><span>{{ sampleBFailure }}</span> Failures</td>
-          </tr>
-          <tr>
-            <td style="text-align: right"><span>{{ sampleASuccess }}</span> Successes</td>
-            <td><span>{{ sampleBSuccess }}</span> Successes</td>
-          </tr>
-        </table>
-       </div>
-      
-      </div>
-
-      <h2>3. Sampling Distribution of Difference of Proportions</h2>
-      <input type="checkbox" style="float:right" checked/>
-      <div class="section flex-row">
-        <div class="lhs">
-            <div>
-                <label for="test-type">Type of Test:</label>
-                <select id="test-type" [disabled]="!isDataLoaded" (change)="onTestTypeChange()" class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg" [(ngModel)]="selectedTestOption">
-                  <option value="null" disabled selected>Type of Test</option>
-                  <option value="oneTailRight">One Tail Right</option>
-                  <option value="oneTailLeft">One Tail Left</option>
-                  <option value="TwoTail">Two Tails</option>
-                </select>
-            </div>
-            <span>Select differences at least as extreme as</span>
-            <input [disabled]="!samDisActive" type="number"  id="tail-input" value="0" [(ngModel)]="prop_diff" step="any"
-              class="w-full border if-disabled border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
-            <hr>
-      
-          <div class="stats">
-            <div>
-              <span>Difference of Proportions in Original Data::</span>
-              <span>{{ proportionDiff }}</span>
-            </div>
-            <div>
-              <span>Mean of Sample Differences:</span>
-              <span>{{ meanSampleDiffs }}</span>
-            </div>
-            <div>
-              <span>Standard Deviation:</span>
-              <span>{{ stddevSampleDiffs }}</span>
-            </div>
-            <div>
-              <span>Total # Samples:</span>
-              <span>{{ totalSamples }}</span>
-            </div>
-            <div>
-              <span># Extreme Differences:</span>
-              <span>{{ extremediff }}</span>
-            </div>
-            <div>
-              <span>Proportion Extreme Differences:</span>
-              <span>{{ propextremediff }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="rhs">
-          <canvas id="prop_diff" style="height:300px"></canvas>
         </div>
       </div>
-
+      <div class="rhs w-9/12">
+        <div class="chart-wrap"><canvas id="data-chart-1" height="200"></canvas></div>
+      </div>
     </div>
   </div>
-<app-footer></app-footer>  
-    
-  
+  <div class="flex justify-between">
+    <h2 class="text-xl font-bold">2. Run Simulations</h2>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionTwo')">
+  </div>
+  <div class="flex gap-3" [ngClass]="sections.sectionTwo ? '' : 'hidden'">
+    <div class="w-3/12">
+      <h3 class="font-bold"># of Simulations</h3>
+      <input [(ngModel)]="numofSem" [disabled]="!activateSim"
+        class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
+        type="number" value="1" min="1" max="100" />
+      <button (click)="runSim()" *ngIf="activateSim"
+        class="mt-1 border bg-primary disabled: text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">Run
+        Simulation
+      </button>
+      <button [disabled]="true" *ngIf="!activateSim"
+        class="mt-1 border bg-gray-400 text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">Run
+        Simulation
+      </button>
+      <div class="text-sm font-medium mb-2">
+        <div class="flex justify-between">
+          <span>Proportion of Successes Randomized to Group A (p<sub>A</sub>): </span>
+          <span summary="sampleProportionA">{{simsummary.sampleProportionA}} </span>
+        </div>
+        <div class="flex justify-between">
+          <span>Proportion of Successes Randomized to Group B (p<sub>B</sub>):</span>
+          <span summary="sampleProportionB">{{simsummary.sampleProportionB}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
+          <span summary="sampleProportioniff">{{simsummary.sampleProportionDiff}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="rhs w-9/12">
+      <h3>Most Recent Draw</h3>
+      <div class="chart-wrap"><canvas id="data-chart-2" height="200"></canvas></div>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <h2 class="text-xl font-bold">3. Sampling Distribution of Difference of Proportions</h2>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
+  </div>
+  <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
+    <div class="w-3/12">
+      <select [disabled]="!activateSim" [(ngModel)]="selectedTestOption" name="testType"
+        class="if-disabled w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
+             <option value="heading" disabled selected>Type of Test</option>
+             <option value="oneTailRight">One Tail Right</option>
+             <option value="oneTailLeft">One Tail Left</option>
+             <option value="TwoTail">Two Tails</option>
+       </select>
+      <span>Select differences at least as extreme as</span>
+      <!-- <input [disabled]="!samDisActive" type="number" id="tail-input" [(ngModel)]="mean_diff" step="any"
+       class="w-full border if-disabled border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"> -->
+       <input [(ngModel)]="mean_diff" [disabled]="!activateSim"
+       class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
+       type="number" value="1" min="1" max="100" />
+      <hr>
+      <div class="text-sm font-medium mb-2">
+        <div class="flex justify-between">
+          <span>Difference of Proportions in Original Data:</span>
+          <span summary="dataMeanDiff">{{mean_diff}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Mean of Sample Differences:</span>
+          <span summary="mean">{{simsummary.sampleMeanDiff}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Standard Deviation:</span>
+          <span summary="stddev">{{lastSummary?.stddev}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Total # samples: </span>
+          <span summary="total" summaryint>{{lastSummary?.total}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span># of Extreme Differences: </span>
+          <span summary="chosen" summaryint>{{lastSummary?.chosen }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Proportion of Extreme Differences</span>
+          <span summary="proportion">{{lastSummary?.proportion }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="rhs w-9/12">
+      <canvas id="diff-chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

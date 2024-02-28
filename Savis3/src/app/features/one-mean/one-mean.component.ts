@@ -572,5 +572,50 @@ export class OneMeanComponent {
   }
 }
   
+validateFile(fileInput: any) {
+  this.valuesArray = [];
+  let file = fileInput.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      // check if the data is vertical or horizontal
+      console.log(e.target?.result);
+      let vertical = (e.target?.result as string).split('\n').length > 1;
+      if (vertical) {
+        this.valuesArray = (e.target?.result as string).split('\n')
+        .map(value => value.replace(/\r/g, ''))
+        .filter(value => value.trim() !== '');
+      } else {
+        this.valuesArray = (e.target?.result as string).split(',')
+        .map(value => value.replace(/\r/g, ''))
+        .filter(value => value.trim() !== '');
+      }
+      // convert the array into numbers
+      this.valuesArray = this.valuesArray.map((value: string) => parseInt(value)).filter((value: number) => !isNaN(value));
+      // calculate the mean
+      this.inputMean = MathService.mean(this.valuesArray);
+      this.hypoInputMean = this.inputMean;
+      // calculate the standard deviation
+      this.standardDeviation = parseFloat(MathService.stddev(this.valuesArray).toFixed(2));
+      this.inputSize = this.valuesArray.length;
+      this.hypoValuesArray = this.valuesArray;
+      // create the chart
+      this.lineChartData1 = [{
+        data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
+        label: 'Original Dataset',
+        pointBackgroundColor: 'orange',
+      }];
+      this.lineChartLabels1 = this.valuesArray.map((index:number) => `Value ${index+1}`);
+      this.lineChartData2 = [{
+        data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
+        label: 'Hypothetical Population',
+        pointBackgroundColor: 'orange',
+      }];
+      this.lineChartLabels2 = this.valuesArray.map((index:number) => `Value ${index+1}`);
+      this.updateChartOptions();
+    }
+    reader.readAsText(file);
+  }
+}
 
 }
