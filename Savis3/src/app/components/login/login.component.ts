@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value; // Destructure email and password from the form value
-      this.afAuth.signInWithEmailAndPassword(email, password)
+      const { username, password } = this.loginForm.value; // Destructure email and password from the form value
+      this.afAuth.signInWithEmailAndPassword(username, password)
         .then(userCredential => {
           console.log('Logged in successfully!', userCredential.user);
           this.router.navigate(['/homepage']);
