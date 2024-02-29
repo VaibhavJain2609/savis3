@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRouterModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,12 +30,23 @@ import { MathService } from './Utils/math.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
+}
+
+export function setupTranslateFactory(service : TranslateService): Function {
+  return () => new Promise((resolve, reject) => {
+    const savedLang = localStorage.getItem('lang');
+    const initialLang = savedLang ? savedLang : 'en';
+    service.use(initialLang).subscribe(
+      () => resolve(null),
+      error => reject(error)
+    );
+  });
 }
 
 @NgModule({
@@ -84,7 +95,14 @@ export function HttpLoaderFactory(http: HttpClient){
   ],
   providers: [
     CalculationService,
-    MathService
+    MathService,
+    TranslateService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: setupTranslateFactory,
+      deps: [TranslateService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
