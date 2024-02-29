@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import Chart, { ChartXAxe } from 'chart.js';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { ChartXAxe } from 'chart.js';
+import { ChartDataSets, ChartOptions  } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
 @Component({
@@ -8,7 +9,7 @@ import { Color, Label } from 'ng2-charts';
   templateUrl: './one-proportion.component.html',
   styleUrls: ['./one-proportion.component.scss']
 })
-export class OneProportionComponent {
+export class OneProportionComponent{
   // User input properties
   probabilityOfHeads: number = 0.5; // Default probability of heads
   numberOfTosses: number = 5; // Default number of tosses
@@ -34,116 +35,131 @@ export class OneProportionComponent {
   }
 
   // Chart properties
-  chartData: ChartDataSets[] = [
-    { 
-      data: [], 
-      label: 'Samples',
-      borderWidth: 1,
-      backgroundColor: this.colors.sample,
-      hidden: false,
-      barPercentage: 1.0
-    },
-    {
-      type: 'line',
-      label: 'Binomial Prediction',
-      data: [],
-      borderWidth: 1,
-      borderColor: this.colors.binomial,
-      backgroundColor: this.colors.binomial,
-      pointRadius: 3,
-      fill: false,
-      hidden: false,
-      barPercentage: 1.0
-    },
-    {
-      type: 'line',
-      label: 'Selected',
-      data: [],
-      borderWidth: 0.1,
-      backgroundColor: this.colors.selected,
-      hidden: false,
-      fill: 'end',
-      barPercentage: 1.0
-    }
-  ];
+  chartData: ChartDataSets[]
   
-  chartLabels: Label[] = ['0', '1', '2', '3', '4', '5'];
+  chartLabels: Label[];
   
-  chartOptions: ChartOptions = {
-    responsive: true,
-    scales: {
-      xAxes:[
-        {
-          scaleLabel:{
-            display: true,
-            labelString: '# of heads in 5 tosses',
-            // fontColor: 'black',
-            // fontSize: 14
-          }
-        } as ChartXAxe
-      ],
-      yAxes: [
-        {
-          ticks:{
-            max: 1,
-            beginAtZero: true,
-            stepSize: 0.1,
-          },
-          scaleLabel: {
-            display: true,
-            labelString: '# of samples',
-            // fontColor: 'black',
-            // fontSize: 14
-          }
-        }
+  chartOptions: ChartOptions
+
+  chartColors: Color[]
+
+  constructor(
+    private translate: TranslateService,
+    ) {
+    // Chart data
+    this.chartData = [
+      { 
+        data: [], 
+        label: this.translate.instant('op_bar_sample'),
+        borderWidth: 1,
+        backgroundColor: this.colors.sample,
+        hidden: false,
+        barPercentage: 1.0
+      },
+      {
+        type: 'line',
+        label: this.translate.instant('op_bar_binomial'),
+        data: [],
+        borderWidth: 1,
+        borderColor: this.colors.binomial,
+        backgroundColor: this.colors.binomial,
+        pointRadius: 3,
+        fill: false,
+        hidden: false,
+        barPercentage: 1.0
+      },
+      {
+        type: 'line',
+        label: this.translate.instant('op_bar_selected'),
+        data: [],
+        borderWidth: 0.1,
+        backgroundColor: this.colors.selected,
+        hidden: false,
+        fill: 'end',
+        barPercentage: 1.0
+      }
     ]
-    },
-    maintainAspectRatio: true,
-    tooltips: {
-      mode: 'index',
-      backgroundColor: 'rgba(0, 0, 0, 1.0)',
-      callbacks: {
-        title: function(tooltipItem, data) {
-          if (tooltipItem[0]) {
-            let title = tooltipItem[0].xLabel || '';
-            title += ` heads`;
-            return title.toString(); // Explicitly convert to string
-          }
-          return ''; // Return an empty string if tooltipItem[0] is undefined
-        },
-        label: (tooltipItem, data) => {
-          if (tooltipItem && tooltipItem.datasetIndex !== undefined) {
-            if (tooltipItem.datasetIndex !== 2) {
-              return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${tooltipItem.yLabel}`;
-            } else {
-              return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
-                this.maxHeads - this.minHeads + 1
-              }`
+
+    // Chart labels
+    this.chartLabels = ['0', '1', '2', '3', '4', '5']
+
+    // Chart options
+    this.chartOptions = {
+      responsive: true,
+      scales: {
+        xAxes:[
+          {
+            scaleLabel:{
+              display: true,
+              labelString: `${this.translate.instant('op_bar_heads')} ` + this.maxHeads + ` ${this.translate.instant('op_bar_heads2')}`,
+              // fontColor: 'black',
+              // fontSize: 14
+            }
+          } as ChartXAxe
+        ],
+        yAxes: [
+          {
+            ticks:{
+              max: 1,
+              beginAtZero: true,
+              stepSize: 0.1,
+            },
+            scaleLabel: {
+              display: true,
+              labelString: this.translate.instant('op_bar_num_samples'),
+              // fontColor: 'black',
+              // fontSize: 14
             }
           }
-          return ''; // Return an empty string if tooltipItem or tooltipItem.datasetIndex is undefined
+      ]
+      },
+      maintainAspectRatio: true,
+      tooltips: {
+        mode: 'index',
+        backgroundColor: 'rgba(0, 0, 0, 1.0)',
+        callbacks: {
+          title: function(tooltipItem, data) {
+            if (tooltipItem[0]) {
+              let title = tooltipItem[0].xLabel || '';
+              title += ` heads`;
+              return title.toString(); // Explicitly convert to string
+            }
+            return ''; // Return an empty string if tooltipItem[0] is undefined
+          },
+          label: (tooltipItem, data) => {
+            if (tooltipItem && tooltipItem.datasetIndex !== undefined) {
+              if (tooltipItem.datasetIndex !== 2) {
+                return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${tooltipItem.yLabel}`;
+              } else {
+                return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
+                  this.maxHeads - this.minHeads + 1
+                }`
+              }
+            }
+            return ''; // Return an empty string if tooltipItem or tooltipItem.datasetIndex is undefined
+          }
         }
       }
     }
-  };
 
-  chartColors: Color[] = [
-    {
-      backgroundColor: 'rgba(0,255,0,0.3)',
-      borderColor: 'green'
-    },
-    {
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'red'
-    }
-  ]
+    // Chart colors
+    this.chartColors = [
+      {
+        backgroundColor: 'rgba(0,255,0,0.3)',
+        borderColor: 'green'
+      },
+      {
+        backgroundColor: 'rgba(255,0,0,0.3)',
+        borderColor: 'red'
+      }
+    ]
 
-  constructor() {}
+    
+
+  }
 
   // ngOnInit() {
-  //   console.log(this.chart)
-  //   console.log(this.colors)
-  //   console.log(this.dataFromCalculations)
+
   // }
 
   // Reset the form and chart data
@@ -159,7 +175,7 @@ export class OneProportionComponent {
     this.chartData = [
       { 
         data: [],
-        label: 'Samples',
+        label: this.translate.instant('op_bar_sample'),
         borderWidth: 1,
         backgroundColor: this.colors.sample,
         hidden: false
@@ -167,7 +183,7 @@ export class OneProportionComponent {
       {
         type: 'line',
         data: [],
-        label: 'Bionomial Prediction',
+        label: this.translate.instant('op_bar_binomial'),
         borderWidth: 1,
         borderColor: this.colors.binomial,
         backgroundColor: this.colors.binomial,
@@ -178,7 +194,7 @@ export class OneProportionComponent {
       {
         type: 'line',
         data: [],
-        label: 'Selected',
+        label: this.translate.instant('op_bar_selected'),
         borderWidth: 0.1,
         backgroundColor: this.colors.selected,
         hidden: false,
@@ -241,7 +257,7 @@ export class OneProportionComponent {
     this.chartData = [
       { 
         data: probabilities,
-        label: 'Samples',
+        label: this.translate.instant('op_bar_sample'),
         borderWidth: 1,
         backgroundColor: this.colors.sample,
         hidden: false
@@ -249,7 +265,7 @@ export class OneProportionComponent {
       {
         type: 'line',
         data: [],
-        label: 'Bionomial Prediction',
+        label: this.translate.instant('op_bar_binomial'),
         borderWidth: 1,
         borderColor: this.colors.binomial,
         backgroundColor: this.colors.binomial,
@@ -260,7 +276,7 @@ export class OneProportionComponent {
       {
         type: 'line',
         data: [],
-        label: 'Selected',
+        label: this.translate.instant('op_bar_selected'),
         borderWidth: 0.1,
         backgroundColor: this.colors.selected,
         hidden: false,
@@ -293,115 +309,3 @@ export class OneProportionComponent {
   }
 
 }
-
-// export class ChartInfo{
-//   colors = {
-//     sample: 'rgba(255, 0, 0, 0.7)',
-//     binomial: 'rgba(0, 0, 255, 0.6',
-//     selected: 'rgba(0, 255, 0, 0.6)',
-//     line: 'rgba(0, 255, 0, 0.6)',
-//     box: 'rgba(0, 255, 0, 0.1)',
-//     invisible: 'rgba(0, 255, 0, 0.0)'
-//   }
-
-//   dataFromCalculation = {
-//     theoryMean: 0,
-//     noOfSelected: 0
-//   }
-
-//   // Declare and initialize the variable ctx
-//   ctx: any = (document?.getElementById('myChart') as HTMLCanvasElement)?.getContext('2d');
-
-//   chart = new Chart(this.ctx, {
-//     type: 'bar',
-//     data: {
-//       labels: [],
-//       datasets: [
-//         {
-//           label: 'Samples',
-//           data: [],
-//           borderWidth: 1,
-//           backgroundColor: this.colors.sample,
-//           hidden: false
-//         },
-//         {
-//           type: 'line',
-//           label: 'Binomial',
-//           data: [],
-//           borderWidth: 1,
-//           borderColor: this.colors.binomial,
-//           backgroundColor: this.colors.binomial,
-//           pointRadius: 3,
-//           fill: false,
-//           hidden: false
-//         },
-//         {
-//           type: 'line',
-//           label: 'Selected',
-//           data: [],
-//           borderWidth: 0.1,
-//           backgroundColor: this.colors.selected,
-//           hidden: false,
-//           fill: 'end'
-//         }
-//       ],
-//     },
-//     options: {
-//       scales: {
-//         yAxes:[
-//           {
-//             ticks:{
-//               max: 10,
-//               beginAtZero: true
-//             },
-//             scaleLabel:{
-//               display: true,
-//               labelString: '# of samples',
-//               // fontColor: 'black',
-//               // fontSize: 14
-//             }
-//           }
-//         ],
-//         xAxes:[
-//           {
-//             barPercentage: 1.0,
-//             scaleLabel:{
-//               display: true,
-//               labelString: '# of heads in 5 tosses',
-//               // fontColor: 'black',
-//               // fontSize: 14
-//             }
-//           } as ChartXAxe
-//         ]
-//       },
-//       responsive: true,
-//       maintainAspectRatio: true,
-//       tooltips: {
-//         mode: 'index',
-//         backgroundColor: 'rgba(0, 0, 0, 1.0)',
-//         callbacks: {
-//           title: function(tooltipItem, data) {
-//             if (tooltipItem[0]) {
-//               let title = tooltipItem[0].xLabel || '';
-//               title += ` heads`;
-//               return title.toString(); // Explicitly convert to string
-//             }
-//             return ''; // Return an empty string if tooltipItem[0] is undefined
-//           },
-//           label: (tooltipItem, data) => {
-//             if (tooltipItem && tooltipItem.datasetIndex !== undefined) {
-//               if (tooltipItem.datasetIndex !== 2) {
-//                 return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${tooltipItem.yLabel}`;
-//               } else {
-//                 return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
-//                   this.dataFromCalculation.noOfSelected
-//                 }`
-//               }
-//             }
-//             return ''; // Return an empty string if tooltipItem or tooltipItem.datasetIndex is undefined
-//           }
-//         }
-//       }
-//     }
-//   })
-// }
