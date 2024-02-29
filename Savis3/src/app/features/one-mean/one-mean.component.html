@@ -1,16 +1,16 @@
 <app-navbar></app-navbar>
 <body class="m-2">
   <div id="one-mean">
-  <h1 id="title" class="text-3xl font-bold">One Mean Hypothesis Testing</h1>
+  <h1 id="title" class="text-3xl font-bold">{{'one_mean_hypothesis_testing' | translate }}</h1>
   <div id="form-container">
     <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
-      <h3 id="subtitle" class="text-l font-bold mb-2">1. Enter Data</h3>
+      <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
       <div>
         <textarea class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [ngModel]="dataInput" name="dataFormInput"></textarea>
       </div>
       <div id="button-div">
-        <button type="submit" class="btn">Load Data</button>
-        <button type="button" class="btn" (click)="onReset(dataForm)">Reset</button>
+        <button type="submit" class="btn">{{'load_data' | translate}}</button>
+        <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
         <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)">
       </div>
     </form>
@@ -32,9 +32,9 @@
         </table>
       </div>
         <div id="p-display">
-          <p id="mean-display">Mean: {{inputMean}}</p>
-          <p id="std-display">Standard Deviation: {{standardDeviation}}</p>
-          <p id="size-display">Size: {{inputSize}}</p>
+          <p id="mean-display">{{'mean' | translate}}: {{inputMean}}</p>
+          <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
+          <p id="size-display">{{'size' | translate}}: {{inputSize}}</p>
         </div>
       </div>
     
@@ -54,12 +54,12 @@
   <hr class="line-break mt-2">
 
   <div>
-    <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. Generate Hypothetical Population</h3>
+    <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. {{'hypothetical_pop' | translate}}</h3>
     <div id="hypothetical-output">
       <div id="chart-input-form">
-        <label>Shift Mean</label>
+        <label>{{'shift_mean' | translate}}</label>
         <input type="number" step="0.1" value="0" [(ngModel)]="meanValue" (change)="increaseData()" class="border border-gray-300 rounded-md pl-2">
-        <label>Increase data <span>{{rangeValue}}</span> times</label>
+        <label>{{'increase_data' | translate}} <span>{{rangeValue}}</span> times</label>
         <input type="range" min="1" max="50" step="1" value="1" [(ngModel)]="rangeValue" (change)="increaseRange()">
       </div>
       <div id="display-container">
@@ -80,8 +80,8 @@
         </table>
       </div>
       <div id="p-display">
-        <p id="mean-display">Mean: {{hypoInputMean}}</p>
-        <p id="std-display">Standard Deviation: {{standardDeviation}}</p>
+        <p id="mean-display">{{'mean' | translate}}: {{hypoInputMean}}</p>
+        <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
       </div>
     </div>
       <div id="chart-wrap">
@@ -99,15 +99,15 @@
   
   <hr class="line-break">
   
-  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">3. Draw Sample</h3>
+  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">3. {{'draw_sample' | translate}}</h3>
   <div id="sample-container">
     <div id="chart-input-form">
       
-        <label>Sample Size:</label>
+        <label>{{'sample_size' | translate}}:</label>
         <input type="number" step="1" value="1" [(ngModel)]="sampleSize" class="border border-gray-300 rounded-md pl-2">
-        <label># of samples</label>
+        <label># {{'of_samples' | translate}}</label>
         <input type="number" step="1" value="1" min="1" [(ngModel)]="numSamples" class="border border-gray-300 rounded-md pl-2">
-        <button type="button" (click)="runSimulation()" id="run-sim-btn">Run Simulation</button>
+        <button type="button" (click)="runSimulation()" id="run-sim-btn">{{'run_simulation' | translate}}</button>
       
     </div>
 
@@ -128,7 +128,7 @@
       </tbody>
       </table>
   </div>
-    <p>Mean: {{this.sampleMean}}</p>
+    <p>{{'mean' | translate}}: {{this.sampleMean}}</p>
   </div>
 
   
@@ -147,17 +147,17 @@
 
   
   <hr class="line-break">
-  <h3 class="text-l font-bold mb-2 mt-2">4. Sampling Distribution of Means</h3>
+  <h3 class="text-l font-bold mb-2 mt-2">4. {{'sampling_distribution' | translate}}</h3>
   <div id="sampling-container">
   <div id="section-4-div">
     <select id="distribution-select" [(ngModel)]="distributionSelected" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1">
-      <option value="default">Type of Test</option>
-      <option value="one-right">One Tail Right</option>
-      <option value="one-left">One Tail Left</option>
+      <option value="default">{{'type_of_test' | translate}}</option>
+      <option value="one-right">{{'one_tail_right' | translate}}</option>
+      <option value="one-left">{{'one_tail_left' | translate}}</option>
     </select>
 
-    <p>Total # of samples:{{this.meanSamples}}</p>
-    <p id="sample-mean-p">Sample means at least as extreme as </p>
+    <p>{{'total_samples' | translate}}:{{this.meanSamples}}</p>
+    <p id="sample-mean-p">{{'sample_means' | translate}} </p>
     <input type="number" [(ngModel)]="extremeSample" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
   </div>
   <div>
@@ -177,8 +177,8 @@
     </tbody>
     </table>
 </div>
-<p>Mean of sample means: {{this.sampleMeansMean}}</p>
-<p>Standard Devation: {{this.sampleMeansStd}}</p>
+<p>{{'mean_of_sample' | translate}}: {{this.sampleMeansMean}}</p>
+<p>{{'standard_deviation' | translate}}: {{this.sampleMeansStd}}</p>
 </div>
 
 <div id="chart-wrap">
