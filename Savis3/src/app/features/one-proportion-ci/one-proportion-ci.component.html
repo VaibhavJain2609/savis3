@@ -2,27 +2,27 @@
 
 <div class="one-proportion-ci">
     <div class="title2">
-        <h1>One Proportion Confidence Interval Testing</h1>
+        <h1>{{ 'opc_title' | translate }}</h1>
     </div>
-    <div class="title3"><h2>1. Enter Data</h2></div>
+    <div class="title3"><h2>1. {{ 'opc_data' | translate }}</h2></div>
     <!-- <input type="checkbox" style="float:right" checked/> -->
     <div id="input-section" class="section">
         <div class="lhs">
             <p>
-                Successes
+                {{ 'opc_success' | translate }}
             </p>
             <input type="number" id="success" min="0" step="1" [(ngModel)]="success" #successInput>
             <p>
-                Failures
+                {{ 'opc_failure' | translate }}
             </p>
             <input type="number" id="failure" min="0" step="1" [(ngModel)]="failure" #failureInput>
             <br>
-            <button class="btn load-button" (click)="loadData()">LoadData</button>
-            <button class="btn reset-button" (click)="resetData()">ResetData</button>
+            <button class="btn load-button" (click)="loadData()">{{ 'opc_load' | translate }}</button>
+            <button class="btn reset-button" (click)="resetData()">{{ 'opc_reset' | translate }}</button>
             <br>
             <div class="stats">
                 <div>
-                  <span>Proportion of Successes (p): </span>
+                  <span>{{ 'opc_propSuccess' | translate }}</span>
                   <span>{{ proportion | number : '1.4-4' }}</span>
                 </div>
             </div>
@@ -31,8 +31,8 @@
         <div class="rhs">
             <!-- <label><span summary="numfailure"></span>Failures</label>
             <label><span summary="numsuccess"></span>Successes</label> -->  
-            <label>{{ numsuccess }} Successes</label>
-            <label>{{ numfailure }} Failures</label> 
+            <label>{{ numsuccess }} {{ 'opc_success' | translate }}</label>
+            <label>{{ numfailure }} {{ 'opc_failure' | translate }}</label> 
             <!-- <p rowspan="2" colspan="2"> -->
             <div class="chart-wrap">
                 <canvas baseChart
@@ -65,33 +65,33 @@
     </div> 
     <br>
     <hr>
-    <div class="title3"><h2>2. Run Simulations</h2></div>
+    <div class="title3"><h2>2. {{ 'opc_sims' | translate }}</h2></div>
     <!-- <input type="checkbox" style="float:right" checked/> -->
     <div id="input-section" class="section">
         <div class="lhs">
             <p>
-                Sample Size
+                {{ 'opc_sample' | translate }}
             </p>
             <input id="sample-size" type="number" min="1" max="'1000" [(ngModel)]="sampleSize">
             <p>
-                Number of Simulations
+                {{ 'opc_numsims' | translate }}
             </p>
             <!-- <input id="numSimulations" type="number" min="1" max="1000" [(ngModel)]="numSimulations"> -->
             <input type="number" min="1" max="1000" [(ngModel)]="numSimulations">
             <br>
-            <button class="btn" (click)="runSimulations()">Run Simulations</button>
+            <button class="btn" (click)="runSimulations()">{{ 'opc_sims' | translate }}</button>
             <br>
             <div class="stats">
                 <div>
-                    <span>Proportion of Successes of Most Recent Draw (p): </span>
+                    <span>{{ 'opc_propSims' | translate }}</span>
                     <span>{{ sampleProportion | number : '1.4-4' }}</span>
                 </div>
             </div>
         </div>
         <div class="rhs">
-            <div class="l">Most Recent Draw</div>
-            <h6>{{ randomizedfailure }} Failures</h6> 
-            <h6>{{ randomizedsuccess }} Successes</h6>
+            <div class="l">{{ 'opc_Recent' | translate }}</div>
+            <h6>{{ randomizedfailure }} {{ 'opc_failure' | translate }}</h6> 
+            <h6>{{ randomizedsuccess }} {{ 'opc_success' | translate }}</h6>
             <div class="chart-wrap2">
                 <canvas baseChart
                     [datasets]="barChartData2"
@@ -109,37 +109,37 @@
     </div>
     <br><br>
     <hr>
-    <div class="title3"><h2>3. Sampling Distribution of Proportions</h2></div>
+    <div class="title3"><h2>3. {{ 'opc_SampleProp' | translate }}</h2></div>
     <!-- <input type="checkbox" style="float:right" checked/> -->
     <div class="section flex-row" style="display: flex; flex-wrap: wrap;">
         <div class="lhs">
             <table>
-                <label for="confidence-level">Confidence Level {{confidenceLevel}} %</label>
+                <label for="confidence-level">{{ 'opc_confidence' | translate }} {{confidenceLevel}} %</label>
             </table>
             <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
             <br>
-            <button class="btn" style="width:80%" (click)="buildci()">Build</button>
+            <button class="btn" style="width:80%" (click)="buildci()">{{ 'opc_build' | translate }}</button>
             <br>  
             <br>
             <div class="stats">
                 <div>
-                     <span>Mean of Sample Proportions: </span>
+                     <span>{{ 'opc_mean' | translate }}</span>
                      <span>{{ mean | number : '1.4-4'}}</span>
                  </div>
                  <div>
-                     <span>Standard Deviation: </span>
+                     <span>{{ 'opc_stddev' | translate }}</span>
                      <span>{{ stddev | number : '1.4-4'}}</span>
                  </div>
                  <div>
-                     <span>Lower Bound: </span>
+                     <span>{{ 'opc_lower' | translate }}</span>
                      <span>{{ lower | number : '1.4-4'}}</span>
                  </div>
                  <div>
-                     <span>Upper Bound: </span>
+                     <span>{{ 'opc_upper' | translate }}</span>
                      <span>{{ upper | number : '1.4-4'}}</span>
                  </div>
                  <div>
-                     <span>Total Samples: </span>
+                     <span>{{ 'opc_total' | translate }}</span>
                      <span>{{ total }}</span>
                  </div>
              </div>
