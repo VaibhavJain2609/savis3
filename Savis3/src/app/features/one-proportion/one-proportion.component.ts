@@ -489,6 +489,7 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
    * Slice the data to show only the selected area
    */
   updateChart() {
+    this.selected = this.generateSelectedArray()
     if(!this.zoomIn) {
       this.chart.data.labels = this.labels
       if (this.chart && this.chart.data && this.chart.data.datasets && this.chart.data.datasets[0] && this.chart.data.datasets[1] && this.chart.data.datasets[2]){
@@ -549,6 +550,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.updateChart()
   }
 
+  /**
+   * Unregister the chart plugins when the component is destroyed
+   */
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnDestroy() {
     Chart.pluginService.unregister(oneProportionOffset)
