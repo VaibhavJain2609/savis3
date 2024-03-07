@@ -224,13 +224,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     (this.chart as any).mean = this.mean
 
     // Event listener for double click to zoom in and out
-    this.chart.canvas.ondblclick = (event) => {
-      if(!this.zoomIn && this.noOfCoin >= 50) {
-        this.zoomIn = true
-        this.updateChart()
-      } else {
-        this.zoomIn = false
-        this.updateChart()
+    this.chart.canvas.ondblclick = () => {
+      if (this.noOfCoin >= 50) {
+          this.zoomIn = !this.zoomIn; // toggle zoomIn
+          this.updateChart();
       }
     }
   }
@@ -273,6 +270,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
    * When the draw sample button is clicked, draw the samples and update the chart
    */
   sampleDraw() {
+    if(this.zoomIn){
+      this.zoomIn = false
+    }
+
     this.totalSamples += this.thisSampleSizes
 
     const newSamples = this.drawSamples()
@@ -345,16 +346,39 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
    * Update the selected area of the chart
    */
   updateSelected(): void {
-    this.binomialData = this.calculateBionomial()
-    this.generateLabels()
-    this.chart.data.datasets[1].data = this.binomialData
-    this.chart.data.datasets[2].data = this.generateSelectedArray()
-    
-    this.interval = this.calculateSamplesSelected()
-    this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`
+    this.binomialData = this.calculateBionomial();
+    this.interval = this.calculateSamplesSelected();
+    this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`;
+
+    if (!this.zoomIn) {
+        this.generateLabels();
+        this.chart.data.labels = this.labels;
+        this.chart.data.datasets[1].data = this.binomialData;
+        this.chart.data.datasets[2].data = this.generateSelectedArray();
+    } else {
+        const roundedMean = Math.floor(this.probability * this.noOfCoin);
+        const HALF_WIDTH = 25;
+        let lowerRange, upperRange;
+
+        if (roundedMean - HALF_WIDTH <= 0) {
+            lowerRange = 0;
+            upperRange = lowerRange + HALF_WIDTH * 2;
+        } else if (roundedMean + HALF_WIDTH >= this.noOfCoin) {
+            upperRange = this.noOfCoin + 1;
+            lowerRange = upperRange - HALF_WIDTH * 2;
+        } else {
+            lowerRange = roundedMean - HALF_WIDTH;
+            upperRange = roundedMean + HALF_WIDTH;
+        }
+
+        upperRange = lowerRange + HALF_WIDTH * 2;
+
+        this.chart.data.datasets[1].data = this.binomialData.slice(lowerRange, upperRange);
+        this.chart.data.datasets[2].data = this.generateSelectedArray().slice(lowerRange, upperRange);
+    }
 
     this.chart.update();
-  }
+}
 
   /**
    * Generate an array to represent the selected area
@@ -523,9 +547,7 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
 
     const maxSamples = Math.max(...this.samples)
 
-    if (maxSamples < 10) {
-      this.chart.options.scales.yAxes[0].ticks.max = 10
-    } else {
+    if (maxSamples > 10) {
       if(maxSamples <= 100) {
         this.chart.options.scales.yAxes[0].ticks.max = maxSamples + ( 10 - (maxSamples % 10) )
       } else {
