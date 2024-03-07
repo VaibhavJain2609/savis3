@@ -38,10 +38,10 @@ describe('LanguageSwitcherComponent', () => {
   })
 
   it('should switch language', () => {
-    const event = { target: { checked: true } } as unknown as Event;
-    component.switchLanguage(event);
-    expect(translateService.use).toHaveBeenCalledWith('es');
-    expect(localStorage.getItem('lang')).toEqual('es');
+    const event = { target: { checked: true } } as unknown as Event
+    component.switchLanguage(event)
+    expect(translateService.use).toHaveBeenCalledWith('es')
+    expect(localStorage.getItem('lang')).toEqual('es')
   })
 
   it('should switch language to Spanish when checked', () => {
