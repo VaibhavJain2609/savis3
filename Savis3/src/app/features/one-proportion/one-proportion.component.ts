@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnChanges, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
+import { oneProportionDynamicBubbleSize, oneProportionOffset, oneProportionSampleLegendColor } from '../../Utils/chartjs-plugin';
 
 @Component({
   selector: 'app-one-proportion',
@@ -99,52 +100,11 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
   constructor(
     private translate: TranslateService,
     ) {
-      Chart.pluginService.register({
-        id: "offsetBar",
-        afterUpdate: function(chart) {
-          // We get the dataset and set the offset here
-          const dataset = chart.config.data.datasets[2]
-          // const width = dataset._meta[0].data[1]._model.x - dataset._meta[0].data[0]._model.x;
-          let offset;
-          const meta: any = Object.values((dataset as any)._meta)[0]
-          if (meta.data.length > 0) {
-            offset = -(meta.data[1]._model.x - meta.data[0]._model.x) / 2
-          }
+      Chart.pluginService.register(oneProportionOffset)
       
-          // For every data in the dataset ...
-          for (var i = 0; i < meta.data.length; i++) {
-            // We get the model linked to this data
-            var model = meta.data[i]._model
-            // And add the offset to the `x` property
-            model.x += offset;
+      Chart.pluginService.register(oneProportionSampleLegendColor)
       
-            // .. and also to these two properties
-            // to make the bezier curve fits the new graph
-            model.controlPointNextX += offset
-            model.controlPointPreviousX += offset
-          }
-        }
-      })
-      
-      Chart.pluginService.register({
-        id: "fixedSamplelegendColor",
-        afterUpdate: function(chart) {
-          (chart as any).legend.legendItems[0].fillStyle = "rgba(255,0,0,0.8)"
-        }
-      })
-      
-      Chart.pluginService.register({
-        id: "dynamicBubbleSize",
-        beforeUpdate: function(chart) {
-          if ((chart as any).mean) {
-            const chartData = chart.config.data; // sample dataset
-            const dynamicSize = 50 / chartData.labels.length
-            const minSize = 2
-            chartData.datasets[1].radius =
-              dynamicSize > minSize ? dynamicSize : minSize
-          }
-        }
-      })
+      Chart.pluginService.register(oneProportionDynamicBubbleSize)
 
   }
 
@@ -585,6 +545,13 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
    */
   ngOnChanges() {
     this.updateChart()
+  }
+
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnDestroy() {
+    Chart.pluginService.unregister(oneProportionOffset)
+    Chart.pluginService.unregister(oneProportionSampleLegendColor)
+    Chart.pluginService.unregister(oneProportionDynamicBubbleSize)
   }
 
 }
