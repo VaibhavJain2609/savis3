@@ -1,9 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnChanges, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartDataSets, ChartOptions, Chart, ChartXAxe  } from 'chart.js';
-import { BaseChartDirective, Color, Label } from 'ng2-charts';
-import { oneProportionDynamicBubbleSize, oneProportionOffset, oneProportionSampleLegendColor } from '../../Utils/chartjs-plugin';
-import { max } from 'simple-statistics';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-one-proportion',
@@ -11,26 +8,75 @@ import { max } from 'simple-statistics';
   styleUrls: ['./one-proportion.component.scss']
 })
 export class OneProportionComponent implements AfterViewInit, OnChanges{
-  // User input properties
+  /**
+   * number of coins to be flipped
+   */
   noOfCoin: number = 5
+  /**
+   * probability of getting a head
+   */
   probability: number = 0.5
+  /**
+   * Chart labels
+   */
   labels: string[] = []
+  /**
+   * Binomial data
+   */
   binomialData: number[] = []
+  /**
+   * Sample data
+   */
   samples: number[] = []
+  /**
+   * Selected area within the data
+   */
   selected: number[] = []
+  /**
+   * Mean of the data
+   */
   mean: number = NaN
+  /**
+   * Standard deviation of the data
+   */
   std: number = NaN
+  /**
+   * Number of selected data
+   */
   noOfSelected: number = 0
+  /**
+   * Total number of samples
+   */
   totalSamples: number = 0
+  /**
+   * Lower range of the selected area
+   */
   lowerSelectedRange: number = 0
+  /**
+   * Upper range of the selected area
+   */
   upperSelectedRange: number = 0
+  /**
+   * Number of samples in each draw
+   */
   thisSampleSizes: number = 1
+  /**
+   * Zoom in or out of the chart
+   */
   zoomIn: boolean = false
+  /**
+   * Interval of data in the selected area
+   */
   interval: number = 0
 
+  /**
+   * Proportion of the selected area
+   */
   proportion: string = '0/0 = NaN'
 
-  // Chart colors
+  /**
+   * Chart colors
+   */
   colors = {
     sample: "rgba(255, 0, 0, 0.7)",
       binomial: "rgba(0, 0, 255, 0.6)",
@@ -40,18 +86,19 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
       invisible: "rgba(0, 255, 0, 0.0)"
   }
 
+  /**
+   * Chart object
+   */
   chart: Chart
+  /**
+   * Chart canvas (HTML element)
+   */
   @ViewChild('chartCanvas') chartCanvas: ElementRef<HTMLCanvasElement>
 
-  dataFromCalculation = {
-    theoryMean: 0,
-    noOfSelected: 0,
-  }
 
   constructor(
     private translate: TranslateService,
     ) {
-
       Chart.pluginService.register({
         id: "offsetBar",
         afterUpdate: function(chart) {
@@ -101,10 +148,16 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
 
   }
 
+  /**
+   * After the view is initialized, create the chart
+   */
   ngAfterViewInit(): void {
       this.createChart()
   }
 
+  /**
+   * Create the chart and set the chart settings
+   */
   createChart(): void {
     const context = this.chartCanvas.nativeElement.getContext('2d')
     if(context){
@@ -210,6 +263,7 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
 
     (this.chart as any).mean = this.mean
 
+    // Event listener for double click to zoom in and out
     this.chart.canvas.ondblclick = (event) => {
       if(!this.zoomIn && this.noOfCoin >= 50) {
         this.zoomIn = true
@@ -221,7 +275,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     }
   }
 
-  // Reset the form and chart data
+  /**
+   * Reset the data and the chart
+   */
   reset() {
     this.noOfCoin = 5
     this.probability = 0.5
@@ -243,6 +299,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.resetChart()
   }
 
+  /**
+   * Reset the chart
+   */
   resetChart(): void {
     if(this.chart) {
       this.chart.destroy()
@@ -250,6 +309,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.createChart()
   }
   
+  /**
+   * When the draw sample button is clicked, draw the samples and update the chart
+   */
   sampleDraw() {
     this.totalSamples += this.thisSampleSizes
 
@@ -280,6 +342,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.chart.update()
   }
 
+  /**
+   * Generate the labels for the chart
+   * this is for the x-axis
+   */
   generateLabels(): void {
     this.labels = Array(this.noOfCoin + 1)
     for (let i = 0; i < this.noOfCoin + 1; i++) {
@@ -290,6 +356,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.chart.update()
   }
 
+  /**
+   * Recalculate the samples and update the chart when the number of coins is changed
+   */
   recalculateSamples():void {
     this.samples = []
     this.generateLabels()
@@ -310,6 +379,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.chart.update()
   }
 
+  /**
+   * Update the selected area of the chart
+   */
   updateSelected(): void {
     this.binomialData = this.calculateBionomial()
     this.generateLabels()
@@ -322,6 +394,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.chart.update();
   }
 
+  /**
+   * Generate an array to represent the selected area
+   * @returns Array of 0s and NaNs to represent the selected area
+   */
   generateSelectedArray(): Array<number> {
     const lower = this.lowerSelectedRange >= 0 ? this.lowerSelectedRange : 0
     const upper = this.upperSelectedRange <= this.noOfCoin + 2 ? this.upperSelectedRange : this.noOfCoin + 2
@@ -336,6 +412,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     })
   }
 
+  /**
+   * Calculate the binomial data of each point
+   * @returns Array of binomial data
+   */
   calculateBionomial(): Array<number> {
     const coeff = Array(this.noOfCoin + 1).fill(0)
     coeff[0] = 1
@@ -351,6 +431,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     return binomialBase.map(x => x * this.totalSamples)
   }
 
+  /**
+   * Draw the samples using the current sample size
+   * @returns Array of samples
+   */
   drawSamples() : Array<Array<number>> {
     const drawResults = Array(this.thisSampleSizes)
 
@@ -364,6 +448,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     return drawResults
   }
 
+  /**
+   * Draw the samples with the same sample size
+   * @returns Array of samples
+   */
   drawSamplesWithSameSize() : Array<Array<number>> {
     const drawResults = Array(this.totalSamples)
 
@@ -377,12 +465,20 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     return drawResults
   }
 
+  /**
+   * Calculate the mean of the samples
+   * @returns Mean of the samples
+   */
   calculateMean(): number {
     return (
       this.samples.reduce((acc: number, x: number, i: number) => acc + x * i, 0) / this.samples.reduce((acc: any, x: any) => acc+ x, 0)
     )
   }
 
+  /**
+   * Calculate the standard deviation of the samples
+   * @returns Standard deviation of the samples
+   */
   calculateStd(): number {
     const mean = this.calculateMean()
 
@@ -392,6 +488,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     )
   }
 
+  /**
+   * Calculate the number of samples selected
+   * @returns Number of samples selected
+   */
   calculateSamplesSelected(): number {
     const lower = this.lowerSelectedRange >= 0 ? this.lowerSelectedRange : 0
     const upper = this.upperSelectedRange <= this.samples.length ? this.upperSelectedRange : this.samples.length
@@ -404,6 +504,12 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     }, 0)
   }
 
+  /**
+   * Add the new samples to the original samples
+   * @param originalSamples Original samples
+   * @param drawResults New samples
+   * @returns Updated samples
+   */ 
   addSamples(originalSamples: any[], drawResults: any[]) {
     const summary = drawResults.reduce((acc, eachDraw) => {
       const noOfHead = eachDraw.reduce((accHeads: any, head: any) => accHeads + head, 0)
@@ -414,6 +520,12 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     return originalSamples.map((x, i) => x + (summary[i] || 0))
   }
 
+  /**
+   * Update the chart if the zoom in or out is changed
+   * This method will trigger when a double click event is involved
+   * If the number of coins is less than 50, the zoom in will not work
+   * Slice the data to show only the selected area
+   */
   updateChart() {
     if(!this.zoomIn) {
       this.chart.data.labels = this.labels
@@ -458,9 +570,6 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
       }
     }
 
-    // this.dataFromCalculation.theoryMean = this.mean
-    // this.dataFromCalculation.noOfSelected = this.noOfSelected;
-    
     (this.chart as CustomChart).mean = this.mean
 
     if (this.chart && this.chart.options && this.chart.options.scales && this.chart.options.scales.xAxes && this.chart.options.scales.xAxes[0] && this.chart.options.scales.xAxes[0].scaleLabel) {
@@ -471,6 +580,9 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
 
   }
 
+  /**
+   * Update the chart if any changes are detected
+   */
   ngOnChanges() {
     this.updateChart()
   }
