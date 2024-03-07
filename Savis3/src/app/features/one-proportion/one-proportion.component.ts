@@ -334,8 +334,10 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
     this.std = this.calculateStd() || 0
     this.interval = this.calculateSamplesSelected()
     this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`
+    this.binomialData = this.calculateBionomial()
 
     this.chart.data.datasets[0].data = this.samples
+    this.chart.data.datasets[1].data = this.binomialData
     this.chart.update()
   }
 
