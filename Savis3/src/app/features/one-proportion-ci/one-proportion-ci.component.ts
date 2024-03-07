@@ -42,9 +42,9 @@ export class OneProportionCIComponent implements OnInit {
   lower: number
   upper: number
   total: number
-  needData = []
+  needData: any = []
   simulations: number[] = []
-  noData = []
+  noData: any = []
   //chart: any
   sampleMeans: any
   Summaries = new SummaryService();
