@@ -136,7 +136,7 @@ export class TwoMeansComponent implements OnInit {
   ngAfterContentInit(){
     let leg = [`Differences `, `NaN`]
     let color = [`orange `, `red`]
-    let rData2 = {
+    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
       "minmax": [0 ,1],
       "data": [[],[]],
       "backgroundColor": "rebeccapurple"
