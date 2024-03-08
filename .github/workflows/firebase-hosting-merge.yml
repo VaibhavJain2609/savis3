@@ -18,6 +18,8 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: ./Savis3
+      - name: Install Firebase Tools
+        run: npm install -g firebase-tools@10.3.0
       - name: Build
         run: npm run build
         working-directory: ./Savis3
