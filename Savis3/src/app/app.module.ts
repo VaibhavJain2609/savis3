@@ -6,7 +6,6 @@ import { OneProportionComponent } from './features/one-proportion/one-proportion
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CalculationService } from './features/one-proportion/service/calculcation.service';
 import { TwoProportionsComponent } from './features/two-proportions/two-proportions.component';
 import { OneMeanComponent } from './features/one-mean/one-mean.component';
 import { TwoMeansComponent } from './features/two-means/two-means.component';
@@ -94,7 +93,6 @@ export function setupTranslateFactory(service : TranslateService): Function {
     })
   ],
   providers: [
-    CalculationService,
     MathService,
     TranslateService,
     {
