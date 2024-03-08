@@ -7,7 +7,8 @@ import { StackedDotChartService } from 'src/app/Utils/stacked-dot-chart.service'
 import { MathService } from 'src/app/Utils/math.service';
 import { SamplingService } from 'src/app/Utils/sampling.service';
 import { SummaryService } from 'src/app/Utils/summaries.service';
-import { max } from 'simple-statistics';
+//import { max } from 'simple-statistics';
+
 @Component({
   selector: 'app-one-proportion-ci',
   templateUrl: './one-proportion-ci.component.html',
@@ -30,7 +31,7 @@ export class OneProportionCIComponent implements OnInit {
   randomizedfailure:number 
   randomizedsuccess:number 
   confidenceLevel:number = 95
-  increment:number = 1
+  increment:number = 0
   sampleSize:number
   numSimulations:number  
   numsuccess:number 
@@ -194,7 +195,7 @@ export class OneProportionCIComponent implements OnInit {
     },
     maintainAspectRatio: false,
   };
-
+  
   public barChartOptions3: any={
     responsive: true,
     scales:{
@@ -202,7 +203,7 @@ export class OneProportionCIComponent implements OnInit {
         {
           ticks:{
             max:1,
-            min:-1,
+            //min:-1,
             stepSize: 0.2, 
             beginsAtZero: true,
           },
@@ -244,7 +245,7 @@ export class OneProportionCIComponent implements OnInit {
         hoverBackgroundColor: 'red',
       }];
     if (numsuccess <= 0 || numfailure <= 0) {
-      alert('Please enter valid values for success and failure, ensuring it is greater that 0.');
+      alert('The value of successes and failures must be greater than 0');
     }
     else {
       let proportion = this.calculateProportion(numsuccess, numfailure);
@@ -276,6 +277,7 @@ export class OneProportionCIComponent implements OnInit {
     this.failure = 0;
     this.numfailure = 0;
     this.numsuccess = 0;
+    this.increment = 0;
     this.proportion = NaN;
     this.sampleSize = 0;
     this.numSimulations = 0;
@@ -390,7 +392,7 @@ export class OneProportionCIComponent implements OnInit {
         {
           ticks:{
             max:1,
-            min:-1,
+            //min:-1,
             stepSize: 0.2, 
             beginsAtZero: true,
           },
@@ -484,15 +486,13 @@ export class OneProportionCIComponent implements OnInit {
   incrementt(increment: number): void{
    if(increment > 0)
     {
-      this.numsuccess*=increment;
-      this.numfailure*=increment;
-      //this.updateChart();
-      // this.success = this.success*increment;
-      // this.failure = this.failure*increment;
+      this.numsuccess = this.success * increment;;
+      this.numfailure = this.failure * increment;
+   }else{
+    alert('Increase by factor must be greater than zero')
    }
-   //this.calcNumsuccfail();
-    //this.updateChart();
   }
+
   calcNumsuccfail(): void{
     this.numsuccess = Math.round(this.success);
     this.numfailure = Math.round(this.failure);
@@ -527,398 +527,123 @@ export class OneProportionCIComponent implements OnInit {
       hoverBackgroundColor: 'red',
     }];
 
-    for (let simIdx = 0; simIdx < numSimulationsValue; simIdx++) {
-      let allItems = new Array(totalGroup);
-      allItems.fill(0);
-      allItems.fill(1, 0, totalSuccess);
-      const shuffled = SamplingService.shuffle(allItems);
-      const { chosen } = SamplingService.randomSubset(shuffled, totalElements);
-      const samplesuccess = MathService.countWhere(chosen, (data: number) => data == 1);
-      const samplefailure = totalElements - samplesuccess;
-      let sampleProportion: number = MathService.roundToPlaces(samplesuccess / totalElements, 4);
-      this.sampleProportion = sampleProportion;
-      //const mean = MathService.mean(this.simulations);
-      //const stddev = MathService.stddev(this.simulations);
-      //const total = this.simulations.length ;
-
-      const standardError = this.stddev/Math.sqrt(this.total);
-      const zScore = MathService.z_score_alpha_2(this.confidenceLevel);
-  
-      const marginOfError = zScore * standardError;
-  
-      const lower = this.mean - marginOfError;
-      const upper = this.mean + marginOfError;
-
-      const successPercentagee = (samplesuccess / totalElements) * 100;
-      const failurePercentagee = (samplefailure / totalElements) * 100;
-  
-      this.barChartData2[0].data = this.barChartData2[0].data || [];
-      this.barChartData2[1].data = this.barChartData2[1].data || [];
-    
-      if (this.sampleSize !== totalElements) {
-        this.sampleSize = totalElements;
-        this.sampleMeans = [];
-      }
-  
-      this.simulations.push(sampleProportion);
-  
-      let summary = {
-        samplesuccess,
-        samplefailure,
-        sampleProportion,
-        //mean,
-        //stddev,
-        //total,
-        lower,
-        upper
-      };
-    
-      this.randomizedsuccess = samplesuccess;
-      this.randomizedfailure = samplefailure;
-     // this.mean = MathService.mean(this.simulations);
-     // this.stddev = MathService.stddev(this.simulations);
-     // this.total = total;
-      this.lower = lower;
-      this.upper = upper;
-
-      this.Summaries.updateSummaryElements(this.summaryElements, summary);
-  
-      this.barChartData2[0].data[simIdx] = MathService.roundToPlaces(successPercentagee, 2);
-      this.barChartData2[1].data[simIdx] = MathService.roundToPlaces(failurePercentagee, 2);
-      //this.buildci();
-      //this.updateLatestCharts();
-      // Update the bar chart data for each simulation
-      //const successPercentage = this.calculateSuccessPercentage(numsuccess, numfailure);
-      //const failurePercentage = this.calculateFailurePercentage(numsuccess, numfailure);
-  
+    if (this.increment<=0) {
+      alert('Please increment the data for group');
     }
-    this.mean = MathService.mean(this.simulations);
-    this.stddev = MathService.stddev(this.simulations);
-    this.total = this.simulations.length;
-    this.buildci();
-    this.updateC();
-  }
+
+    else{
+      for (let simIdx = 0; simIdx < numSimulationsValue; simIdx++) {
+        let allItems = new Array(totalGroup);
+        allItems.fill(0);
+        allItems.fill(1, 0, totalSuccess);
+        const shuffled = SamplingService.shuffle(allItems);
+        const { chosen } = SamplingService.randomSubset(shuffled, totalElements);
+        const samplesuccess = MathService.countWhere(chosen, (data: number) => data == 1);
+        const samplefailure = totalElements - samplesuccess;
+        let sampleProportion: number = MathService.roundToPlaces(samplesuccess / totalElements, 4);
+        this.sampleProportion = sampleProportion;
   
+        const successPercentagee = (samplesuccess / totalElements) * 100;
+        const failurePercentagee = (samplefailure / totalElements) * 100;
+    
+        this.barChartData2[0].data = this.barChartData2[0].data || [];
+        this.barChartData2[1].data = this.barChartData2[1].data || [];
+      
+        if (this.sampleSize !== totalElements) {
+          this.sampleSize = totalElements;
+          this.sampleMeans = [];
+        }
+    
+        this.simulations.push(sampleProportion);
+    
+        let summary = {
+          samplesuccess,
+          samplefailure,
+          sampleProportion,
+        };
+      
+        this.randomizedsuccess = samplesuccess;
+        this.randomizedfailure = samplefailure;
+  
+        this.Summaries.updateSummaryElements(this.summaryElements, summary);
+    
+        this.barChartData2[0].data[simIdx] = MathService.roundToPlaces(successPercentagee, 2);
+        this.barChartData2[1].data[simIdx] = MathService.roundToPlaces(failurePercentagee, 2);
+      }
+      this.mean = MathService.mean(this.simulations);
+      this.stddev = MathService.stddev(this.simulations);
+      this.total = this.simulations.length;
+      this.buildci();
+    }
+  }
+
   buildci()
   {
     const standardError = this.stddev/Math.sqrt(this.total);
     const zScore = MathService.z_score_alpha_2(this.confidenceLevel);
 
     const marginOfError = zScore * standardError;
+    
+    this.lower = this.mean - marginOfError,
+    this.upper = this.mean + marginOfError
 
-    this.lower = this.mean - marginOfError;
-    this.upper = this.mean + marginOfError;
-  }
+    const temp = this.simulations.map(val => val);
+    temp.sort((a,b) => a-b);
 
-  updateC(): void{
-    const [lower, upper] = MathService.getCutOffInterval(this.confidenceLevel, this.simulations.length);
-    let pointsInInterval:any[] = [];
-    let pointsNotInInterval:any[] = [];
-    let frequencyMap: Record<number, number> = {};
-    // let dataInInterval: any = [];
-    // let dataNotInInterval: any = [];
+    const [chosen, unchosen] = SamplingService.splitUsing(temp, (val: number) => {
+      return val>=this.lower &&  val<=this.upper;
+    });
 
-    // let point:any = {};
-    // let pointsArray:any = {};
-    // for(let i=0; i<this.simulations.length; i++){
-    //   let value = this.simulations[i];
-    //   if(point[value] === undefined){
-    //     point[value] = 1;
-    //   } else{
-    //     point[value] += 1;
-    //   }
-    //   pointsArray.push({x: value, y: point[value]});
-    //   if (value >= lower && value <= upper) {
-    //     this.barChartData3 = [{
-    //       data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-    //       label: 'Values in Interval',
-    //       pointBackgroundColor: pointsArray.map((value:any) => value.x > this.lower ? 'green' : 'red'),
-    //     }];
-    //   } else if(value> upper){
-    //     this.barChartData3 = [{
-    //       data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-    //       label: 'Values not in Interval',
-    //       pointBackgroundColor: pointsArray.map((value:any) => value.x > this.lower ? 'red' : 'green'),
-    //     }];
-    //   }
-    // }
-    // Calculate frequency of each value
-    for(let value of this.simulations){
-      if(frequencyMap[value]){
-          frequencyMap[value] += 1;
-      } else {
-          frequencyMap[value] = 1;
+    let chosenFreq: Record<string, number> = {};
+    let unchosenFreq: Record<string, number> = {};
+    
+    // Calculate frequencies for chosen and unchosen values
+    chosenFreq = {};
+    chosen.forEach(val => {
+      chosenFreq[val] = (chosenFreq[val] || 0) + 1;
+    });
+
+    unchosenFreq = {};
+    unchosen.forEach(val => {
+      unchosenFreq[val] = (unchosenFreq[val] || 0) + 1;
+    });
+
+    // Convert frequencies to chart data
+    let chosenData = Object.keys(chosenFreq).map(key => ({
+      x: parseFloat(key),
+      y: chosenFreq[key]
+    }));
+
+    let unchosenData = Object.keys(unchosenFreq).map(key => ({
+      x: parseFloat(key),
+      y: unchosenFreq[key]
+    }));
+
+    // Set the barChartData3 with both datasets
+    this.barChartData3 = [
+      {
+        data: chosenData,
+        label: 'Values in Interval',
+        backgroundColor: 'green',
+        pointBackgroundColor: 'green',
+        pointRadius: 7,
+        pointHoverBackgroundColor: 'green'
+      },
+      {
+        data: unchosenData,
+        label: 'Values not in Interval',
+        backgroundColor: 'red',
+        pointBackgroundColor: 'red',
+        pointRadius: 7,
+        pointHoverBackgroundColor: 'red'
       }
-  }
-
-  // Separate the values into 'in interval' and 'not in interval'
-  for(let value of Object.keys(frequencyMap)){
-      let x = parseFloat(value);
-      let y = frequencyMap[value as unknown as number];
-      if(x >= lower && x <= upper){
-          pointsInInterval.push({x: x, y: y});
-      } else {
-          pointsNotInInterval.push({x: x, y: y});
-      }
-  }
-
-  // Set the barChartData3 with both datasets
-  this.barChartData3 = [
-    {
-      data: pointsInInterval,
-      label: 'Values in Interval',
-      backgroundColor: 'green',
-      pointBackgroundColor: pointsInInterval.map((value:any) => value.x > this.lower ? 'green' : 'red'),
-    },
-    {
-      data: pointsNotInInterval,
-      label: 'Values not in Interval',
-      backgroundColor: 'red',
-      pointBackgroundColor: pointsNotInInterval.map((value:any) => value.x > this.lower ? 'red' : 'green'),
+    ];
+    // If you need to update the chart, do it here
+    if (this.chart && this.chart.chart) {
+        this.chart.chart.update();
     }
-  ];
 
-  // If you need to update the chart, do it here
-  if (this.chart && this.chart.chart) {
-      this.chart.chart.update();
   }
-    //if (this.confidenceLevel == 0 || this.simulations.length === 0) return;
-
-    //const sortedSimulations = [...this.simulations].sort((a,b) => a-b);
-
-    // let frequencyMap = new Map<number, number>();
-    // this.simulations.forEach(value => {
-    //   let frequency = frequencyMap.get(value) || 0;
-    //   frequencyMap.set(value, frequency + 1);
-    // });
-
-    // Populate the data arrays for in and out of interval.
-    // frequencyMap.forEach((count, value) => {
-    //   let dataPoint = { x: value, y: count };
-    //   if (value >= lower && value <= upper) {
-    //     dataInInterval.push(dataPoint);
-    //   } else {
-    //     dataNotInInterval.push(dataPoint);
-    //   }
-    // });  
-
-    // this.barChartData3[0].data = dataInInterval;
-    // this.barChartData3[1].data = dataNotInInterval;
- 
-    // this.barChartLabels3 = Array.from({ length: this.simulations.length }, (_, i) => `Simulation ${i + 1}`);
-
-    // this.cdRef.detectChanges();
-
-    // if (this.chart && this.chart.chart) {
-    //   this.chart.chart.update();
-    //   console.log('Chart updated');
-    // }
-  }
-
-  // updateChartt(): void{
-  //   //const confidenceLevel = Number(this.dom.ciElement.value) || 100;
-  //  // let confidenceLevel = Number(this.dom.ciElement.value) || 100;;
-  //   // if (this.dom.ciElement) {
-  //   //   confidenceLevel = Number(this.dom.ciElement.value) || 100;
-  //   // } else {
-  //   //   // Handle the case where ciElement is not available.
-  //   //   console.error('ciElement is not available.');
-  //   //   // Set a default confidence level or perform other error handling as needed.
-  //   //   confidenceLevel = 100;
-  //   // }
-  //   if (this.confidenceLevel == 0 || this.simulations.length === 0) return;
-
-  //   const [lower, upper] = MathService.getCutOffInterval(this.confidenceLevel, this.simulations.length);
-  //   const sortedSimulations = [...this.simulations].sort((a,b) => a-b);
-  //   //const jitter = (amount: number) => Math.random() * amount - amount / 2;
-  //   // const confidenceInterval = {
-  //   //   lower: sortedSimulations[lower],
-  //   //   upper: sortedSimulations[Math.min(upper, sortedSimulations.length - 1)]
-  //   // };
-
-  //   let frequencyMap = new Map<number, number>();
-
-  //   // Count the frequency of each value
-  //   for (const value of sortedSimulations) {
-  //     frequencyMap.set(value, (frequencyMap.get(value) || 0) + 1);
-  //   }
-    
-  //   // const lowerBound = this.lower;
-  //   // const upperBound = this.upper;
-
-  //   // this.Summaries.updateSummaryElements(this.summaryElements, {
-  //   //   lower: confidenceInterval.lower,
-  //   //   upper: confidenceInterval.upper
-  //   // });
-
-  //   let dataInInterval: any = [];
-  //   let dataNotInInterval: any = [];
-
-  //   // Separate the values into in interval and not in interval arrays
-  //   for (const [value, count] of frequencyMap) {
-  //     if (value >= lower && value <= upper) {
-  //       dataInInterval.push({ x: value, y: count });
-  //     } else {
-  //       dataNotInInterval.push({ x: value, y: count });
-  //     }
-  //   }
-  //   // sortedSimulations.forEach((value) => {
-  //   //   const yValueWithJitter = 1 + jitter(0.1); // Jitter of +/- 0.05 around y=1
-  //   //   if (value >= lowerBound && value <= upperBound) {
-  //   //     dataInInterval.push({ x: value, y: yValueWithJitter });
-  //   //   } else {
-  //   //     dataNotInInterval.push({ x: value, y: yValueWithJitter });
-  //   //   }
-  //   // });
-
-  //   // let valueCounts: Record<number, number> = {};
-    
-  //   // interface ChartDataPoint{
-  //   //   x: number;
-  //   //   y: number;
-  //   // }
-
-  //   // for(const value of this.simulations){
-  //   //   if(value >= this.lower && value <= this.upper){
-  //   //     valueCounts[value] = (valueCounts[value] || 0) + 1;
-  //   //   }
-  //   // }
-
-  //   // //let dataInInterval: ChartDataPoint[] = [];
-  //   // //let dataNotInInterval: ChartDataPoint[] = [];
-
-  //   // let dataInInterval = Object.keys(valueCounts).map((xValue) => {
-  //   //   return { 
-  //   //     x: parseFloat(xValue), 
-  //   //     y: valueCounts[parseFloat(xValue)],
-  //   //   };
-  //   // });
-    
-  //   // let dataNotInInterval = this.simulations.filter((value) => value < this.lower || value > this.upper).map((value) => {
-  //   //   return { 
-  //   //     x: value,
-  //   //     y: -1,
-  //   //   }; // Using -1 just to indicate not in interval for visualization
-  //   // });
-
-  //   //let minValue = Math.min(...this.simulations);
-  //   //let maxValue = Math.max(...this.simulations);
-
-  //   // this.simulations.forEach((value, index) => {
-  //   //   const point = {x:index, y:value};
-  //   //   //let point = {x:index, y:value};
-  //   //   if (value >= confidenceInterval.lower && value <= confidenceInterval.upper) {
-  //   //     //dataInInterval;
-  //   //     //this.barChartData3[0].data = dataInInterval;
-  //   //     //dataInInterval.push(point);
-  //   //     this.barChartData3[0].data?.push(point as any);
-  //   //   } else {
-  //   //     //dataNotInInterval;
-  //   //     //this.barChartData3[0].data = dataNotInInterval;
-  //   //     //dataNotInInterval.push(point);
-  //   //     this.barChartData3[0].data?.push(point as any);
-  //   //   }
-  //   // });
-
-  //   this.barChartData3[0].data = dataInInterval;
-  //   this.barChartData3[1].data = dataNotInInterval;
-
-  //   this.barChartLabels3 = sortedSimulations.map((_, index) => `Simulation ${index + 1}`);
-
-  //   // this.barChartData3 = [
-  //   //   {
-  //   //     label: 'Values in Interval',
-  //   //     backgroundColor: 'green', 
-  //   //     data: dataInInterval, 
-  //   //     borderColor: 'green',
-  //   //     pointBorderColor: 'green'
-  //   //     //"data": [{"x": value, "y": 1}, {"x": value2, "y": 1}, ...],
-  //   //    // data: [],
-  //   //   },
-  //   //   {
-  //   //     label: 'Values not in Interval',
-  //   //     backgroundColor: 'red',
-  //   //     data: dataNotInInterval,
-  //   //     borderColor: 'red', 
-  //   //     pointBorderColor: 'red'
-  //   //     //"data": [{"x": value3, "y": 1}, {"x": value4, "y": 1}, ...],
-  //   //     //data: [],
-  //   //   }
-  //   // ];
-
-  //   //this.barChartLabels3 = Array.from({length: this.simulations.length}, (_, i) => 'Label ${i + 1}');
-  // //   this.barChartLabels3 = this.simulations.map((_, index) => `Simulation ${index + 1}`);
-
-  // //  // this.charts.ciChart.setScale(confidenceInterval.lower, confidenceInterval.upper);
-
-  // //   this.barChartOptions3 ={
-  // //     responsive: true,
-  // //     scales:{
-  // //       xAxes:[
-  // //         {
-  // //           ticks:{
-  // //             max:maxValue,
-  // //             min:minValue,
-  // //             stepSize: 0.2, 
-  // //             beginsAtZero: true,
-  // //           },
-  // //           scaleLabel: {
-  // //             display:true,
-  // //           }
-  // //         },
-  // //       ],
-  // //       yAxes:[
-  // //         {
-  // //           ticks:{
-  // //             min: 1,
-  // //             stepSize:1,
-  // //             beginsAtZero: true,
-  // //           },
-  // //           scaleLabel:{
-  // //             display:true,
-  // //           }
-  // //         }
-  // //       ]
-  // //     },
-  // //     maintainAspectRatio: false,
-  // // };
-
-  //   //this.barChartLabels3 = this.simulations.map((index:number) => `Label ${index + 1}`);
-   
-  //  //this.barChartData3[0].data = this.barChartData3[0].data || [];
-  //  //this.barChartData3[1].data = this.barChartData3[1].data || [];
-   
-  //   // console.log('Updated Chart Data:', this.barChartData3);
-  //   // // ... rest of your code ...
-
-  //   //console.log(`Lower: ${this.lower}, Upper: ${this.upper}`);
-   
-  //   // this.simulations.forEach((value, index) => {
-  //   //   let point:any = {x: index, y: value};
-  //   //   if(value >= this.lower && value <= this.upper){
-  //   //     this.barChartData3[0].data?.push(point);
-  //   //   } else{
-  //   //     this.barChartData3[1].data?.push(point);
-  //   //   }
-  //   // });
-  //   // console.log('Updated Chart Data:', this.barChartData3);
-  //   // for(const value of this.simulations){
-  //   //   //let point: number[] = [value,1];
-  //   //   if(value >= this.lower && value <= this.upper){
-  //   //     this.barChartData3[0].data.push(value);
-  //   //     //this.barChartData3[1].data.push(null!);
-  //   //   }else{
-  //   //     //this.barChartData3[0].data.push(null!);
-  //   //     this.barChartData3[1].data.push(value);
-  //   //   }
-  //   // }
-  //   //console.log('Final Chart Data:', JSON.stringify(this.barChartData3, null, 2));
-
-  //   if (this.chart && this.chart.chart) {
-  //     this.chart.chart.update();
-  //     console.log('Chart updated');
-  //   }
-  //}
 
   resetAllBut(remove: string[]): Record<string, any>{
     const keys = Object.keys(this.summaryElements)
