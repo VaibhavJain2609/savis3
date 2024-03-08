@@ -60,6 +60,7 @@
     "opc_load": "Load Data",
     "opc_reset": "Reset Data",
     "opc_propSuccess": "Proportion of Successes (p): ",
+    "opc_increase": "Increase By",
     "opc_sims": "Run Simulations",
     "opc_sample": "Sample Size",
     "opc_numsims": "Number of Simulations",
