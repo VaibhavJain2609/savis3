@@ -61,105 +61,57 @@ nav a:hover {
     color: #1e6542;
 }
 
+/* Top level container */
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
+/* Styling for each column */
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1vh;
+}
 
-
-.box {
-   
-    padding: 100px;
-    flex: 1;
-    width: 310px;
-    border: 5px;
-    padding: 15px;
-    margin: 18px;
-    margin-left: 190px;
+/* Individual box styling */
+.box, .box2, .box3 {
+    width: 100%;
+    max-width: 310px;
+    padding: 2vh;
+    margin: 1vh auto;
     background-color: rgb(52, 144, 110);
     border-radius: 2px;
     font-family: 'Poppins', sans-serif;
-    color:beige;
+    color: beige;
     text-align: center;
 }
 
-
-
-
-.tool1{
-   
-    margin-top: 50px;
-    color: black;
-    text-align:left;
-    margin-left: 230px;
-    font-family: 'Roboto Slab', serif;
-    font-size: 25px;
-}
-
-
-
-
-.box2{
-    width: 310px;
-    border: 5px;
-    padding: 15px;
-    margin-left: 42%;
-    margin-top: 20px;
-    background-color: rgb(52, 144, 110);
-    border-radius: 2px;
-    font-family: 'Poppins', sans-serif;
-    color:beige;
-    text-align: center;
-}
-
-
-
-
-.tool2{
-   
-    color: black;
-    margin-left: 890px;
-    font-family: 'Roboto Slab', serif;
-    margin-top: -390px;
-    font-size: 25px;
-}
-
-
-
-
-.box3{
-   
-    width: 300px;
-    border: 5px;
-    padding: 15px;
-    margin-left: 1400px;
-    margin-top: 20px;
-    background-color: rgb(52, 144, 110);
-    border-radius: 2px;
-    font-family: 'Poppins', sans-serif;
-    color:beige;
-    text-align: center;
-}
-
-
-
-
-.tool3{
-    color: black;
-    margin-left: 1430px;
-    font-family: 'Roboto Slab', serif;
-    margin-top: -260px;
-    font-size: 25px;
-}
-
-
-
-
-/*main topics hover*/
+/* Box hovering effects */
 .box:hover, .box2:hover, .box3:hover {
-    /* Adjusted hover effect to a darker translucent green */
     background-color: rgba(109, 147, 111, 0.7);
+    cursor: pointer;
 }
 
+/* Styling size based on user's display size */
+@media(max-width: 600px) {
+    .box-container{
+        flex-direction: column;
+    }
+}
 
-
+/* Tooltips styling */
+.tool1, .tool2, .tool3 {
+    margin: 2em auto 1em;
+    color: black;
+    text-align: center;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.5em;
+    width: 100%;
+    max-width: 310px;
+}
 
 footer{
     padding-top: 19%;

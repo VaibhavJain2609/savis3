@@ -47,3 +47,49 @@ export const squareDemo = {
     ctx.restore();
   }
 };
+
+export const oneProportionOffset = {
+  id: 'offsetBar', 
+  afterUpdate: function(chart: any) {
+    const dataset = chart.config.data.datasets[2]
+    let offset
+
+    const meta: any = Object.values(dataset._meta)[0]
+    if(meta.data.length > 0) {
+      offset = -(meta.data[1]._model.x - meta.data[0]._model.x) / 2
+    }
+
+    // For every data in the dataset ...
+    for (var i = 0; i < meta.data.length; i++) {
+      // We get the model linked to this data
+      var model = meta.data[i]._model
+      
+      // And add the offset to the 'x' property
+      model.x += offset
+
+      // .. and also to these two properties
+      // to make the bezier curve fits the new data
+      model.controlPointNextX += offset
+      model.controlPointPreviousX += offset
+    }
+  }
+}
+
+export const oneProportionSampleLegendColor = {
+  id: 'fixedSamplelegendColor',
+  afterUpdate: function(chart: any) {
+    chart.legend.legendItems[0].fillStyle = 'rgba(255, 0, 0, 0.8)'
+  }
+}
+
+export const oneProportionDynamicBubbleSize = {
+  id: 'dynamicBubbleSize',
+  beforeUpdate: function(chart: any) {
+    if(chart.mean) {
+      const chartData = chart.config.data
+      const dynamicSize = 50 / chartData.labels.length
+      const minSize = 2
+      chartData.datasets[1].radius = dynamicSize > minSize ? dynamicSize : minSize
+    }
+  }
+}
