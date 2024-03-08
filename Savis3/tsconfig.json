@@ -31,9 +31,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "enableIvy": true,
-  },
-  "exclude": [
-    "cypress",
-    "./cypress.config.ts"
-  ],
+  }
 }
