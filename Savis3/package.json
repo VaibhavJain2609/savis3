@@ -27,7 +27,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/chart.js": "^2.9.4",
-    "chartjs-plugin-annotation": "^3.0.1",
+    "chartjs-plugin-annotation": "^0.5.7",
     "dependencies": "0.0.1",
     "firebase": "^7.0 || ^8.0",
     "jstat": "^1.9.6",
