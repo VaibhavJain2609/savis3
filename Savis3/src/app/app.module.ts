@@ -14,7 +14,6 @@ import { TwoMeansCIComponent } from './features/two-means-ci/two-means-ci.compon
 import { TwoProportionsCIComponent } from './features/two-proportions-ci/two-proportions-ci.component';
 import { OneProportionCIComponent } from './features/one-proportion-ci/one-proportion-ci.component';
 import { LinearRegressionComponent } from './features/linear-regression/linear-regression.component';
-import { BivariantComponent } from './features/bivariant/bivariant.component';
 import { CorrelationComponent } from './features/correlation/correlation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/scatter-plot.component';
@@ -62,7 +61,6 @@ export function setupTranslateFactory(service : TranslateService): Function {
     TwoProportionsCIComponent,
     OneProportionCIComponent,
     LinearRegressionComponent,
-    BivariantComponent,
     CorrelationComponent,
     HomepageComponent,
     ScatterPlotComponent,
