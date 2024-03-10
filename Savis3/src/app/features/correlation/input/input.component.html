@@ -10,10 +10,12 @@
     <!-- Left side container part -->
 
     <div>
-      <h2 class="text-xl font-bold">Manual Input:</h2>
+      <h2 class="text-xl font-bold">
+        {{ "correlation.Manual_Input:" | translate }}
+      </h2>
       <div>
         <div>
-          <p>X Values</p>
+          <p>{{ "correlation.X_Values" | translate }}</p>
         </div>
         <textarea
           class="text-black"
@@ -26,7 +28,7 @@
 
       <div>
         <div>
-          <p>Y Values</p>
+          <p>{{ "correlation.Y_Values" | translate }}</p>
         </div>
         <textarea
           class="text-black"
@@ -37,32 +39,35 @@
         ></textarea>
       </div>
 
-      <b>Format of Input: 1,2,3,4, ....</b>
-      <p>Both inputs should be of the same length</p>
+      <b>{{ "correlation.Format_of_Input:_1,2,3,4,_..." | translate }}.</b>
+      <p>
+        {{ "correlation.Both_inputs_should_be_of_the_same_length" | translate }}
+      </p>
       <div>
         <button
           (click)="calculate()"
           class="bg-white text-black rounded-sm px-2"
         >
-          Calculate
+          {{ "correlation.Calculate" | translate }}
         </button>
       </div>
     </div>
     <!-- Right side container part -->
     <div>
-      <h2>Upload File:</h2>
+      <h2>{{ "correlation.Upload_File" | translate }}:</h2>
       <div>
         <input type="file" id="fileUpload" (change)="onFileChange($event)" />
         <!-- Add (change) event listener to capture file -->
         <!-- <button class="btn btn-primary mt-5 ms-3" style="width: 10vw;">Upload</button> -->
       </div>
 
-      <b>File could be csv, xlsx</b>
+      <b>{{ "correlation.File_could_be_csv,_xlsx" | translate }}</b>
     </div>
   </form>
 
   <h2 class="text-xl font-bold">
-    Result of correlation: {{ correlationValue || "" }}
+    {{ "correlation.Result_of_correlation:" | translate
+    }}{{ correlationValue || "" | translate }}
   </h2>
 </div>
 
@@ -70,7 +75,9 @@
 
 <div *ngIf="isFileData" class="my-20">
   <div>
-    <h2 class="text-xl font-bold">Displaying File Data:</h2>
+    <h2 class="text-xl font-bold">
+      {{ "correlation.Displaying_File_Data:" | translate }}
+    </h2>
 
     <!-- Check if fileData is available -->
     <div>
@@ -78,7 +85,9 @@
         <!-- Check if there are columns in fileData[0] -->
         <ng-container>
           <h5 class="text-sm italic text-gray-700">
-            Select any two Columns from Available Columns Names:
+            {{
+              "Select_any_two_Columns_from_Available_Columns_Names:" | translate
+            }}
           </h5>
           <div class="flex gap-4">
             <select [formControl]="select1">
@@ -129,7 +138,7 @@
       (click)="calculateFile()"
       class="bg-white border-black border text-black rounded-sm px-2"
     >
-      Calculate
+      {{ "correlation.Calculate" | translate }}
     </button>
   </div>
 </div>
