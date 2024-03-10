@@ -8,7 +8,6 @@ import { AboutComponent } from "./components/about/about.component"
 import { CsvFileUploadComponent } from "./components/csv-file-upload/csv-file-upload.component"
 import { ForgotpasswordComponent } from "./components/forgotpassword/forgotpassword.component"
 import { HomepageComponent } from "./components/homepage/homepage.component"
-import { BivariantComponent } from "./features/bivariant/bivariant.component"
 import { ChartComponent } from "./features/correlation/chart/chart.component"
 import { CorrelationComponent } from "./features/correlation/correlation.component"
 import { InputComponent } from "./features/correlation/input/input.component"
@@ -50,7 +49,6 @@ describe('AppComponent', () => {
         TwoProportionsCIComponent,
         OneProportionCIComponent,
         LinearRegressionComponent,
-        BivariantComponent,
         CorrelationComponent,
         HomepageComponent,
         ScatterPlotComponent,

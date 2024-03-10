@@ -19,6 +19,7 @@ export class TwoMeansCIComponent implements OnInit {
   datamean1: number = 0
   mean_diff: number = 0
   numofSem: number = 1
+  increment: number = 10
   samDisActive = false
   lastSummary: any
   chart1: any

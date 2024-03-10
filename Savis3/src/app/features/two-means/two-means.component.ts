@@ -6,6 +6,8 @@ import { Sampling } from 'src/app/Utils/sampling';
 import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
 
+import { TranslateService } from '@ngx-translate/core'; 
+
 @Component({
   selector: 'app-two-means',
   templateUrl: './two-means.component.html',
@@ -63,7 +65,7 @@ export class TwoMeansComponent implements OnInit {
 
   numberOfSimulations: number;
 
-  constructor(private smp: Sampling, private tail: TailchartService) {
+  constructor(private smp: Sampling, private tail: TailchartService, private translate: TranslateService) {
 
   }
   toggleSection(e: any, sec: string) {

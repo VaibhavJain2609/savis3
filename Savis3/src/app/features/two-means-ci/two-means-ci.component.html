@@ -41,12 +41,20 @@
           <span>{{datamean1}}</span>
         </div>
         <div class="flex justify-between">
+          <span>Standard Deviation (Group 1): </span>
+          <span>{{datamean1}}</span>
+        </div>
+        <div class="flex justify-between">
           <span>Size n (Group 2):</span>
           <span> {{dataSize2}}</span>
         </div>
         <div class="flex justify-between">
           <span>Mean 2 (Group 2):</span>
           <span>{{datamean2}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Standard Deviation (Group 2): </span>
+          <span>{{datamean1}}</span>
         </div>
         <div class="flex justify-between">
           <span>Difference of Means (Mean 1 - Mean 2):</span>
@@ -57,10 +65,24 @@
     <div class="w-9/12">
       <div style="display: block">
         <div class="chart-wrap"><canvas id="data-chart-1" height="220"></canvas></div>
+        <p>
+          {{ 'opc_increase' | translate }}
+          <input type = "number" step = "1" min = "10" id = "increment" [(ngModel)]="increment"/>
+          <button class = "incrementButton">
+              <button class="custom-button">+</button>
+          </button>
+      </p>
 
       </div>
       <div style="display: block">
         <div class="chart-wrap"><canvas id="data-chart-2" height="220"></canvas></div>
+        <p>
+          {{ 'opc_increase' | translate }}
+          <input type = "number" step = "1" min = "10" id = "increment" [(ngModel)]="increment"/>
+          <button class = "incrementButton">
+              <button class="custom-button">+</button>
+          </button>
+        </p>
       </div>
     </div>
   </div>
@@ -105,3 +127,59 @@
       <div class="chart-wrap"><canvas id="data-chart-4" height="200"></canvas></div>
     </div>
   </div>
+  <div class="flex justify-between">
+
+    <h2 class="text-xl font-bold">3. Sampling Distribution of Difference of Means
+    </h2>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
+  </div>
+  <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
+    <div class="w-3/12">
+      <select [disabled]="!samDisActive" (change)="selectedTest($event)" class="if-disabled w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
+        <option value="null" disabled selected>Type of Test
+        </option>
+        <option value="oneTailRight">One Tail Right
+        </option>
+        <option value="oneTailLeft">One Tail Left
+        </option>
+        <option value="TwoTail">Two Tails
+        </option>
+
+      </select>
+      <span>Select differences at least as extreme as</span>
+      <input [disabled]="!samDisActive" type="number"  id="tail-input" value="0" [(ngModel)]="mean_diff" step="any"
+        class="w-full border if-disabled border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
+      <hr>
+      <div class="text-sm font-medium mb-1">
+        <div class="flex justify-between">
+          <span>Original Dataset Difference of Means:</span>
+          <span summary="dataMeanDiff">{{mean_diff}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Mean of Sample Differences:</span>
+          <span summary="mean">{{simsummary.sampleMeanDiff}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Standard Deviation:</span>
+          <span summary="stddev">{{lastSummary?.stddev}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Total # samples: </span>
+          <span summary="total" summaryint>{{lastSummary?.total}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span># of Extreme Differences: </span>
+          <span summary="chosen" summaryint>{{lastSummary?.chosen }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Proportion of Extreme Differences</span>
+          <span summary="proportion">{{lastSummary?.proportion }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="rhs w-9/12">
+      <canvas id="diff-chart"></canvas>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
