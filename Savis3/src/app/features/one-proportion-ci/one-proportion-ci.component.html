@@ -1,144 +1,231 @@
 <app-navbar></app-navbar>
 
 <div class="one-proportion-ci">
-    <div class="title2">
-        <h1>{{ 'opc_title' | translate }}</h1>
-    </div>
-    <div class="title3"><h2>1. {{ 'opc_data' | translate }}</h2></div>
-    <!-- <input type="checkbox" style="float:right" checked/> -->
-    <div id="input-section" class="section">
-        <div class="lhs">
-            <p>
-                {{ 'opc_success' | translate }}
-            </p>
-            <input type="number" id="success" min="0" step="1" [(ngModel)]="success" #successInput>
-            <p>
-                {{ 'opc_failure' | translate }}
-            </p>
-            <input type="number" id="failure" min="0" step="1" [(ngModel)]="failure" #failureInput>
-            <br>
-            <button class="btn load-button" (click)="loadData()">{{ 'opc_load' | translate }}</button>
-            <button class="btn reset-button" (click)="resetData()">{{ 'opc_reset' | translate }}</button>
-            <br>
-            <div class="stats">
-                <div>
-                  <span>{{ 'opc_propSuccess' | translate }}</span>
-                  <span>{{ proportion | number : '1.4-4' }}</span>
-                </div>
-            </div>
-            <br><br>
+  <div class="title2">
+    <h1>{{ "opc.title" | translate }}</h1>
+  </div>
+  <div class="title3">
+    <h2>1. {{ "opc.data" | translate }}</h2>
+  </div>
+  <!-- <input type="checkbox" style="float:right" checked/> -->
+  <div id="input-section" class="section">
+    <div class="lhs">
+      <p>
+        {{ "opc.success" | translate }}
+      </p>
+      <input
+        type="number"
+        id="success"
+        min="0"
+        step="1"
+        [(ngModel)]="success"
+        #successInput
+      />
+      <p>
+        {{ "opc.failure" | translate }}
+      </p>
+      <input
+        type="number"
+        id="failure"
+        min="0"
+        step="1"
+        [(ngModel)]="failure"
+        #failureInput
+      />
+      <br />
+      <button class="btn load-button" (click)="loadData()">
+        {{ "opc.load" | translate }}
+      </button>
+      <button class="btn reset-button" (click)="resetData()">
+        {{ "opc.reset" | translate }}
+      </button>
+      <br />
+      <div class="stats">
+        <div>
+          <span>{{ "opc.propSuccess" | translate }}</span>
+          <span>{{ proportion | number : "1.4-4" }}</span>
         </div>
-        <div class="rhs">
-            <label>{{ numsuccess }} {{ 'opc_success' | translate }}</label>
-            <label>{{ numfailure }} {{ 'opc_failure' | translate }}</label> 
-            <div class="chart-wrap">
-                <canvas baseChart
-                    [datasets]="barChartData1"
-                    [labels]="barChartLabels1"
-                    [options]="barChartOptions1"
-                    [chartType]="barChartType1">
+      </div>
+      <br /><br />
+    </div>
+    <div class="rhs">
+      <!-- <label><span summary="numfailure"></span>Failures</label>
+            <label><span summary="numsuccess"></span>Successes</label> -->
+      <label>{{ numsuccess }} {{ "opc.success" | translate }}</label>
+      <label>{{ numfailure }} {{ "opc.failure" | translate }}</label>
+      <!-- <p rowspan="2" colspan="2"> -->
+      <div class="chart-wrap">
+        <canvas
+          baseChart
+          [datasets]="barChartData1"
+          [labels]="barChartLabels1"
+          [options]="barChartOptions1"
+          [chartType]="barChartType1"
+        >
+        </canvas>
+      </div>
+      <!-- <div class="chart-wrap">
+                <canvas id="input-bars"
+                    [datasets]="chartData"
+                    [options]="chartOptions"
+                    [chartType]="'bar'">
                 </canvas>
-            </div>
-            <p>
-                {{ 'opc_increase' | translate }}
+            </div> -->
+      <!-- <p>
+                Increase By
                 <input type = "number" step = "1" min = "1" id = "increment" [(ngModel)]="increment"/>
                 <button class = "incrementButton" (click)="incrementt(increment)">
-                    <button class="custom-button">+</button>
+                    <span class="material-icons">add_circle</span>
                 </button>
-            </p>
-        </div>
-    </div> 
-    <br>
-    <hr>
-    <div class="title3"><h2>2. {{ 'opc_sims' | translate }}</h2></div>
-    <!-- <input type="checkbox" style="float:right" checked/> -->
-    <div id="input-section" class="section">
-        <div class="lhs">
-            <p>
-                {{ 'opc_sample' | translate }}
-            </p>
-            <input id="sample-size" type="number" min="1" max="'1000" [(ngModel)]="sampleSize">
-            <p>
-                {{ 'opc_numsims' | translate }}
-            </p>
-            <input type="number" min="1" max="1000" [(ngModel)]="numSimulations">
-            <br>
-            <button class="btn" (click)="runSimulations()">{{ 'opc_sims' | translate }}</button>
-            <br>
-            <div class="stats">
-                <div>
-                    <span>{{ 'opc_propSims' | translate }}</span>
-                    <span>{{ sampleProportion | number : '1.4-4' }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="rhs">
-            <div class="l">{{ 'opc_Recent' | translate }}</div>
-            <h6>{{ randomizedfailure }} {{ 'opc_failure' | translate }}</h6> 
-            <h6>{{ randomizedsuccess }} {{ 'opc_success' | translate }}</h6>
-            <div class="chart-wrap2">
-                <canvas baseChart
-                    [datasets]="barChartData2"
-                    [labels]="barChartLabels2"
-                    [options]="barChartOptions2"
-                    [chartType]="barChartType1">
-                </canvas>
-            </div>
-        </div>
+            </p> -->
+      <!-- <div style = "width: 10%; margin: auto">
+                <button class = "incrementButton" (click)="incrementt(increment)" >
+                    <span class="material-icons">add_circle</span>
+                </button>
+            </div> -->
     </div>
-    <br><br>
-    <hr>
-    <div class="title3"><h2>3. {{ 'opc_SampleProp' | translate }}</h2></div>
-    <!-- <input type="checkbox" style="float:right" checked/> -->
-    <div class="section flex-row" style="display: flex; flex-wrap: wrap;">
-        <div class="lhs">
-            <table>
-                <label for="confidence-level">{{ 'opc_confidence' | translate }} {{confidenceLevel}} %</label>
-            </table>
-            <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
-            <br>
-            <button class="btn" style="width:80%" (click)="buildci()">{{ 'opc_build' | translate }}</button>
-            <br>  
-            <br>
-            <div class="stats">
-                <div>
-                     <span>{{ 'opc_mean' | translate }}</span>
-                     <span>{{ mean | number : '1.4-4'}}</span>
-                 </div>
-                 <div>
-                     <span>{{ 'opc_stddev' | translate }}</span>
-                     <span>{{ stddev | number : '1.4-4'}}</span>
-                 </div>
-                 <div>
-                     <span>{{ 'opc_lower' | translate }}</span>
-                     <span>{{ lower | number : '1.4-4'}}</span>
-                 </div>
-                 <div>
-                     <span>{{ 'opc_upper' | translate }}</span>
-                     <span>{{ upper | number : '1.4-4'}}</span>
-                 </div>
-                 <div>
-                     <span>{{ 'opc_total' | translate }}</span>
-                     <span>{{ total }}</span>
-                 </div>
-             </div>
-            <br>  
+  </div>
+  <br />
+  <hr />
+  <div class="title3">
+    <h2>2. {{ "opc.sims" | translate }}</h2>
+  </div>
+  <!-- <input type="checkbox" style="float:right" checked/> -->
+  <div id="input-section" class="section">
+    <div class="lhs">
+      <p>
+        {{ "opc.sample" | translate }}
+      </p>
+      <input
+        id="sample-size"
+        type="number"
+        min="1"
+        max="'1000"
+        [(ngModel)]="sampleSize"
+      />
+      <p>
+        {{ "opc.numsims" | translate }}
+      </p>
+      <!-- <input id="numSimulations" type="number" min="1" max="1000" [(ngModel)]="numSimulations"> -->
+      <input type="number" min="1" max="1000" [(ngModel)]="numSimulations" />
+      <br />
+      <button class="btn" (click)="runSimulations()">
+        {{ "opc.sims" | translate }}
+      </button>
+      <br />
+      <div class="stats">
+        <div>
+          <span>{{ "opc.propSims" | translate }}</span>
+          <span>{{ sampleProportion | number : "1.4-4" }}</span>
         </div>
-        <div class="rhs">
-            <div class="chart-wrap3">
-                <canvas baseChart
-                    [datasets]="barChartData3"
-                    [labels]="barChartLabels3"
-                    [options]="barChartOptions3"
-                    [chartType]="barChartType2">
-                </canvas>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="rhs">
+      <div class="l">{{ "opc.Recent" | translate }}</div>
+      <h6>{{ randomizedfailure }} {{ "opc.failure" | translate }}</h6>
+      <h6>{{ randomizedsuccess }} {{ "opc.success" | translate }}</h6>
+      <div class="chart-wrap2">
+        <canvas
+          baseChart
+          [datasets]="barChartData2"
+          [labels]="barChartLabels2"
+          [options]="barChartOptions2"
+          [chartType]="barChartType1"
+        >
+        </canvas>
+      </div>
+      <!-- <div class="chart-wrap2">
+                <canvas id="last-sim-bars">
+
+                </canvas>
+            </div> -->
+    </div>
+  </div>
+  <br /><br />
+  <hr />
+  <div class="title3">
+    <h2>3. {{ "opc.SampleProp" | translate }}</h2>
+  </div>
+  <!-- <input type="checkbox" style="float:right" checked/> -->
+  <div class="section flex-row" style="display: flex; flex-wrap: wrap">
+    <div class="lhs">
+      <table>
+        <label for="confidence-level"
+          >{{ "opc.confidence" | translate }} {{ confidenceLevel }} %</label
+        >
+      </table>
+      <input
+        type="range"
+        min="1"
+        max="100"
+        step="1"
+        style="width: 50%"
+        id="confidence-level"
+        [(ngModel)]="confidenceLevel"
+      />
+      <br />
+      <button class="btn" style="width: 80%" (click)="buildci()">
+        {{ "opc.build" | translate }}
+      </button>
+      <br />
+      <br />
+      <div class="stats">
+        <div>
+          <span>{{ "opc.mean" | translate }}</span>
+          <span>{{ mean | number : "1.4-4" }}</span>
+        </div>
+        <div>
+          <span>{{ "opc.stddev" | translate }}</span>
+          <span>{{ stddev | number : "1.4-4" }}</span>
+        </div>
+        <div>
+          <span>{{ "opc.lower" | translate }}</span>
+          <span>{{ lower | number : "1.4-4" }}</span>
+        </div>
+        <div>
+          <span>{{ "opc.upper" | translate }}</span>
+          <span>{{ upper | number : "1.4-4" }}</span>
+        </div>
+        <div>
+          <span>{{ "opc.total" | translate }}</span>
+          <span>{{ total }}</span>
+        </div>
+      </div>
+      <br />
+      <!-- <br>
+            <h4>Description Interval</h4>
+            <label for="min-tailValue">Set Min</label>
+            <input type="number" id="min-tailValue" disabled="need-results" min="0" max="1">
+            <label for="min-tailValue">Include Min<input type="checkbox" id="includeMin" disabled="need-results"></label>
+            <br>
+            <label for="max-tailValue">Set Max</label>
+            <input type="number" id="max-tailValue" disabled="need-results" min="0.1" max="1">
+            <label for="max-tailValue">Include Max<input type="checkbox" id="includeMax" disabled="need-results"></label>  
+            <br>
+            <h4>Set Percentage</h4>
+            <label for="confidence-level">
+                Percentage
+                <input type="number" id="confidence-level" step="0.01" min="0" max="100" disabled="need-results">
+            </label> 
+            <br> -->
+    </div>
+    <div class="rhs">
+      <div class="chart-wrap3">
+        <canvas
+          baseChart
+          [datasets]="barChartData3"
+          [labels]="barChartLabels3"
+          [options]="barChartOptions3"
+          [chartType]="barChartType2"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script src="{{base}}../lib/Chart.bundle.min.js"></script>
+<script src="{{ base }}../lib/Chart.bundle.min.js"></script>
 <script src="./oneProportionsEntry.js" type="module"></script>
 <script src="./oneProportions.bundle.js"></script>
-
+<!-- <br><br><br><br> -->
 <app-footer></app-footer>

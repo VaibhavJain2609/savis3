@@ -1,589 +1,343 @@
-import { AfterViewInit, Component, ElementRef, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart } from 'chart.js';
-import { oneProportionDynamicBubbleSize, oneProportionOffset, oneProportionSampleLegendColor } from '../../Utils/chartjs-plugin';
+import { ChartXAxe } from 'chart.js';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-one-proportion',
   templateUrl: './one-proportion.component.html',
-  styleUrls: ['./one-proportion.component.scss']
+  styleUrls: ['./one-proportion.component.scss'],
 })
-export class OneProportionComponent implements AfterViewInit, OnChanges{
-  /**
-   * number of coins to be flipped
-   */
-  noOfCoin: number = 5
-  /**
-   * probability of getting a head
-   */
-  probability: number = 0.5
-  /**
-   * Chart labels
-   */
-  labels: string[] = []
-  /**
-   * Binomial data
-   */
-  binomialData: number[] = []
-  /**
-   * Sample data
-   */
-  samples: number[] = []
-  /**
-   * Selected area within the data
-   */
-  selected: number[] = []
-  /**
-   * Mean of the data
-   */
-  mean: number = NaN
-  /**
-   * Standard deviation of the data
-   */
-  std: number = NaN
-  /**
-   * Number of selected data
-   */
-  noOfSelected: number = 0
-  /**
-   * Total number of samples
-   */
-  totalSamples: number = 0
-  /**
-   * Lower range of the selected area
-   */
-  lowerSelectedRange: number = 0
-  /**
-   * Upper range of the selected area
-   */
-  upperSelectedRange: number = 0
-  /**
-   * Number of samples in each draw
-   */
-  thisSampleSizes: number = 1
-  /**
-   * Zoom in or out of the chart
-   */
-  zoomIn: boolean = false
-  /**
-   * Interval of data in the selected area
-   */
-  interval: number = 0
+export class OneProportionComponent implements OnInit {
+  // samplesString: string = 'Samples';
+  // binomialPredictionString: string = 'Binomial Prediction';
+  // selectedString: string = 'Selected';
 
-  /**
-   * Proportion of the selected area
-   */
-  proportion: string = '0/0 = NaN'
+  legendStrings: string[] = ['Samples', 'Binomial Prediction', 'Selected'];
 
-  /**
-   * Chart colors
-   */
+  ngOnInit(): void {
+    this.translate.onLangChange.subscribe((e) => {
+      this.legendStrings = [
+        this.translate.instant('oph.bar_sample'),
+        this.translate.instant('oph.bar_binomial'),
+        this.translate.instant('oph.bar_selected'),
+      ];
+    });
+  }
+
+  // User input properties
+  probabilityOfHeads: number = 0.5; // Default probability of heads
+  numberOfTosses: number = 5; // Default number of tosses
+  sampleSize: number = 1; // Default number of samples to draw
+  minHeads: number = 0; // Minimum number of heads in interval
+  maxHeads: number = 0; // Maximum number of heads in interval
+  interval: number = 0; // number of samples in interval
+  proportion: string = '1/1 = 1.000';
+
+  // Statistical properties
+  totalSamples: number = 0; // Total number of samples drawn
+  meanHeads: number = 0; // Mean number of heads observed
+  standardDeviation: number = 0; // Standard deviation of number of heads
+
+  // Chart colors
   colors = {
-    sample: "rgba(255, 0, 0, 0.7)",
-      binomial: "rgba(0, 0, 255, 0.6)",
-      selected: "rgba(0, 255, 0, 0.6)",
-      line: "rgba(0, 255, 0, 0.6)",
-      box: "rgba(0, 255, 0, 0.1)",
-      invisible: "rgba(0, 255, 0, 0.0)"
-  }
+    sample: 'rgba(255, 0, 0, 0.7)',
+    binomial: 'rgba(0, 0, 255, 0.6',
+    selected: 'rgba(0, 255, 0, 0.6)',
+    line: 'rgba(0, 255, 0, 0.6)',
+    box: 'rgba(0, 255, 0, 0.1)',
+    invisible: 'rgba(0, 255, 0, 0.0)',
+  };
 
-  /**
-   * Chart object
-   */
-  chart: Chart
-  /**
-   * Chart canvas (HTML element)
-   */
-  @ViewChild('chartCanvas') chartCanvas: ElementRef<HTMLCanvasElement>
+  // Chart properties
+  chartData: ChartDataSets[];
 
+  chartLabels: Label[];
 
-  constructor(
-    private translate: TranslateService,
-    ) {
-      Chart.pluginService.register(oneProportionOffset)
-      
-      Chart.pluginService.register(oneProportionSampleLegendColor)
-      
-      Chart.pluginService.register(oneProportionDynamicBubbleSize)
+  chartOptions: ChartOptions;
 
-  }
+  chartColors: Color[];
 
-  /**
-   * After the view is initialized, create the chart
-   */
-  ngAfterViewInit(): void {
-      this.createChart()
-  }
+  constructor(private translate: TranslateService) {
+    // Chart data
+    this.chartData = [
+      {
+        data: [],
+        label: this.translate.instant('oph.bar_sample'),
+        borderWidth: 1,
+        backgroundColor: this.colors.sample,
+        hidden: false,
+        barPercentage: 1.0,
+      },
+      {
+        type: 'line',
+        label: this.translate.instant('oph.bar_binomial'),
+        data: [],
+        borderWidth: 1,
+        borderColor: this.colors.binomial,
+        backgroundColor: this.colors.binomial,
+        pointRadius: 3,
+        fill: false,
+        hidden: false,
+        barPercentage: 1.0,
+      },
+      {
+        type: 'line',
+        label: this.translate.instant('oph.bar_selected'),
+        data: [],
+        borderWidth: 0.1,
+        backgroundColor: this.colors.selected,
+        hidden: false,
+        fill: 'end',
+        barPercentage: 1.0,
+      },
+    ];
 
-  /**
-   * Create the chart and set the chart settings
-   */
-  createChart(): void {
-    const context = this.chartCanvas.nativeElement.getContext('2d')
-    if(context){
-      this.chart = new Chart(context, {
-        type: 'bar',
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: this.translate.instant('op_bar_sample'),
-              data: [],
-              borderWidth: 1,
-              // id: 'x-axis-1',
-              backgroundColor: this.colors.sample,
-              hidden: false,
+    // Chart labels
+    this.chartLabels = ['0', '1', '2', '3', '4', '5'];
+
+    // Chart options
+    this.chartOptions = {
+      responsive: true,
+      scales: {
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString:
+                `${this.translate.instant('oph.bar_heads')} ` +
+                this.maxHeads +
+                ` ${this.translate.instant('oph.bar_heads2')}`,
+              // fontColor: 'black',
+              // fontSize: 14
             },
-            {
-              type: 'line',
-              label: this.translate.instant('op_bar_binomial'),
-              data: [],
-              borderWidth: 1,
-              // id: 'x-axis-2',
-              borderColor: this.colors.binomial,
-              backgroundColor: this.colors.binomial,
-              pointRadius: 3,
-              pointHoverRadius: 15,
-              pointHoverBackgroundColor: this.colors.binomial,
-              fill: false,
-              hidden: false,
-              showLine: false,
+          } as ChartXAxe,
+        ],
+        yAxes: [
+          {
+            ticks: {
+              max: 1,
+              beginAtZero: true,
+              stepSize: 0.1,
             },
-            {
-              type: 'line',
-              label: this.translate.instant('op_bar_selected'),
-              data: [],
-              borderWidth: 0.1,
-              // id: 'x-axis-3',
-              backgroundColor: this.colors.selected,
-              hidden: false,
-              fill: 'end',
-            }
-          ]
-        },
-        options: {
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  autoSkip: true,
-                },
-                scaleLabel: {
-                  display: true,
-                  labelString: this.translate.instant('op_bar_num_samples'),
-                  // fontColor: 'black',
-                  // fontSize: 14
-                }
-              }
-            ],
-            xAxes: [
-              {
-                // barPercentage: 1.0,
-                scaleLabel: {
-                  display: true,
-                  labelString: `${this.translate.instant('op_bar_heads')} ` + this.upperSelectedRange + ` ${this.translate.instant('op_bar_heads2')}`,
-                  // fontColor: 'black',
-                  // fontSize: 14
-                }
-              }
-            ]
+            scaleLabel: {
+              display: true,
+              labelString: this.translate.instant('oph.bar_num_samples'),
+              // fontColor: 'black',
+              // fontSize: 14
+            },
           },
-          responsive: true,
-          maintainAspectRatio: true,
-          tooltips: {
-            mode: 'index',
-            backgroundColor: 'rgba(0, 0, 0, 1.0)',
-            callbacks: {
-              title: function(tooltipItem, data) {
-                if (tooltipItem[0]) {
-                  let title = tooltipItem[0].xLabel || ''
-                  title += ` heads`;
-                  return title.toString(); // Explicitly convert to string
-                }
-                return '' // Return an empty string if tooltipItem[0] is undefined
-              },
-              label: (tooltipItem, data) => {
-                if (tooltipItem && tooltipItem.datasetIndex !== undefined) {
-                  if (tooltipItem.datasetIndex !== 2) {
-                    return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${tooltipItem.yLabel}`;
-                  } else {
-                    return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
-                      this.interval
-                    }`
-                  }
-                }
-                return '' // Return an empty string if tooltipItem or tooltipItem.datasetIndex is undefined
+        ],
+      },
+      maintainAspectRatio: true,
+      tooltips: {
+        mode: 'index',
+        backgroundColor: 'rgba(0, 0, 0, 1.0)',
+        callbacks: {
+          title: function (tooltipItem, data) {
+            if (tooltipItem[0]) {
+              let title = tooltipItem[0].xLabel || '';
+              title += ` heads`;
+              return title.toString(); // Explicitly convert to string
+            }
+            return ''; // Return an empty string if tooltipItem[0] is undefined
+          },
+          label: (tooltipItem, data) => {
+            if (tooltipItem && tooltipItem.datasetIndex !== undefined) {
+              if (tooltipItem.datasetIndex !== 2) {
+                return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
+                  tooltipItem.yLabel
+                }`;
+              } else {
+                return `${data.datasets?.[tooltipItem.datasetIndex]?.label} : ${
+                  this.maxHeads - this.minHeads + 1
+                }`;
               }
             }
-          }
-        }  
-      })
-    }
+            return ''; // Return an empty string if tooltipItem or tooltipItem.datasetIndex is undefined
+          },
+        },
+      },
+    };
 
-    (this.chart as any).mean = this.mean
-
-    // Event listener for double click to zoom in and out
-    this.chart.canvas.ondblclick = () => {
-      if (this.noOfCoin >= 50) {
-          this.zoomIn = !this.zoomIn; // toggle zoomIn
-          this.updateChart();
-      }
-    }
+    // Chart colors
+    this.chartColors = [
+      {
+        backgroundColor: 'rgba(0,255,0,0.3)',
+        borderColor: 'green',
+      },
+      {
+        backgroundColor: 'rgba(255,0,0,0.3)',
+        borderColor: 'red',
+      },
+    ];
   }
 
-  /**
-   * Reset the data and the chart
-   */
+  // ngOnInit() {
+
+  // }
+
+  // Reset the form and chart data
   reset() {
-    this.noOfCoin = 5
-    this.probability = 0.5
-    this.labels = []
-    this.binomialData = []
-    this.samples = []
-    this.selected = []
-    this.mean = NaN
-    this.std = NaN
-    this.noOfSelected = 0
-    this.totalSamples = 0
-    this.thisSampleSizes = 1
-    this.lowerSelectedRange = 0
-    this.upperSelectedRange = 0
-    this.zoomIn = false
-    this.interval = 0
-    this.proportion = '0/0 = NaN'
-
-    this.resetChart()
+    this.probabilityOfHeads = 0.5;
+    this.numberOfTosses = 5;
+    this.sampleSize = 1;
+    this.minHeads = 0;
+    this.maxHeads = 0;
+    this.totalSamples = 0;
+    this.meanHeads = 0;
+    this.standardDeviation = 0;
+    this.chartData = [
+      {
+        data: [],
+        label: this.translate.instant('oph.bar_sample'),
+        borderWidth: 1,
+        backgroundColor: this.colors.sample,
+        hidden: false,
+      },
+      {
+        type: 'line',
+        data: [],
+        label: this.translate.instant('oph.bar_binomial'),
+        borderWidth: 1,
+        borderColor: this.colors.binomial,
+        backgroundColor: this.colors.binomial,
+        pointRadius: 3,
+        fill: false,
+        hidden: false,
+      },
+      {
+        type: 'line',
+        data: [],
+        label: this.translate.instant('oph.bar_selected'),
+        borderWidth: 0.1,
+        backgroundColor: this.colors.selected,
+        hidden: false,
+        barPercentage: 1.0,
+      },
+    ];
+    this.chartLabels = ['0', '1', '2', '3', '4', '5'];
   }
 
-  /**
-   * Reset the chart
-   */
-  resetChart(): void {
-    if(this.chart) {
-      this.chart.destroy()
-    }
-    this.createChart()
-  }
-  
-  /**
-   * When the draw sample button is clicked, draw the samples and update the chart
-   */
-  sampleDraw() {
-    if(this.zoomIn){
-      this.zoomIn = false
-    }
+  // Draw samples and update chart
+  drawSamples() {
+    // Here you would calculate the sample based on the binomial distribution
+    // with this.probabilityOfHeads and this.numberOfTosses.
+    // For the purpose of this example, we will just simulate some data.
 
-    this.totalSamples += this.thisSampleSizes
+    // Simulate drawing samples and calculating statistics
+    let simulatedHeads = this.simulateDrawingSamples(
+      this.probabilityOfHeads,
+      this.numberOfTosses,
+      this.sampleSize
+    );
+    this.meanHeads =
+      simulatedHeads.reduce((a, b) => a + b, 0) / simulatedHeads.length;
+    this.standardDeviation = this.calculateStandardDeviation(
+      simulatedHeads,
+      this.meanHeads
+    );
+    this.totalSamples += this.sampleSize;
 
-    const newSamples = this.drawSamples()
-    this.binomialData = this.calculateBionomial()
-    this.selected = this.generateSelectedArray()
-
-    if(this.samples.length === 0) {
-      this.samples = Array(this.noOfCoin + 1).fill(0)
-    }
-    this.samples = this.addSamples(this.samples, newSamples)
-
-    if (this.chart && this.chart.data && this.chart.data.datasets && this.chart.data.datasets[0] && this.chart.data.datasets[1] && this.chart.data.datasets[2]) {
-      this.chart.data.datasets[0].data = this.samples
-      this.chart.data.datasets[1].data = this.binomialData
-      this.chart.data.datasets[2].data = this.selected
-    }
-
-    this.mean = this.calculateMean()
-    this.std = this.calculateStd() || 0
-
-    this.generateLabels()
-    this.chart.data.labels = this.labels
-
-    this.interval = this.calculateSamplesSelected()
-    this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`
-
-    this.chart.update()
+    // Update chart data
+    this.updateChartData(simulatedHeads);
   }
 
-  /**
-   * Generate the labels for the chart
-   * this is for the x-axis
-   */
-  generateLabels(): void {
-    this.labels = Array(this.noOfCoin + 1)
-    for (let i = 0; i < this.noOfCoin + 1; i++) {
-      this.labels[i] = i.toString()
-    }
-
-    this.chart.data.labels = this.labels
-    this.chart.update()
-  }
-
-  /**
-   * Recalculate the samples and update the chart when the number of coins is changed
-   */
-  recalculateSamples():void {
-    this.samples = []
-    this.generateLabels()
-
-    const reSamples = this.drawSamplesWithSameSize()
-    
-    if(this.samples.length === 0) {
-      this.samples = Array(this.noOfCoin + 1).fill(0)
-    }
-    this.samples = this.addSamples(this.samples, reSamples)
-
-    this.mean = this.calculateMean()
-    this.std = this.calculateStd() || 0
-    this.interval = this.calculateSamplesSelected()
-    this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`
-    this.binomialData = this.calculateBionomial()
-
-    this.chart.data.datasets[0].data = this.samples
-    this.chart.data.datasets[1].data = this.binomialData
-    this.chart.update()
-  }
-
-  /**
-   * Update the selected area of the chart
-   */
-  updateSelected(): void {
-    this.binomialData = this.calculateBionomial();
-    this.interval = this.calculateSamplesSelected();
-    this.proportion = `${this.interval}/${this.totalSamples} = ${(this.interval / this.totalSamples).toFixed(3)}`;
-
-    if (!this.zoomIn) {
-        this.generateLabels();
-        this.chart.data.labels = this.labels;
-        this.chart.data.datasets[1].data = this.binomialData;
-        this.chart.data.datasets[2].data = this.generateSelectedArray();
-    } else {
-        const roundedMean = Math.floor(this.probability * this.noOfCoin);
-        const HALF_WIDTH = 25;
-        let lowerRange, upperRange;
-
-        if (roundedMean - HALF_WIDTH <= 0) {
-            lowerRange = 0;
-            upperRange = lowerRange + HALF_WIDTH * 2;
-        } else if (roundedMean + HALF_WIDTH >= this.noOfCoin) {
-            upperRange = this.noOfCoin + 1;
-            lowerRange = upperRange - HALF_WIDTH * 2;
-        } else {
-            lowerRange = roundedMean - HALF_WIDTH;
-            upperRange = roundedMean + HALF_WIDTH;
+  // Simulate drawing samples
+  simulateDrawingSamples(
+    probability: number,
+    tosses: number,
+    size: number
+  ): number[] {
+    let samples = [];
+    for (let i = 0; i < size; i++) {
+      let heads = 0;
+      for (let j = 0; j < tosses; j++) {
+        if (Math.random() < probability) {
+          heads++;
         }
-
-        upperRange = lowerRange + HALF_WIDTH * 2;
-
-        this.chart.data.datasets[1].data = this.binomialData.slice(lowerRange, upperRange);
-        this.chart.data.datasets[2].data = this.generateSelectedArray().slice(lowerRange, upperRange);
-    }
-
-    this.chart.update();
-}
-
-  /**
-   * Generate an array to represent the selected area
-   * @returns Array of 0s and NaNs to represent the selected area
-   */
-  generateSelectedArray(): Array<number> {
-    const lower = this.lowerSelectedRange >= 0 ? this.lowerSelectedRange : 0
-    const upper = this.upperSelectedRange <= this.noOfCoin + 2 ? this.upperSelectedRange : this.noOfCoin + 2
-
-    const select = Array(this.noOfCoin + 2).fill(NaN)
-
-    return select.map((x, i) => {
-      if(i >= lower && i <= upper + 1) {
-        return 0
       }
-      return x
-    })
-  }
-
-  /**
-   * Calculate the binomial data of each point
-   * @returns Array of binomial data
-   */
-  calculateBionomial(): Array<number> {
-    const coeff = Array(this.noOfCoin + 1).fill(0)
-    coeff[0] = 1
-
-    const binomialBase = Array(this.noOfCoin + 1)
-
-    binomialBase[0] = Math.pow(1 - this.probability, this.noOfCoin)
-    for(let i = 1; i < this.noOfCoin + 1; i++) {
-      coeff[i] = (coeff[i - 1] * (this.noOfCoin + 1 - i)) / i
-
-      binomialBase[i] = coeff[i] * Math.pow(1 - this.probability, this.noOfCoin - i) * Math.pow(this.probability, i)
+      samples.push(heads);
     }
-    return binomialBase.map(x => x * this.totalSamples)
+    return samples;
   }
 
-  /**
-   * Draw the samples using the current sample size
-   * @returns Array of samples
-   */
-  drawSamples() : Array<Array<number>> {
-    const drawResults = Array(this.thisSampleSizes)
-
-    for(let i = 0; i < this.thisSampleSizes; i++) {
-      const singleDraw = Array(this.noOfCoin).fill(NaN)
-      drawResults[i] = singleDraw.map(x => {
-        return Math.random() < this.probability ? 1 : 0
-      })
-    }
-
-    return drawResults
+  // Calculate the standard deviation of the sample
+  calculateStandardDeviation(samples: number[], mean: number): number {
+    const sumOfSquares = samples.reduce(
+      (acc, val) => acc + Math.pow(val - mean, 2),
+      0
+    );
+    return Math.sqrt(sumOfSquares / samples.length);
   }
 
-  /**
-   * Draw the samples with the same sample size
-   * @returns Array of samples
-   */
-  drawSamplesWithSameSize() : Array<Array<number>> {
-    const drawResults = Array(this.totalSamples)
+  // Update the chart with new data
+  updateChartData(sampleData: number[]) {
+    console.log(this.numberOfTosses);
 
-    for(let i = 0; i < this.totalSamples; i++) {
-      const singleDraw = Array(this.noOfCoin).fill(NaN)
-      drawResults[i] = singleDraw.map(x => {
-        return Math.random() < this.probability ? 1 : 0
-      })
-    }
+    // You would calculate the actual probabilities here
+    // For the purpose of this example, we'll just count the occurrences
+    let occurrenceCounts = new Array(this.numberOfTosses + 1).fill(0);
+    sampleData.forEach((heads) => {
+      occurrenceCounts[heads]++;
+    });
 
-    return drawResults
+    // Convert counts to probabilities
+    let probabilities = occurrenceCounts.map(
+      (count) => count / this.sampleSize
+    );
+    this.chartData = [
+      {
+        data: probabilities,
+        label: this.translate.instant('oph.bar_sample'),
+        borderWidth: 1,
+        backgroundColor: this.colors.sample,
+        hidden: false,
+      },
+      {
+        type: 'line',
+        data: [],
+        label: this.translate.instant('oph.bar_binomial'),
+        borderWidth: 1,
+        borderColor: this.colors.binomial,
+        backgroundColor: this.colors.binomial,
+        pointRadius: 3,
+        fill: false,
+        hidden: false,
+      },
+      {
+        type: 'line',
+        data: [],
+        label: this.translate.instant('oph.bar_selected'),
+        borderWidth: 0.1,
+        backgroundColor: this.colors.selected,
+        hidden: false,
+        barPercentage: 1.0,
+      },
+    ];
+
+    // Update the label on the x-axis with the number of Tosses
+    // this.chartLabels = this.generateLabels();
   }
 
-  /**
-   * Calculate the mean of the samples
-   * @returns Mean of the samples
-   */
-  calculateMean(): number {
-    return (
-      this.samples.reduce((acc: number, x: number, i: number) => acc + x * i, 0) / this.samples.reduce((acc: any, x: any) => acc+ x, 0)
-    )
+  generateLabels(): void {
+    this.chartLabels = Array.from({ length: this.numberOfTosses + 1 }, (_, i) =>
+      i.toString()
+    );
   }
 
-  /**
-   * Calculate the standard deviation of the samples
-   * @returns Standard deviation of the samples
-   */
-  calculateStd(): number {
-    const mean = this.calculateMean()
+  updateSelected(): void {
+    console.log(this.chartData[2]);
 
-    return Math.sqrt(
-      this.samples.reduce((acc: number, x: number, i: number) => acc + (i - mean) * (i - mean) * x, 0) /
-      (this.samples.reduce((acc: any, x: any) => acc + x, 0) - 1)
-    )
+    console.log(this.minHeads, this.maxHeads);
+
+    // Update x axis data for selected area to be highlighted the range is from minHeads to maxHeads
+    this.chartData[2].data = [
+      { x: this.minHeads, y: 0 },
+      { x: this.minHeads, y: 1 },
+      { x: this.maxHeads, y: 1 },
+      { x: this.maxHeads, y: 0 },
+    ];
   }
-
-  /**
-   * Calculate the number of samples selected
-   * @returns Number of samples selected
-   */
-  calculateSamplesSelected(): number {
-    const lower = this.lowerSelectedRange >= 0 ? this.lowerSelectedRange : 0
-    const upper = this.upperSelectedRange <= this.samples.length ? this.upperSelectedRange : this.samples.length
-
-    return this.samples.reduce((acc, x, i) => {
-      if(i >= lower && i <= upper) {
-        return acc + x
-      }
-      return acc
-    }, 0)
-  }
-
-  /**
-   * Add the new samples to the original samples
-   * @param originalSamples Original samples
-   * @param drawResults New samples
-   * @returns Updated samples
-   */ 
-  addSamples(originalSamples: any[], drawResults: any[]) {
-    const summary = drawResults.reduce((acc, eachDraw) => {
-      const noOfHead = eachDraw.reduce((accHeads: any, head: any) => accHeads + head, 0)
-      const headsCount = acc[noOfHead] + 1 || 1
-      return { ...acc, [noOfHead]: headsCount }
-    }, {})
-
-    return originalSamples.map((x, i) => x + (summary[i] || 0))
-  }
-
-  /**
-   * Update the chart if the zoom in or out is changed
-   * This method will trigger when a double click event is involved
-   * If the number of coins is less than 50, the zoom in will not work
-   * Slice the data to show only the selected area
-   */
-  updateChart() {
-    this.selected = this.generateSelectedArray()
-    if(!this.zoomIn) {
-      this.chart.data.labels = this.labels
-      if (this.chart && this.chart.data && this.chart.data.datasets && this.chart.data.datasets[0] && this.chart.data.datasets[1] && this.chart.data.datasets[2]){
-        this.chart.data.datasets[0].data = this.samples
-        this.chart.data.datasets[1].data = this.binomialData
-        this.chart.data.datasets[2].data = this.selected
-      }
-    } else {
-      const roundedMean = Math.floor(this.probability * this.noOfCoin)
-      const HALF_WIDTH = 25
-      let lowerRange, upperRange
-
-      if (roundedMean - HALF_WIDTH <= 0) {
-        lowerRange = 0
-        upperRange = lowerRange + HALF_WIDTH * 2
-      } else if (roundedMean + HALF_WIDTH >= this.noOfCoin) {
-        upperRange = this.noOfCoin + 1
-        lowerRange = upperRange - HALF_WIDTH * 2
-      } else {
-        lowerRange = roundedMean - HALF_WIDTH
-        upperRange = roundedMean + HALF_WIDTH
-      }
-
-      upperRange = lowerRange + HALF_WIDTH * 2
-
-      this.chart.data.labels = this.labels.slice(lowerRange, upperRange)
-      this.chart.data.datasets[0].data = this.samples.slice(lowerRange, upperRange)
-      this.chart.data.datasets[1].data = this.binomialData.slice(lowerRange, upperRange)
-      this.chart.data.datasets[2].data = this.selected.slice(lowerRange, upperRange)
-    }
-
-    const maxSamples = Math.max(...this.samples)
-
-    if (maxSamples > 10) {
-      if(maxSamples <= 100) {
-        this.chart.options.scales.yAxes[0].ticks.max = maxSamples + ( 10 - (maxSamples % 10) )
-      } else {
-        this.chart.options.scales.yAxes[0].ticks.max = maxSamples + ( 100 - (maxSamples % 100) )
-      }
-    }
-
-    (this.chart as CustomChart).mean = this.mean
-
-    if (this.chart && this.chart.options && this.chart.options.scales && this.chart.options.scales.xAxes && this.chart.options.scales.xAxes[0] && this.chart.options.scales.xAxes[0].scaleLabel) {
-      this.chart.options.scales.xAxes[0].scaleLabel.labelString = `${this.translate.instant('op_bar_heads')} ` + this.upperSelectedRange + ` ${this.translate.instant('op_bar_heads2')}`;
-    }
-
-    this.chart.update()
-
-  }
-
-  /**
-   * Update the chart if any changes are detected
-   */
-  ngOnChanges() {
-    this.updateChart()
-  }
-
-  /**
-   * Unregister the chart plugins when the component is destroyed
-   */
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnDestroy() {
-    Chart.pluginService.unregister(oneProportionOffset)
-    Chart.pluginService.unregister(oneProportionSampleLegendColor)
-    Chart.pluginService.unregister(oneProportionDynamicBubbleSize)
-  }
-
-}
-
-interface CustomChart extends Chart {
-  mean: number
 }

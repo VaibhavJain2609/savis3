@@ -40,6 +40,7 @@ export class ForgotpasswordComponent implements OnInit {
         this.errorMessage = error.message
       })
     }
+    return null
   }
 
   validateAllFormFields(formGroup:FormGroup){

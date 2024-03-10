@@ -13,8 +13,5 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: [
     'lcov', 'html'
-  ],
-  coveragePathIgnorePatterns: [
-    "/src/app/Utils/"
   ]
 };

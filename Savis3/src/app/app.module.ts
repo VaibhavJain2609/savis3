@@ -6,6 +6,7 @@ import { OneProportionComponent } from './features/one-proportion/one-proportion
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalculationService } from './features/one-proportion/service/calculcation.service';
 import { TwoProportionsComponent } from './features/two-proportions/two-proportions.component';
 import { OneMeanComponent } from './features/one-mean/one-mean.component';
 import { TwoMeansComponent } from './features/two-means/two-means.component';
@@ -14,6 +15,7 @@ import { TwoMeansCIComponent } from './features/two-means-ci/two-means-ci.compon
 import { TwoProportionsCIComponent } from './features/two-proportions-ci/two-proportions-ci.component';
 import { OneProportionCIComponent } from './features/one-proportion-ci/one-proportion-ci.component';
 import { LinearRegressionComponent } from './features/linear-regression/linear-regression.component';
+import { BivariantComponent } from './features/bivariant/bivariant.component';
 import { CorrelationComponent } from './features/correlation/correlation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/scatter-plot.component';
@@ -61,6 +63,7 @@ export function setupTranslateFactory(service : TranslateService): Function {
     TwoProportionsCIComponent,
     OneProportionCIComponent,
     LinearRegressionComponent,
+    BivariantComponent,
     CorrelationComponent,
     HomepageComponent,
     ScatterPlotComponent,
@@ -91,6 +94,7 @@ export function setupTranslateFactory(service : TranslateService): Function {
     })
   ],
   providers: [
+    CalculationService,
     MathService,
     TranslateService,
     {

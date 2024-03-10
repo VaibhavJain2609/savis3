@@ -1,15 +1,23 @@
 <div>
+  <div>
+    <h2>
+      {{
+        "linear_regression_chart.Regression_Line_and_Confidence_Intervals"
+          | translate
+      }}
+    </h2>
     <div>
-      <h2>Regression Line and Confidence Intervals</h2>
-      <div>
-        Least Squares Area: {{ leastSquares }}
-      </div>
-      <div>
-        <canvas baseChart
-                [datasets]="scatterChartData"
-                [options]="scatterChartOptions"
-                [chartType]="scatterChartType">
-        </canvas>
-      </div>
+      {{ "linear_regression_chart.Least_Squares_Area:" | translate }}
+      {{ leastSquares }}
+    </div>
+    <div>
+      <canvas
+        baseChart
+        [datasets]="scatterChartData"
+        [options]="scatterChartOptions"
+        [chartType]="scatterChartType"
+      >
+      </canvas>
     </div>
   </div>
+</div>

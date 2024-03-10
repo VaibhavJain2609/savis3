@@ -3,39 +3,49 @@
 
 <!-- contents -->
 <div class="container">
-    <form #myForm="ngForm">
-      <div class="input-container">
-        <label for="dataPoints">Enter Data Points (x,y):</label>
-        <br>
-        <textarea 
-          class="textarea border-2 border-gray-900 rounded-md" 
-          [value]="csvContent" 
-          id="dataPoints" 
-          name="dataPoints" 
-          [(ngModel)]="datapoints" 
-          placeholder="e.g., 1,3\n2,5\n3,7">
-        </textarea>
-        <!-- <csv-file-upload class="textarea" id="dataPoints" name="dataPoints" [(ngModel)]="datapoints" placeholder="e.g., 1,3\n2,5\n3,7"></csv-file-upload> -->
-        <br>
-        <button class="bg-white hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" (click)="updateChart()">Update Chart</button>
-        <label class="file-input mx-2">
-          <input 
-          class="hidden" 
-          type="file" 
-          (change)="onFileSelect($event)" 
-          accept=".csv">
-          <span class="bg-white hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Choose File</span>
-        </label>
-      </div>
-    </form>
-
-    <div class="chart">
-        <app-scatter-plot 
-          class="chartData" 
-          [dataPoints]="parsedDatapoints">
-        </app-scatter-plot>
+  <form #myForm="ngForm">
+    <div class="input-container">
+      <label for="dataPoints">{{
+        "linear_regression.Enter_Data_Points_(x,y):" | translate
+      }}</label>
+      <br />
+      <textarea
+        class="textarea border-2 border-gray-900 rounded-md"
+        [value]="csvContent"
+        id="dataPoints"
+        name="dataPoints"
+        [(ngModel)]="datapoints"
+        placeholder="e.g., 1,3\n2,5\n3,7"
+      >
+      </textarea>
+      <!-- <csv-file-upload class="textarea" id="dataPoints" name="dataPoints" [(ngModel)]="datapoints" placeholder="e.g., 1,3\n2,5\n3,7"></csv-file-upload> -->
+      <br />
+      <button
+        class="bg-white hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+        (click)="updateChart()"
+      >
+        {{ "linear_regression.Update_Chart" | translate }}
+      </button>
+      <label class="file-input mx-2">
+        <input
+          class="hidden"
+          type="file"
+          (change)="onFileSelect($event)"
+          accept=".csv"
+        />
+        <span
+          class="bg-white hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+          >{{ "linear_regression.Choose_File" | translate }}</span
+        >
+      </label>
     </div>
-  </div>
+  </form>
 
-  <!-- footer -->
-  <app-footer class="fixed inset-x-0 bottom-0"></app-footer>
+  <div class="chart">
+    <app-scatter-plot class="chartData" [dataPoints]="parsedDatapoints">
+    </app-scatter-plot>
+  </div>
+</div>
+
+<!-- footer -->
+<app-footer class="fixed inset-x-0 bottom-0"></app-footer>

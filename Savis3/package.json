@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "0.1202.18",
-    "@angular-devkit/build-angular": "^12.2.18",
+    "@angular-devkit/build-angular": "~12.2.18",
     "@angular-eslint/builder": "12.7.0",
     "@angular-eslint/eslint-plugin": "12.7.0",
     "@angular-eslint/eslint-plugin-template": "12.7.0",
@@ -59,7 +59,7 @@
     "concurrently": "^8.2.2",
     "cypress": "^13.6.6",
     "eslint": "^7.26.0",
-    "firebase-tools": "10.3.0",
+    "firebase-tools": "^8.0.0 || ^9.0.0",
     "fuzzy": "^0.1.3",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",

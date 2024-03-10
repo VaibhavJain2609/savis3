@@ -6,8 +6,6 @@ import { Sampling } from 'src/app/Utils/sampling';
 import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
 
-import { TranslateService } from '@ngx-translate/core'; 
-
 @Component({
   selector: 'app-two-means',
   templateUrl: './two-means.component.html',
@@ -65,7 +63,7 @@ export class TwoMeansComponent implements OnInit {
 
   numberOfSimulations: number;
 
-  constructor(private smp: Sampling, private tail: TailchartService, private translate: TranslateService) {
+  constructor(private smp: Sampling, private tail: TailchartService) {
 
   }
   toggleSection(e: any, sec: string) {
@@ -138,7 +136,7 @@ export class TwoMeansComponent implements OnInit {
   ngAfterContentInit(){
     let leg = [`Differences `, `NaN`]
     let color = [`orange `, `red`]
-    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
+    let rData2 = {
       "minmax": [0 ,1],
       "data": [[],[]],
       "backgroundColor": "rebeccapurple"

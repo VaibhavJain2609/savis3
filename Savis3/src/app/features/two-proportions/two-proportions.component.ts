@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { chatClass } from 'src/app/Utils/stacked-dot';
@@ -6,10 +7,9 @@ import { chatClass } from 'src/app/Utils/stacked-dot';
 @Component({
   selector: 'app-two-proportions',
   templateUrl: './two-proportions.component.html',
-  styleUrls: ['./two-proportions.component.scss']
+  styleUrls: ['./two-proportions.component.scss'],
 })
 export class TwoProportionsComponent implements OnInit {
-
   // Your existing variables
   numASuccess: number;
   numAFailure: number;
@@ -34,30 +34,54 @@ export class TwoProportionsComponent implements OnInit {
   extremediff: number;
   propextremediff: number;
 
+  group1String: string = 'Group 1';
+  group2String: string = 'Group 2';
+  group3String: string = 'Group 3';
+  group4String: string = 'Group 4';
+
   // Additional variables for ngModel
   numofSem: number;
   activateSim: boolean = true; // Modify this based on your logic
   mean_diff: number;
   sections = {
     sectionTwo: true,
-    sectionThree: true
+    sectionThree: true,
   };
-  lastSummary: any
-  chart1: any
-  chart2: any
-  chart3: any
+  lastSummary: any;
+  chart1: any;
+  chart2: any;
+  chart3: any;
   simsummary: any = {
     sampleMean1: NaN,
     sampleMean2: NaN,
     sampleMeanDiff: NaN,
-  }
-  demodata: any = [
-  ]
+  };
+  demodata: any = [];
   datasets = [
-    { label: "Group 1", legend: true, backgroundColor: 'orange', data: this.demodata },
-    { label: "Group 2", legend: true, backgroundColor: 'rebeccapurple', data: this.demodata },
-    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
-    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
+    {
+      label: this.group1String,
+      legend: true,
+      backgroundColor: 'orange',
+      data: this.demodata,
+    },
+    {
+      label: this.group2String,
+      legend: true,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
+    {
+      label: this.group3String,
+      legend: false,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
+    {
+      label: this.group4String,
+      legend: false,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
   ];
 
   chartData: ChartDataSets[] = [];
@@ -71,64 +95,48 @@ export class TwoProportionsComponent implements OnInit {
 
   summaryData: ChartDataSets[] = [];
 
-
-
   numberOfSimulations: number;
 
-  constructor() {
-
-  }
-  toggleSection(e: any, sec: string) {
-    
-  }
+  constructor(private translateService: TranslateService) {}
+  toggleSection(e: any, sec: string) {}
   dataTextArea: string = '';
-  data: any
-  updateData(data: any) {
-    
-    }
+  data: any;
+  updateData(data: any) {}
 
-  calculateProportion(data: number[]) {
-    
-  }
+  calculateProportion(data: number[]) {}
   onResetChart() {
-    this.chart1.clear()
-    this.chart2.clear()
-    this.chart3.clear()
-    this.chart1.chart.update(0)
-    this.chart2.chart.update(0)
-    this.chart3.chart.update(0)
+    this.chart1.clear();
+    this.chart2.clear();
+    this.chart3.clear();
+    this.chart1.chart.update(0);
+    this.chart2.chart.update(0);
+    this.chart3.chart.update(0);
   }
 
   async ngOnInit() {
-    this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
-    this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
-    this.chart3 = new chatClass("diff-chart", this.datasets[3]);
-   
-  }
-  ngAfterContentInit(){
-    
-    }
-   
-    
-  
-  loadData(): void {
-    
-  }
+    this.chart1 = new chatClass('data-chart-1', this.datasets[0]);
+    this.chart2 = new chatClass('data-chart-2', this.datasets[1]);
+    this.chart3 = new chatClass('diff-chart', this.datasets[3]);
 
-  updateChart(data: string): void {
-  
-    }
-
-    
-  updateSummaryChart(data: string): void {
-    
+    // this.translateService.onLangChange.subscribe((event) => {
+    //   // console.log(event);
+    //   // this.group1String = this.translateService.instant('oph.group1');
+    //   // this.group2String = "Group 2";
+    //   // this.group3String = "Group 3";
+    //   // this.group4String = "Group 4";
+    // });
   }
+  ngAfterContentInit() {}
 
-  runSimulations(): void {
-  }
+  loadData(): void {}
 
-  sampleSelect(e: any) {
-  }
+  updateChart(data: string): void {}
+
+  updateSummaryChart(data: string): void {}
+
+  runSimulations(): void {}
+
+  sampleSelect(e: any) {}
 
   parseData(dataText: any) {
     let items = dataText
@@ -148,20 +156,11 @@ export class TwoProportionsComponent implements OnInit {
     return Object.values(faceted);
   }
 
-  runSim() {
-  }
+  runSim() {}
 
-  addSimulationSample(sample: any[]) {
-  
-  }
-  onFileSelected(e: any) {
-    
-  }
+  addSimulationSample(sample: any[]) {}
+  onFileSelected(e: any) {}
 
-  onDrop(event: DragEvent): void {
-    
-  }
-  selectedTest(event: any) {
-    
-  }
+  onDrop(event: DragEvent): void {}
+  selectedTest(event: any) {}
 }

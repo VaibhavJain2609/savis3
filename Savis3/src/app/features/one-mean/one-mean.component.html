@@ -1,93 +1,208 @@
 <app-navbar></app-navbar>
 <body class="m-2">
   <div id="one-mean">
-  <h1 id="title" class="text-3xl font-bold">{{'one_mean_hypothesis_testing' | translate }}</h1>
-  <div id="form-container">
-    <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
-      <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
-      <div>
-        <textarea class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [ngModel]="dataInput" name="dataFormInput"></textarea>
-      </div>
-      <div id="button-div">
-        <button type="submit" class="btn">{{'load_data' | translate}}</button>
-        <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
-        <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)">
-      </div>
-    </form>
-    <div id="data-div">
-      <div class="data-display">
-        <table id="original-data-display">
-          <thead *ngIf="valuesArray.length > 0">
-            <tr>
-              <th>ID</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let value of valuesArray; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{value}}</td>
-          </tr>
-        </tbody>
-        </table>
-      </div>
+    <h1 id="title" class="text-3xl font-bold">
+      {{ "one_mean.hypothesis_testing" | translate }}
+    </h1>
+    <div id="form-container">
+      <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
+        <h3 id="subtitle" class="text-l font-bold mb-2">
+          1.{{ "one_mean.enter_data" | translate }}
+        </h3>
+        <div>
+          <textarea
+            class="border border-gray-300 rounded-md p-2 h-50"
+            rows="8"
+            placeholder="Please enter data in column format or upload a CSV file"
+            [ngModel]="dataInput"
+            name="dataFormInput"
+          ></textarea>
+        </div>
+        <div id="button-div">
+          <button type="submit" class="btn">
+            {{ "one_mean.load_data" | translate }}
+          </button>
+          <button type="button" class="btn" (click)="onReset(dataForm)">
+            {{ "one_mean.reset" | translate }}
+          </button>
+          <input
+            type="file"
+            name="dataForm-file"
+            accept=".csv"
+            (change)="validateFile($event)"
+          />
+        </div>
+      </form>
+      <div id="data-div">
+        <div class="data-display">
+          <table id="original-data-display">
+            <thead *ngIf="valuesArray.length > 0">
+              <tr>
+                <th>ID</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of valuesArray; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div id="p-display">
-          <p id="mean-display">{{'mean' | translate}}: {{inputMean}}</p>
-          <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
-          <p id="size-display">{{'size' | translate}}: {{inputSize}}</p>
+          <p id="mean-display">
+            {{ "one_mean.mean" | translate }}: {{ inputMean }}
+          </p>
+          <p id="std-display">
+            {{ "one_mean.standard_deviation" | translate }}:
+            {{ standardDeviation }}
+          </p>
+          <p id="size-display">
+            {{ "one_mean.size" | translate }}: {{ inputSize }}
+          </p>
         </div>
       </div>
-    
 
-    <div id="chart-wrap">
-      <canvas baseChart
-        [datasets]="lineChartData1"
-        [labels]="lineChartLabels1"
-        [options]="lineChartOptions"
-        [legend]="lineChartLegend"
-        [chartType]="lineChartType"
-        height="300"
-      ></canvas>
-    </div>
-  </div>
-
-  <hr class="line-break mt-2">
-
-  <div>
-    <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. {{'hypothetical_pop' | translate}}</h3>
-    <div id="hypothetical-output">
-      <div id="chart-input-form">
-        <label>{{'shift_mean' | translate}}</label>
-        <input type="number" step="0.1" value="0" [(ngModel)]="meanValue" (change)="increaseData()" class="border border-gray-300 rounded-md pl-2">
-        <label>{{'increase_data' | translate}} <span>{{rangeValue}}</span> times</label>
-        <input type="range" min="1" max="50" step="1" value="1" [(ngModel)]="rangeValue" (change)="increaseRange()">
-      </div>
-      <div id="display-container">
-      <div class="data-display">
-        <table id="hypothetical-data-table">
-          <thead *ngIf="hypoValuesArray.length > 0">
-            <tr>
-              <th>ID</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let value of hypoValuesArray; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{value}}</td>
-          </tr>
-        </tbody>
-        </table>
-      </div>
-      <div id="p-display">
-        <p id="mean-display">{{'mean' | translate}}: {{hypoInputMean}}</p>
-        <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
-      </div>
-    </div>
       <div id="chart-wrap">
-        <canvas baseChart
-          [datasets]="lineChartData2"
-          [labels]="lineChartLabels2"
+        <canvas
+          baseChart
+          [datasets]="lineChartData1"
+          [labels]="lineChartLabels1"
+          [options]="lineChartOptions"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          height="300"
+        ></canvas>
+      </div>
+    </div>
+
+    <hr class="line-break mt-2" />
+
+    <div>
+      <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">
+        2. {{ "one_mean.hypothetical_pop" | translate }}
+      </h3>
+      <div id="hypothetical-output">
+        <div id="chart-input-form">
+          <label>{{ "one_mean.shift_mean" | translate }}</label>
+          <input
+            type="number"
+            step="0.1"
+            value="0"
+            [(ngModel)]="meanValue"
+            (change)="increaseData()"
+            class="border border-gray-300 rounded-md pl-2"
+          />
+          <label
+            >{{ "one_mean.increase_data" | translate }}
+            <span>{{ rangeValue }}</span> times</label
+          >
+          <input
+            type="range"
+            min="1"
+            max="50"
+            step="1"
+            value="1"
+            [(ngModel)]="rangeValue"
+            (change)="increaseRange()"
+          />
+        </div>
+        <div id="display-container">
+          <div class="data-display">
+            <table id="hypothetical-data-table">
+              <thead *ngIf="hypoValuesArray.length > 0">
+                <tr>
+                  <th>ID</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let value of hypoValuesArray; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="p-display">
+            <p id="mean-display">
+              {{ "one_mean.mean" | translate }}: {{ hypoInputMean }}
+            </p>
+            <p id="std-display">
+              {{ "one_mean.standard_deviation" | translate }}:
+              {{ standardDeviation }}
+            </p>
+          </div>
+        </div>
+        <div id="chart-wrap">
+          <canvas
+            baseChart
+            [datasets]="lineChartData2"
+            [labels]="lineChartLabels2"
+            [options]="lineChartOptions2"
+            [legend]="lineChartLegend"
+            [chartType]="lineChartType"
+            height="300"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+
+    <hr class="line-break" />
+
+    <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">
+      3. {{ "one_mean.draw_sample" | translate }}
+    </h3>
+    <div id="sample-container">
+      <div id="chart-input-form">
+        <label>{{ "one_mean.sample_size" | translate }}:</label>
+        <input
+          type="number"
+          step="1"
+          value="1"
+          [(ngModel)]="sampleSize"
+          class="border border-gray-300 rounded-md pl-2"
+        />
+        <label># {{ "one_mean.of_samples" | translate }}</label>
+        <input
+          type="number"
+          step="1"
+          value="1"
+          min="1"
+          [(ngModel)]="numSamples"
+          class="border border-gray-300 rounded-md pl-2"
+        />
+        <button type="button" (click)="runSimulation()" id="run-sim-btn">
+          {{ "one_mean.run_simulation" | translate }}
+        </button>
+      </div>
+
+      <div>
+        <div class="data-display">
+          <table id="sample-table">
+            <thead *ngIf="sample.length > 0">
+              <tr>
+                <th>ID</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let value of sample; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ value }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>{{ "one_mean.mean" | translate }}: {{ this.sampleMean }}</p>
+      </div>
+
+      <div id="chart-wrap">
+        <canvas
+          baseChart
+          [datasets]="lineChartData3"
+          [labels]="lineChartLabels3"
           [options]="lineChartOptions2"
           [legend]="lineChartLegend"
           [chartType]="lineChartType"
@@ -95,105 +210,80 @@
         ></canvas>
       </div>
     </div>
-  </div>
-  
-  <hr class="line-break">
-  
-  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">3. {{'draw_sample' | translate}}</h3>
-  <div id="sample-container">
-    <div id="chart-input-form">
-      
-        <label>{{'sample_size' | translate}}:</label>
-        <input type="number" step="1" value="1" [(ngModel)]="sampleSize" class="border border-gray-300 rounded-md pl-2">
-        <label># {{'of_samples' | translate}}</label>
-        <input type="number" step="1" value="1" min="1" [(ngModel)]="numSamples" class="border border-gray-300 rounded-md pl-2">
-        <button type="button" (click)="runSimulation()" id="run-sim-btn">{{'run_simulation' | translate}}</button>
-      
+
+    <hr class="line-break" />
+    <h3 class="text-l font-bold mb-2 mt-2">
+      4. {{ "one_mean.sampling_distribution" | translate }}
+    </h3>
+    <div id="sampling-container">
+      <div id="section-4-div">
+        <select
+          id="distribution-select"
+          [(ngModel)]="distributionSelected"
+          (change)="extremeSampleFunc()"
+          class="border border-gray-300 rounded-md p-1"
+        >
+          <option value="default">
+            {{ "one_mean.type_of_test" | translate }}
+          </option>
+          <option value="one-right">
+            {{ "one_mean.one_tail_right" | translate }}
+          </option>
+          <option value="one-left">
+            {{ "one_mean.one_tail_left" | translate }}
+          </option>
+        </select>
+
+        <p>{{ "one_mean.total_samples" | translate }}:{{ this.meanSamples }}</p>
+        <p id="sample-mean-p">{{ "one_mean.sample_means" | translate }}</p>
+        <input
+          type="number"
+          [(ngModel)]="extremeSample"
+          (change)="extremeSampleFunc()"
+          class="border border-gray-300 rounded-md p-1 w-36"
+        />
+      </div>
+      <div>
+        <div class="data-display">
+          <table id="sample-table">
+            <thead *ngIf="sampleMeans.length > 0">
+              <tr>
+                <th>#</th>
+                <th>Mean</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let mean of sampleMeans; let i = index">
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ mean }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          {{ "one_mean.mean_of_sample" | translate }}:
+          {{ this.sampleMeansMean }}
+        </p>
+        <p>
+          {{ "one_mean.standard_deviation" | translate }}:
+          {{ this.sampleMeansStd }}
+        </p>
+      </div>
+
+      <div id="chart-wrap">
+        <canvas
+          baseChart
+          [datasets]="lineChartData4"
+          [labels]="lineChartLabels4"
+          [options]="lineChartOptions2"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          height="300"
+        ></canvas>
+      </div>
     </div>
 
-    <div>
-    <div class="data-display">
-      <table id="sample-table">
-        <thead *ngIf="sample.length > 0">
-          <tr>
-            <th>ID</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let value of sample; let i = index">
-          <td> {{i+1}} </td>
-          <td>{{value}}</td>
-        </tr>
-      </tbody>
-      </table>
+    <hr class="line-break" />
   </div>
-    <p>{{'mean' | translate}}: {{this.sampleMean}}</p>
-  </div>
-
-  
-
-  <div id="chart-wrap">
-    <canvas baseChart
-      [datasets]="lineChartData3"
-      [labels]="lineChartLabels3"
-      [options]="lineChartOptions2"
-      [legend]="lineChartLegend"
-      [chartType]="lineChartType"
-      height="300"
-    ></canvas>
-  </div>
-  </div>
-
-  
-  <hr class="line-break">
-  <h3 class="text-l font-bold mb-2 mt-2">4. {{'sampling_distribution' | translate}}</h3>
-  <div id="sampling-container">
-  <div id="section-4-div">
-    <select id="distribution-select" [(ngModel)]="distributionSelected" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1">
-      <option value="default">{{'type_of_test' | translate}}</option>
-      <option value="one-right">{{'one_tail_right' | translate}}</option>
-      <option value="one-left">{{'one_tail_left' | translate}}</option>
-    </select>
-
-    <p>{{'total_samples' | translate}}:{{this.meanSamples}}</p>
-    <p id="sample-mean-p">{{'sample_means' | translate}} </p>
-    <input type="number" [(ngModel)]="extremeSample" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
-  </div>
-  <div>
-  <div class="data-display">
-    <table id="sample-table">
-      <thead *ngIf="sampleMeans.length > 0">
-        <tr>
-          <th>#</th>
-          <th>Mean</th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let mean of sampleMeans; let i = index">
-      <tr>
-        <td>{{i+1}}</td>
-        <td>{{mean}}</td>
-      </tr>
-    </tbody>
-    </table>
-</div>
-<p>{{'mean_of_sample' | translate}}: {{this.sampleMeansMean}}</p>
-<p>{{'standard_deviation' | translate}}: {{this.sampleMeansStd}}</p>
-</div>
-
-<div id="chart-wrap">
-  <canvas baseChart
-    [datasets]="lineChartData4"
-    [labels]="lineChartLabels4"
-    [options]="lineChartOptions2"
-    [legend]="lineChartLegend"
-    [chartType]="lineChartType"
-    height="300"
-  ></canvas>
-</div>
-</div>
-
-<hr class="line-break">
-</div>
 </body>
 <app-footer></app-footer>
