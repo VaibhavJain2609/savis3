@@ -1,5 +1,6 @@
 {
     "Home": {
+        "Comment": "Home Page",
         "Hypothesis_Testing": "Hypothesis Testing",
         "One_Proportion_Hypothesis_Testing": "One Proportion Hypothesis Testing",
         "Two_Proportion_Hypothesis_Testing": "Two Proportion Hypothesis Testing",
@@ -17,6 +18,7 @@
         "Copyright_©2023_CSUS._All_Rights_Reserved.": "Copyright ©2023 CSUS. All Rights Reserved."
     },
     "Navbar": {
+        "Comment": "Navigation Bar",
         "SAVIS": "SAVIS",
         "Home": "Home",
         "About": "About",
@@ -25,6 +27,7 @@
         "Sign_Out": "Sign Out"
     },
     "about": {
+        "Comment": "About Page",
         "project": "Statistical Analysis Visualizations for Introductory Statistics (SAVIS) was conceived as part of a collaborative research project on statistical education between the Department of Mathematics and Statistics at California State University Sacramento (CSUS) and the School of Mathematics of the Universidad Autónoma de Yucatán (UADY). SAVIS is an educational tool to help to intuitively understand concepts of tests of statistical hypotheses and confidence intervals using visualizations based on resampling and randomization techniques. SAVIS has an online and a stand-alone version (both freely available) in English and Spanish.",
         "created": "SAVIS was created in the Spring of 2019 and extended in the Spring of 2020 and Spring of 2024 by the following graduating seniors from the Department of Computer Science at CSUS under the direction of Rafael E. Diaz Escamilla, a professor in the Department of Mathematics and Statistics at CSUS:",
         "spring2019": "Spring 2019",
@@ -33,6 +36,7 @@
         "contact": "Contact"
     },
     "oph": {
+        "Comment": "One Proportion Hypothesis Testing",
         "title": "One Proportion Hypotheses Test",
         "probability": "Probability of Heads p: ",
         "tosses": "Tosses: ",
@@ -56,6 +60,7 @@
         "bar_num_samples": "# of samples"
     },
     "one_mean": {
+        "Comment": "One Mean Hypothesis Testing",
         "hypothesis_testing": "One Mean Hypothesis Testing",
         "enter_data": "Enter Data",
         "section1_placeholder": "Please enter data in column format or upload a CSV file",
@@ -80,9 +85,11 @@
         "mean_of_sample": "Mean of sample means"
     },
     "footer": {
+        "Comment": "Footer",
         "Copyright_©2024_CSUS._All_Rights_Reserved.": "Copyright ©2024 CSUS. All Rights Reserved."
     },
     "opc": {
+        "Comment": "One Proportion Confidence Interval",
         "title": "One Proportion Confidence Interval Testing",
         "data": "Enter Data",
         "success": "Successes",
@@ -105,6 +112,7 @@
         "total": "Total Samples: "
     },
     "two_proportions": {
+        "Comment": "Two Proportions Hypothesis Testing",
         "Two_Proportions_Hypothesis_Testing": "Two Proportions Hypothesis Testing",
         "Enter_Data:": "1. Enter Data:",
         "Successes": "Successes",
@@ -136,6 +144,7 @@
         "Proportion_of_Extreme_Differences": "Proportion of Extreme Differences"
     },
     "two_means": {
+        "Comment": "Two Means Hypothesis Testing",
         "Two_Means_Hypothesis_Testing": "Two Means Hypothesis Testing",
         "Enter_Data": "1. Enter Data",
         "Select_Sample_Data": "Select Sample Data",
@@ -178,18 +187,22 @@
         "Proportion_of_Extreme_Differences": "Proportion of Extreme Differences"
     },
     "linear_regression": {
+        "Comment": "Linear Regression",
         "Enter_Data_Points_(x,y):": "Enter Data Points (x,y):",
         "Update_Chart": "Update Chart",
         "Choose_File": "Choose File"
     },
     "linear_regression_chart": {
+        "Comment": "Linear Regression Chart",
         "Regression_Line_and_Confidence_Intervals": "Regression Line and Confidence Intervals",
         "Least_Squares_Area:": "Least Squares Area:"
     },
     "bivariant": {
+        "Comment": "Bivariant Visualization",
         "bivariant_works!": "Bivariant Works!"
     },
     "correlation": {
+        "Comment": "Correlation Visualization",
         "Manual_Input:": "Manual Input:",
         "X_Values": "X Values",
         "Y_Values": "Y Values",
@@ -203,6 +216,7 @@
         "Select_any_two_Columns_from_Available_Columns_Names:": "Select any two Columns from Available Columns Names:"
     },
     "2pci": {
+        "Comment": "Two Proportions Confidence Interval",
         "Two_Proportions_Confidence_Interval": "Two Proportions Confidence Interval",
         "1._Enter_Data:": "1. Enter Data:",
         "Group_A": "Group A",
@@ -227,6 +241,7 @@
         "Total_Number_of_Samples:": "Total Number of Samples:"
     },
     "one_mean_ci": {
+        "Comment": "One Mean Confidence Interval",
         "One_Mean_Confidence_Interval": "One Mean Confidence Interval",
         "1._Enter_Data": "1. Enter Data",
         "Select_Sample_Data": "Select Sample Data",
@@ -258,6 +273,7 @@
         "Standard_Devation:": "Standard Deviation:"
     },
     "two_means_ci": {
+        "Comment": "Two Means Confidence Interval",
         "SAVIS_|_Two_Means_Confidence_Interval": "SAVIS | Two Means Confidence Interval",
         "SAVIS": "SAVIS",
         "Home": "Home",
