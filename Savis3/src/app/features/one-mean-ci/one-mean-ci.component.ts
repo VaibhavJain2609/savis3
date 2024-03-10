@@ -21,6 +21,7 @@ export class OneMeanCIComponent {
   inputSize: number = 0;
   csvraw: any
   csv: any
+
   // 2. Hypotheis Population
   hypoValuesArray: any = [];
   originalHypoValuesArray: any = [];
@@ -32,6 +33,8 @@ export class OneMeanCIComponent {
   // 3. Data Filter
   setMin: number = 0;
   setMax: number = 0;
+  filteredOutOfRange: any = [];
+  filteredInRange: any = [];
   // 3. Draw Sample
 
   sampleSize: number = 1;
@@ -65,7 +68,10 @@ export class OneMeanCIComponent {
 
   public lineChartData4: any = [];
   public lineChartLabels4: any = [];
-
+  public lineChartData5: any = [];
+  public lineChartLabels5: any = [];
+  public lineChartData6: any = [];
+  public lineChartLabels6: any = [];
   public lineChartOptions: any = {
     scales: {
       xAxes: [{
@@ -370,6 +376,8 @@ export class OneMeanCIComponent {
     this.lineChartData1 = [];
     this.lineChartData2 = [];
     this.lineChartData3 = [];
+    this.csv = null
+    this.csvraw = null
     this.lineChartData4 = [];
     this.sample = [];
     this.sampleMean = 0;
@@ -399,7 +407,9 @@ export class OneMeanCIComponent {
     this.lineChartData3 = [];
     this.sample = [];
   }
+  filterData(){
 
+  }
   // shift the x-axis when the mean is shifted 
   updateXAxis(increase: boolean) {
     let prevMin = this.lineChartOptions2.scales.xAxes[0].ticks.min;
@@ -634,6 +644,46 @@ export class OneMeanCIComponent {
       pointBackgroundColor: pointsArray.map((value:any) => value.x > this.extremeSample ? 'orange' : 'red'),
     }];
   }
+}
+
+setMinMax() {
+  if (this.setMin > this.setMax) {
+    alert("Minimum value cannot be greater than maximum value");
+  } else {
+    // Filter the sampleMeans array into two datasets: in range and out of range
+    const inRangeData = this.sampleMeans.filter((value: number) => value >= this.setMin && value <= this.setMax);
+    const outOfRangeData = this.sampleMeans.filter((value: number) => value < this.setMin || value > this.setMax);
+
+    // Prepare data for chart display
+    const inRangePoints = this.prepareChartData(inRangeData, 'Green');
+    const outOfRangePoints = this.prepareChartData(outOfRangeData, 'Red');
+
+    // Update chart data
+    this.lineChartData5 = [
+      ...inRangePoints,
+      ...outOfRangePoints
+    ];
+  }
+}
+prepareChartData(data: number[], color: string) {
+  let points: any = {};
+  let pointsArray: any[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    let value = data[i];
+    if (points[value] === undefined) {
+      points[value] = 1;
+    } else {
+      points[value] += 1;
+    }
+    pointsArray.push({ x: value, y: points[value] });
+  }
+
+  return [{
+    data: pointsArray.map((value: any) => ({ x: value.x, y: value.y })),
+    label: color === 'Green' ? 'In Range' : 'Out of Range',
+    pointBackgroundColor: color,
+  }];
 }
 // getZScore(confidenceLevel: number): number {
 //   const alpha: number = 1 - confidenceLevel;

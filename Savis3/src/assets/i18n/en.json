@@ -72,5 +72,6 @@
     "opc_stddev": "Standard Deviation: ",
     "opc_lower": "Lower Bound: ",
     "opc_upper": "Upper Bound: ",
-    "opc_total": "Total Samples: "  
+    "opc_total": "Total Samples: ",  
+    "One_Mean_Confidence_Interval": "One Mean Confidence Interval"
 }
