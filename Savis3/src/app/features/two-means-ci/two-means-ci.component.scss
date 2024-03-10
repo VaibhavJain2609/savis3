@@ -104,3 +104,21 @@ $stat-block-width: calc(50% - 1rem);
     margin-bottom: $button-margin;
   }
 }
+.custom-button {
+  background-color: green;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  font-size: 20px;
+  margin-left: 10px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lightgreen;
+    color: black;
+  }
+}
