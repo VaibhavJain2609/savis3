@@ -107,5 +107,14 @@
     "tm_proportion":"Proporción de diferencias extremas",
     "tm_group1" : "Grupo 1",
     "tm_group2" : "Grupo 2",
-    "tm_diff" :"Diferencias"
+    "tm_diff" :"Diferencias",
+    "One_Mean_Confidence_Interval": "Un intervalo de confianza medio",
+    "Enter_min": "Introduzca un valor mínimo",
+    "Enter_max":"Introduzca un valor máximo" ,
+    "setMinMax": "Establecer valores mínimos y máximos",
+    "Sample95": "Distribución muestral de medias con un 95 % de confianza",
+    "TotalSamp": "# total de muestras",
+    "SampleMean": "Media de las medias muestrales",
+    "LowerBound": "Límite inferior",
+    "UpperBound": "Límite superior"
 }
