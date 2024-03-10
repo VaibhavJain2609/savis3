@@ -104,5 +104,15 @@
     "tm_standard":"Standard Deviation:",
     "tm_total":"Total # of Samples:",
     "tm_extreme":"# of Extreme Differences:",
-    "tm_proportion":"Proportion of Extreme Differences" 
+    "tm_proportion":"Proportion of Extreme Differences",
+    "One_Mean_Confidence_Interval": "One Mean Confidence Interval",
+    "SetMinMax": "Set Minimum and Maximum Values",
+    "Enter_min": "Enter a minimum Value ",
+    "Enter_max": "Enter a maximum Value",
+    "Sample95": "Sampling Distribution of Means at 95% Confidence ",
+    "TotalSamp": "Total # samples: ",
+    "SampleMeans": "Mean of sample means: ",
+    "LowerBound": "Lower Bound: ",
+    "UpperBound": "Upper Bound: "
+
 }
