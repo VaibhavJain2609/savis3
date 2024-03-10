@@ -74,5 +74,13 @@
     "opc_lower": "Lower Bound: ",
     "opc_upper": "Upper Bound: ",
     "opc_total": "Total Samples: ",  
-    "One_Mean_Confidence_Interval": "One Mean Confidence Interval"
+    "One_Mean_Confidence_Interval": "One Mean Confidence Interval",
+    "SetMinMax": "Set Minimum and Maximum Values",
+    "Enter_min": "Enter a minimum Value ",
+    "Enter_max": "Enter a maximum Value",
+    "Sample95": "Sampling Distribution of Means at 95% Confidence ",
+    "TotalSamp": "Total # samples: ",
+    "SampleMeans": "Mean of sample means: ",
+    "LowerBound": "Lower Bound: ",
+    "UpperBound": "Upper Bound: "
 }

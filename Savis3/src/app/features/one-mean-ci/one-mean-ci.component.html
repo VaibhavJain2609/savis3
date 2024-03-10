@@ -160,12 +160,12 @@
     <hr class="line-break">
   
     <div>
-      <h3 id="subtitle">4. Set Minimum and Maximum Values</h3>
+      <h3 id="subtitle">4.{{'setMinMax' | translate }}</h3>
       <div id="hypothetical-output">
         <div id="chart-input-form">
-          <label>Enter a minimum Value: </label>
+          <label>{{'Enter_min' | translate }}: </label>
           <input type="number" step="1" value="0" [(ngModel)]="setMin" (change)="setMinMax()">
-          <label>Enter a maximum Value: </label>
+          <label>{{'Enter_max' | translate }}: </label>
           <input type="number" step="1" value="0" [(ngModel)]="setMax" (change)="setMinMax()">
         </div>
         <div id="display-container">
@@ -186,8 +186,8 @@
           </table>
         </div>
         <div id="p-display">
-          <p id="mean-display">Mean: {{hypoInputMean}}</p>
-          <p id="std-display">Standard Deviation: {{standardDeviation}}</p>
+          <p id="mean-display">{{'mean' | translate}}: {{hypoInputMean}}</p>
+          <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
         </div>
       </div>
         <div id="chart-wrap">
@@ -204,16 +204,16 @@
     </div>
     
     <hr class="line-break">
-    <h3>5. Sampling Distribution of Means at 95% Confidence </h3>
+    <h3>5. {{'Sample95' | translate}}</h3>
     <div id="sampling-container">
     <div id="section-4-div">
         <div class="data-form">
             <br>
-            <p>Total # samples:
+            <p>{{'TotalSamp' | translate}}
       <span id="total-samples">{{this.meanSamples}}</span></p>
-            <p>Lower Bound:
+            <p>{{'LowerBound' | translate}}
       <span id="lower"></span></p>
-            <p>Upper Bound:
+            <p>{{'UpperBound' | translate}}
        <span id="upper"></span></p>
       
       
@@ -243,8 +243,8 @@
       </tbody>
       </table>
   </div>
-  <p>Mean of sample means: {{this.sampleMeansMean}}</p>
-  <p>Standard Devation: {{this.sampleMeansStd}}</p>
+  <p>{{'SampleMean' | translate}}: {{this.sampleMeansMean}}</p>
+  <p>{{'standard_deviation' | translate}}: {{this.sampleMeansStd}}</p>
   </div>
   
   <div id="chart-wrap">
