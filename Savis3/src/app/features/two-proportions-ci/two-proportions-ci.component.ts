@@ -468,7 +468,7 @@ public barChartLabels2: string[] = ['Group A', 'Group B']; // Labels for the dat
   }
 
   loadData(): void {
-    //this.updateChartData();
+    this.updateChartData();
     this.sampleProportionA = this.numASuccess / (this.numASuccess + this.numAFailure);
     this.sampleProportionB = this.numBSuccess / (this.numBSuccess + this.numBFailure);
     this.sampleProportionDiff = (this.sampleProportionA ?? 0) - (this.sampleProportionB ?? 0);
