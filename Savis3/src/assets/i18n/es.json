@@ -142,6 +142,19 @@
     "tp_standard": "Desviación Estándar:",
     "tp_total": "Total de # de Muestras:",
     "tp_extreme": "# de Diferencias Extremas:",
-    "tp_extreme_diff": "Proporción de Diferencias Extremas"
-    
+    "tp_extreme_diff": "Proporción de Diferencias Extremas",
+    "//Correlation": "These are the translations for the Correlation component",
+    "correlation_manual_input": "Entrada manual:",
+    "correlation_X_Values": "Valores X",
+    "correlation_Y_Values": "Valores Y",
+    "correlation_format_of_input": "Formato de entrada: 1, 2, 3, 4, ...",
+    "correlation_both_inputs": "Ambas entradas deben tener la misma longitud",
+    "correlation_calculate": "Calcular",
+    "correlation_upload_file": "Subir archivo",
+    "correlation_file_format": "El archivo podría ser csv, xlsx",
+    "correlation_chose_file": "Elija el archivo",
+    "correlation_no_file": "Ningún archivo elegido",
+    "correlation_result": "Resultado de la correlación:",
+    "correlation_display": "Visualización de datos de archivo:",
+    "correlation_two_columns": "Seleccione dos columnas cualesquiera de los nombres de columnas disponibles:"
 }

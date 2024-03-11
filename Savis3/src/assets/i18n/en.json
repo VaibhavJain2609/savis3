@@ -139,8 +139,19 @@
     "tp_standard":"Standard Deviation:",
     "tp_total":"Total # of Samples:",
     "tp_extreme":"# of Extreme Differences:",
-    "tp_extreme_diff":"Proportion of Extreme Differences"
-
-
-
+    "tp_extreme_diff":"Proportion of Extreme Differences",
+    "//Correlation": "These are the translations for the Correlation component",
+    "correlation_manual_input": "Manual Input:",
+    "correlation_X_Values": "X Values",
+    "correlation_Y_Values": "Y Values",
+    "correlation_format_of_input": "Format of Input: 1, 2, 3, 4, ...",
+    "correlation_both_inputs": "Both inputs should be of the same length",
+    "correlation_calculate": "Calculate",
+    "correlation_upload_file": "Upload File",
+    "correlation_file_format": "File could be csv, xlsx",
+    "correlation_chose_file": "Choose File",
+    "correlation_no_file": "No file chosen",
+    "correlation_result": "Result of correlation:",
+    "correlation_display": "Displaying File Data:",
+    "correlation_two_columns": "Select any two Columns from Available Column Names:"
 }
