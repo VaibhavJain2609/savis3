@@ -73,39 +73,49 @@ export class TwoMeansComponent implements OnInit {
   }
   dataTextArea: string = '';
   data: any
-  updateData(data: any) {
-    this.dataSize1 = this.csv[0].length
-    this.dataSize2 = this.csv[1].length
-    this.datamean1 = Number(this.calculateMean(this.csv[0]).toFixed(3))
-    this.datamean2 = Number(this.calculateMean(this.csv[1]).toFixed(3))
-    this.mean_diff = Number((this.datamean1 - this.datamean2).toFixed(3))
-    let dataValues = this.csv[0].concat(this.csv[1]);
-    let min = Math.min.apply(undefined, dataValues);
-    let max = Math.max.apply(undefined, dataValues);
-    this.minmax = {
-      "min": min,
-      "max": max,
-    }
-    let rData = {
-      "minmax": this.minmax,
-      "data": [this.csv[0]],
-      "label": "Group 1",
-      "backgroundColor": "orange"
-    }
-    let rData2 = {
-      "minmax": this.minmax,
-      "data": [this.csv[1]],
-      "label": "Group 2",
-      "backgroundColor": "rebeccapurple"
-    }
+  updateData(csvData: number[][] | null) {
+    if (csvData){
+      this.dataSize1 = this.csv[0].length
+      this.dataSize2 = this.csv[1].length
+      this.datamean1 = Number(this.calculateMean(this.csv[0]).toFixed(3))
+      this.datamean2 = Number(this.calculateMean(this.csv[1]).toFixed(3))
+      this.mean_diff = Number((this.datamean1 - this.datamean2).toFixed(3))
+      let dataValues = this.csv[0].concat(this.csv[1]);
+      let min = Math.min.apply(undefined, dataValues);
+      let max = Math.max.apply(undefined, dataValues);
+      this.minmax = {
+        "min": min,
+        "max": max,
+      }
+      let rData = {
+        "minmax": this.minmax,
+        "data": [this.csv[0]],
+        "label": "Group 1",
+        "backgroundColor": "orange"
+      }
+      let rData2 = {
+        "minmax": this.minmax,
+        "data": [this.csv[1]],
+        "label": "Group 2",
+        "backgroundColor": "rebeccapurple"
+      }
 
-    this.chart1.setScale(min, max)
-    this.chart2.setScale(min, max)
-    this.chart1.setDataFromRaw(rData)
-    this.chart2.setDataFromRaw(rData2)
-    this.chart1.chart.update(0)
-    this.chart2.chart.update(0)
-    this.activateSim = true
+      this.chart1.setScale(min, max)
+      this.chart2.setScale(min, max)
+      this.chart1.setDataFromRaw(rData)
+      this.chart2.setDataFromRaw(rData2)
+      this.chart1.chart.update(0)
+      this.chart2.chart.update(0)
+      this.activateSim = true
+    }
+    else{
+      this.csv = []; // Or set to null if appropriate
+      this.dataSize1 = 0;
+      this.dataSize2 = 0;
+      this.datamean1 = null;
+      this.datamean2 = null;
+      this.mean_diff = null;
+    }
   }
 
   calculateMean(data: number[]) {
@@ -157,6 +167,7 @@ export class TwoMeansComponent implements OnInit {
     // this.updateChart(data);
     // this.updateSummaryChart(data);
   }
+  
 
   updateChart(data: string): void {
     
@@ -178,17 +189,17 @@ export class TwoMeansComponent implements OnInit {
   }
   updateSummaryChart(data: string): void {
     const rows = data.split('\n');
-    const group1Data = rows.map(row => parseFloat(row.split(',')[1])).filter(value => !isNaN(value));
-    const group2Data: any = [];  // Assuming data for Group 2 is not available in the provided example
-
+    const group1Data = rows.map(row => (parseFloat(row.split(',')[1])) as number).filter(value => !isNaN(value));
+    const group2Data: number[] = []; // Empty array for Group 2 data
+  
     const sizeGroup1 = group1Data.length;
     const meanGroup1 = sizeGroup1 > 0 ? group1Data.reduce((acc, val) => acc + val, 0) / sizeGroup1 : NaN;
-
+  
     const sizeGroup2 = group2Data.length;
-    const meanGroup2 = sizeGroup2 > 0 ? group2Data.reduce((acc: any, val: any) => acc + val, 0) / sizeGroup2 : NaN;
-
+    const meanGroup2 = sizeGroup2 > 0 ? group2Data.reduce((acc, val) => acc + val, 0) / sizeGroup2 : NaN;
+  
     const diffOfMeans = isNaN(meanGroup1) || isNaN(meanGroup2) ? NaN : meanGroup1 - meanGroup2;
-
+  
     this.summaryData = [
       { data: [sizeGroup1, meanGroup1, sizeGroup2, meanGroup2, diffOfMeans], label: 'Summary Statistics' },
     ];
