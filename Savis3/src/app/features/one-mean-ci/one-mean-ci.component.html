@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <body class="m-2">
   <div id="one-mean">
-  <h1 id="title" class="text-3xl font-bold">{{'One_Mean_Confidence_Interval' | translate }}</h1>
+  <h1 id="title" class="text-3xl font-bold">{{'//omci_One_Mean_Confidence_Interval' | translate }}</h1>
   <div id="form-container">
     <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
       <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
@@ -160,12 +160,12 @@
     <hr class="line-break">
   
     <div>
-      <h3 id="subtitle">4.{{'setMinMax' | translate }}</h3>
+      <h3 id="subtitle">4.{{'omci_setMinMax' | translate }}</h3>
       <div id="hypothetical-output">
         <div id="chart-input-form">
-          <label>{{'Enter_min' | translate }}: </label>
+          <label>{{'omci_Enter_min' | translate }}: </label>
           <input type="number" step="1" value="0" [(ngModel)]="setMin" (change)="setMinMax()">
-          <label>{{'Enter_max' | translate }}: </label>
+          <label>{{'omci_Enter_max' | translate }}: </label>
           <input type="number" step="1" value="0" [(ngModel)]="setMax" (change)="setMinMax()">
         </div>
         <div id="display-container">
@@ -204,16 +204,16 @@
     </div>
     
     <hr class="line-break">
-    <h3>5. {{'Sample95' | translate}}</h3>
+    <h3>5. {{'omci_Sample95' | translate}}</h3>
     <div id="sampling-container">
     <div id="section-4-div">
         <div class="data-form">
             <br>
-            <p>{{'TotalSamp' | translate}}
+            <p>{{'omci_TotalSamp' | translate}}
       <span id="total-samples">{{this.meanSamples}}</span></p>
-            <p>{{'LowerBound' | translate}}
+            <p>{{'omci_LowerBound' | translate}}
       <span id="lower"></span></p>
-            <p>{{'UpperBound' | translate}}
+            <p>{{'omci_UpperBound' | translate}}
        <span id="upper"></span></p>
       
       
@@ -243,7 +243,7 @@
       </tbody>
       </table>
   </div>
-  <p>{{'SampleMean' | translate}}: {{this.sampleMeansMean}}</p>
+  <p>{{'omci_SampleMean' | translate}}: {{this.sampleMeansMean}}</p>
   <p>{{'standard_deviation' | translate}}: {{this.sampleMeansStd}}</p>
   </div>
   
