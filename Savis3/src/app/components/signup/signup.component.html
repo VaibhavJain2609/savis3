@@ -9,6 +9,7 @@
         <div class="row">
             <div class="offset-md-12 col-lg-15 col-md-4 offset-lg-4 offset-md-3">
                 <div class="panel border bg-white">
+                    <app-language-switcher class="language"></app-language-switcher>
                     <div class="panel-heading">
                         <h3 class="pt-3 font-weight-bold">Sign Up</h3>
                     </div>
@@ -60,7 +61,7 @@
                                 <small *ngIf="errorMessage" class="signUpErrorMessage">{{errorMessage}}</small>
                                 <small *ngIf="successMessage" class="signUpSuccessMessage">{{successMessage}}</small>
                             </div>
-                            <div class="loginButton">Already have an account? <a id="forget" routerLink="/login">Login</a></div>
+                            <div class="loginButton text-gray-500">Already have an account? <a id="forget" routerLink="/login">Login</a></div>
                         </form>
                     </div>
                 </div>

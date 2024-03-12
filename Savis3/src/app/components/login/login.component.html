@@ -11,6 +11,7 @@
         <div class="row">
             <div class="offset-md-12 col-lg-15 col-md-4 offset-lg-4 offset-md-3">
                 <div class="panel border bg-white">
+                    <app-language-switcher class="language"></app-language-switcher>
                     <div class="panel-heading">
                         <h3 class="pt-3 font-weight-bold">Login</h3>
                     </div>
@@ -38,7 +39,7 @@
                                 <a id="forget" class="font-weight-bold" routerLink="/forgotpassword">Forget Password ?</a>
                             </div>
                             <button (click)="onSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100">Login</button>
-                            <div class="text-center pt-4 custom-padding text-muted">Don't Have an Account <a id="forget" routerLink="/signup">Sign Up</a></div>
+                            <div class="text-center pt-4 custom-padding text-muted text-gray-500">Don't Have an Account <a id="forget" routerLink="/signup">Sign Up</a></div>
                             <button (click)="guestOnSubmit()" type="submit" class="btn btn-primary btn-block mt-4 w-100" >Continue as Guest</button>
 
                            

@@ -47,6 +47,8 @@ export class SignupComponent implements OnInit {
    * Create the new user if all the fields are valid
    */
   onSignUp() {
+    this.errorMessage = ''
+    
     if (this.signUpForm.valid) {
       this.afAuth.createUserWithEmailAndPassword(this.signUpForm.value.email, this.signUpForm.value.password).then((userCredential) => {
 
