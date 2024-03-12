@@ -1,12 +1,13 @@
 .outer {
-    margin: 5.5px;
     margin-left: 0px;
+    min-height: 90vh;
     padding: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 82vh;
+    height: auto;
     background-color: #fff2eb;
+    overflow: hidden;
 }
 
 
@@ -33,7 +34,7 @@
     color: #54c242;
 }
 .copyright{
- padding: 15px;
+    color: #54c242;
 }
 
 
@@ -45,17 +46,11 @@
     padding: 0;
     background-color: #333;
     height: 80px;
+    width: 100%;
     color: #fff;
     text-align: center;
 }
 
-
-
-
-.copyright {
-    text-align: center;
-    color: #54c242;
-}
 
 
 .font-weight-bold{
@@ -132,10 +127,14 @@ A:hover {
 .panel {
     box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
     border-radius: 12px;
-    width: 320px;
     background-color: #fff;
     padding: 20px;
-    margin-left: 620px;
+    margin: auto;
+    width: 100%;
+    max-width: 300px;
+    max-height: 100vh;
+    overflow: hidden;
+    align-self: center;
 }
 
 
@@ -151,10 +150,6 @@ A:hover {
     color: #54c242;
     margin-bottom: 5px;
     margin-top: 15px;
-
-
-
-
 }
 
 
