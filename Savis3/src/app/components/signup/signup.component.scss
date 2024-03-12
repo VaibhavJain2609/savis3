@@ -1,12 +1,13 @@
 .outer {
-    margin: 5.5px;
     margin-left: 0px;
+    min-height: 90vh;
     padding: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 82vh;
+    height: auto;
     background-color: #fff2eb;
+    overflow: auto;
 }
 
 
@@ -87,11 +88,16 @@ A:hover {
 .panel {
     box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
     border-radius: 12px;
-    width: 400px;
     background-color: #fff;
     padding: 20px;
-    margin-left: 580px;
+    margin: auto;
+    width: 100%;
+    max-width: 300px;
+    max-height: 100vh;
+    overflow: hidden;
+    align-self: center;
 }
+
 .panel-heading {
     text-align: center;
     margin-bottom: 10px;
