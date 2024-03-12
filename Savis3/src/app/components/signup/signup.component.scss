@@ -114,8 +114,8 @@ A:hover {
     display: flex;
     align-items: center;
     cursor: pointer;
-    border: 1px solid #ddd;
-    color: #54c242;
+    border: 2px solid #54c242;
+    color: black;
     margin-bottom: 10px;
 }
 
@@ -123,7 +123,7 @@ A:hover {
 
 
 .input-field.error {
-    border: 1px solid red;
+    border: 2px solid red;
     color: red;
 }
 
