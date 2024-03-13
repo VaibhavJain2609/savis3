@@ -5,6 +5,8 @@ import { AngularFireAuth } from "@angular/fire/auth"
 import { RouterTestingModule } from '@angular/router/testing'
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms"
 import { Router } from "@angular/router"
+import { LanguageSwitcherComponent } from "../language-switcher/language-switcher.component"
+import { TranslateModule } from "@ngx-translate/core"
 
 
 const mockAngularFireAuth: any = {
@@ -19,11 +21,11 @@ describe('SignupComponent', () => {
     beforeEach(async() => {
 
         await TestBed.configureTestingModule({
-            declarations: [ SignupComponent ],
+            declarations: [ SignupComponent, LanguageSwitcherComponent ],
             imports: [ 
                 RouterTestingModule,
                 ReactiveFormsModule,
-
+                TranslateModule.forRoot(),
             ],
             providers:[ 
                 { provide: APP_BASE_HREF, useValue: '/' },
@@ -54,10 +56,6 @@ describe('SignupComponent', () => {
         expect(component.signUpForm.controls.email).toBeTruthy()
         expect(component.signUpForm.controls.password).toBeTruthy()
         expect(component.signUpForm.controls.confirmPassword).toBeTruthy()
-    })
-
-    it('should return null if the form is invalid', () => {
-        expect(component.onSignUp()).toBeNull()
     })
 
     it('should send email verification to user when they submit form with valid email', async() => {

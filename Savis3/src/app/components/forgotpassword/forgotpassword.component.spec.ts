@@ -4,6 +4,8 @@ import { APP_BASE_HREF } from "@angular/common"
 import { AngularFireAuth } from "@angular/fire/auth"
 import { RouterTestingModule } from '@angular/router/testing'
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms"
+import { LanguageSwitcherComponent } from "../language-switcher/language-switcher.component"
+import { TranslateModule } from "@ngx-translate/core"
 
 const mockAngularFireAuth: Partial<AngularFireAuth> = {
     sendPasswordResetEmail: jest.fn().mockReturnValue(Promise.resolve())
@@ -16,11 +18,11 @@ describe('ForgotpasswordComponent', () => {
     beforeEach(async() => {
 
         await TestBed.configureTestingModule({
-            declarations: [ ForgotpasswordComponent ],
+            declarations: [ ForgotpasswordComponent, LanguageSwitcherComponent ],
             imports: [ 
                 RouterTestingModule,
                 ReactiveFormsModule,
-                
+                TranslateModule.forRoot()
             ],
             providers:[ 
                 { provide: APP_BASE_HREF, useValue: '/' },
