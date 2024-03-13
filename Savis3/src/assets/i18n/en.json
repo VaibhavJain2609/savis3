@@ -153,5 +153,15 @@
     "correlation_no_file": "No file chosen",
     "correlation_result": "Result of correlation:",
     "correlation_display": "Displaying File Data:",
-    "correlation_two_columns": "Select any two Columns from Available Column Names:"
+    "correlation_two_columns": "Select any two Columns from Available Column Names:",
+    "//NavBar": "These are the translations for the NavBar component",
+    "nav_english": "English",
+    "nav_spanish": "Spanish",
+    "nav_home": "Home",
+    "nav_about": "About",
+    "nav_download": "Download",
+    "nav_user_manual": "User Manual",
+    "nav_sign_out": "Sign Out",
+    "nav_copyright": "Copyright ©2024 CSUS. All Rights Reserved."
+
 }

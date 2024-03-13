@@ -3,6 +3,7 @@ import{FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {

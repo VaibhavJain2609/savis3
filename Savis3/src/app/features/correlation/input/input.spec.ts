@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './input.component';
 import { sampleCorrelation } from 'simple-statistics';
+import { LanguageSwitcherComponent } from '../../../components/language-switcher/language-switcher.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -9,8 +11,11 @@ describe('InputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InputComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [InputComponent, LanguageSwitcherComponent],
+      imports: [
+        ReactiveFormsModule,
+        TranslateModule.forRoot()
+      ],
     }).compileComponents();
   });
 

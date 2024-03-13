@@ -6,6 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms"
 import { Router } from "@angular/router"
 import {User} from '@firebase/auth-types';
+import { LanguageSwitcherComponent } from "../language-switcher/language-switcher.component"
+import { TranslateModule } from "@ngx-translate/core"
 
 
 
@@ -23,10 +25,11 @@ describe('loginComponent', () => {
     beforeEach(async() => {
 
         await TestBed.configureTestingModule({
-            declarations: [ LoginComponent ],
+            declarations: [ LoginComponent, LanguageSwitcherComponent ],
             imports: [ 
                 RouterTestingModule,
                 ReactiveFormsModule,
+                TranslateModule.forRoot()
 
             ],
             providers:[ 
