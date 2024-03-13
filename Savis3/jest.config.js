@@ -2,7 +2,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  globalSetup: '<rootDir>/global-setup.ts',
+  globalSetup: '<rootDir>/setup-jest.ts',
   moduleNameMapper: {
     "^src/(.*)$": "<rootDir>/src/$1",
   },
