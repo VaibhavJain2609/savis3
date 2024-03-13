@@ -156,5 +156,14 @@
     "correlation_no_file": "Ningún archivo elegido",
     "correlation_result": "Resultado de la correlación:",
     "correlation_display": "Visualización de datos de archivo:",
-    "correlation_two_columns": "Seleccione dos columnas cualesquiera de los nombres de columnas disponibles:"
+    "correlation_two_columns": "Seleccione dos columnas cualesquiera de los nombres de columnas disponibles:",
+    "//NavBar": "These are the translations for the NavBar component",
+    "nav_english": "Inglés",
+    "nav_spanish": "Español",
+    "nav_home": "Inicio",
+    "nav_about": "Acerca de SAVIS",
+    "nav_download": "Bajar Archivo",
+    "nav_user_manual": "Manual del Usuario",
+    "nav_sign_out": "Cerrar Sesión",
+    "nav_copyright": "Copyright ©2024 CSUS. Reservados todos los derechos."
 }

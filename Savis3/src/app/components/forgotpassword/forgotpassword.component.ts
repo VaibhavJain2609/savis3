@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EmailValidator } from '../signup/signup.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -18,7 +19,8 @@ export class ForgotpasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {

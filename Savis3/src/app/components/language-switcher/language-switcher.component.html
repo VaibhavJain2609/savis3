@@ -1,8 +1,8 @@
 <div class="container">
-  <span>English</span>
+  <span>{{ 'nav_english' | translate }}</span>
   <label class="switch">
     <input type="checkbox" [checked]="checked" (change)="switchLanguage($event)">
     <span class="slider round"></span>
   </label>
-  <span>Spanish</span>
+  <span>{{ 'nav_spanish' | translate }}</span>
 </div>
