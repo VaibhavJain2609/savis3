@@ -1,6 +1,7 @@
 .container {
+  display: flex;
   align-items: center;
-  margin-top: -2px;
+  justify-content: center;
 }
 
 .switch {
@@ -67,7 +68,7 @@ input:checked + .slider:before {
 /* Add this to style the labels */
 .switch + span, span + .switch {
   vertical-align: middle;
-  margin: 0 10px;
+  margin: 5px;
 }
 
 span {
