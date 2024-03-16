@@ -3,14 +3,16 @@
   <p>Would you like to save this data?</p>
   <mat-form-field>
     <mat-label>File Name</mat-label>
-    <input matInput [(ngModel)]="fileName">
+    <input matInput type="text" [formControl]="fileName">
   </mat-form-field>
   <div>
     <mat-label>Data</mat-label>
     <pre class="preview" matInput>{{data}}</pre>
   </div>
 </mat-dialog-content>
+<br>
+<p>In order to save data, you must enter a file name & have data in the input field</p>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="{fileName: fileName, data}" cdkFocusInitial>Ok</button>
+  <button mat-button class="save" [mat-dialog-close]="{save: true, fileName: fileName.value, data: data}" [disabled]="!fileName || !data || !isFileNameUnique" cdkFocusInitial>Save Data</button>
+  <button mat-button class="close" [mat-dialog-close]="{save: false}">Close</button>
 </mat-dialog-actions>
