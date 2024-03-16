@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-linear-regression',
   templateUrl: './linear-regression.component.html',
   styleUrls: ['./linear-regression.component.scss']
 })
-export class LinearRegressionComponent {
+export class LinearRegressionComponent implements OnInit{
   datapoints: string = '';
   parsedDatapoints: { x: number, y: number }[] = [];
   csvContent: string = '';
 
-  constructor() { }
+  constructor(
+    private sharedService: SharedService
+  ) { }
+
+  ngOnInit(): void {
+      this.sharedService.currentData.subscribe(data => this.datapoints = data)
+  }
 
   updateChart() {
     // Parse the user input into data points

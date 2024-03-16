@@ -35,11 +35,18 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value; // Destructure email and password from the form value
       this.afAuth.signInWithEmailAndPassword(username, password)
-        .then(userCredential => {
-          this.router.navigate(['/homepage']);
-        })
+        // .then(userCredential => {
+        //   this.router.navigate(['/homepage']);
+        // })
         .catch(error => {
           alert('Login failed. Please check your credentials.');
+        });
+      
+        this.afAuth.onAuthStateChanged(user => {
+          if (user) {
+            // User is signed in
+            this.router.navigate(['/homepage']);
+          }
         });
     } else {
       this.validateAllFormFields(this.loginForm);

@@ -9,21 +9,18 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>Edit the data</mat-label>
-    <textarea 
+  <p>Edit the data in the text area below</p>
+  <mat-form-field style="width: 500px;">
+    <textarea
+      class="input-field"
       *ngIf="selectedFile" 
       matInput
-      style="
-        width: 100%;
-        height: 200px;
-        ">{{ selectedFile.data }}
-    </textarea>
+      [(ngModel)]="selectedFile.data"></textarea>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Load File</button>
-  <button mat-button cdkFocusInitial>Edit File</button>
-  <button mat-button cdkFocusInitial>Delete file</button>
+  <button mat-button class="load" (click)="loadFile()" mat-dialog-close>Load File</button>
+  <button mat-button class="button" (click)="editFile()" mat-dialog-close>Edit File</button>
+  <button mat-button class="button" (click)="deleteFile()" mat-dialog-close>Delete file</button>
+  <button mat-button class="close" (click)="onNoClick()">Close</button>
 </mat-dialog-actions>

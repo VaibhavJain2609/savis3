@@ -6,7 +6,7 @@ import { SaveDialogComponent } from './save-dialog/save-dialog.component';
 import { LoadDialogComponent } from './load-dialog/load-dialog.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { take } from 'rxjs/operators';
+import { subscribeOn, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-save-load-buttons',
@@ -34,20 +34,33 @@ export class SaveLoadButtonsComponent {
   }
 
   saveDialog() {
-    console.log(this.feature)
     let dialogRef = this.dialog.open(SaveDialogComponent, {
       width: '400px',
       height: '600px',
-      data: this.data
+      data: this.data,
+      disableClose: true
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      this.af.authState.pipe(take(1)).subscribe(user => {
-        if (user) {
-          const userId = user.uid
-          this.firestore.collection(`users/${userId}/savedData`).add(result);
-        }
-      })
+      if (result.save) {
+        this.af.authState.pipe(take(1)).subscribe(user => {
+          if (user) {
+            const userId = user.uid
+            const { save, ...dataToSave } = result
+            this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', dataToSave.fileName))
+              .get()
+              .toPromise()
+              .then(querySnapshot => {
+                if (querySnapshot.empty) {
+                  this.firestore.collection(`users/${userId}/savedData`).add(dataToSave)
+                }
+              })
+              .catch(error => {
+                console.error('Error saving document: ', error)
+              })
+          }
+        })
+      }
     })
   }
 
@@ -55,11 +68,16 @@ export class SaveLoadButtonsComponent {
     this.af.authState.pipe(take(1)).subscribe(user => {
       if (user) {
         const userId = user.uid
-        this.firestore.collection(`users/${userId}/savedData`).valueChanges().subscribe(data => {
+        const subscription = this.firestore.collection(`users/${userId}/savedData`).valueChanges().subscribe(data => {
           let dialogRef = this.dialog.open(LoadDialogComponent, {
-            width: '400px',
+            width: '600px',
             height: '600px',
-            data: { files: data }
+            data: { files: data },
+            disableClose: true
+          })
+
+          dialogRef.afterClosed().subscribe(() => {
+            subscription.unsubscribe()
           })
         })
       }
