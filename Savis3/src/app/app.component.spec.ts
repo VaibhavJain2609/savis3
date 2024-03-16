@@ -32,6 +32,7 @@ import { HttpClient } from "@angular/common/http"
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core"
 import { HttpLoaderFactory } from "./app.module"
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -74,7 +75,8 @@ describe('AppComponent', () => {
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
           }
-        })
+        }),
+        BrowserAnimationsModule
       ],
       providers:[
         MathService,
