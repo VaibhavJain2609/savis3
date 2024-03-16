@@ -166,8 +166,6 @@ export class ScatterPlotComponent implements OnChanges {
       const regressionY = this.calculateRegressionY(point.x)
       const errorMargin = Math.abs(point.y - regressionY)
 
-      console.log(`Data Point - x: ${point.x}, y: ${point.y}, y1 (regressionY): ${regressionY}`)
-
       return {
         x: point.x,
         y: regressionY,

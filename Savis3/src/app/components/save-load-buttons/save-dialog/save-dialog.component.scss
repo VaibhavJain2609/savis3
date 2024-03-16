@@ -1,0 +1,27 @@
+.preview {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 2px solid black;
+    padding: 10px;
+    background-color: #c0bfbf;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+        display: none !important;
+    }
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+.overflow {
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+        display: none !important;
+    }
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}

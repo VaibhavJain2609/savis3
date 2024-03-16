@@ -32,6 +32,14 @@ import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SaveLoadButtonsComponent } from './components/save-load-buttons/save-load-buttons.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button'
+import { SaveDialogComponent } from './components/save-load-buttons/save-dialog/save-dialog.component';
+import { LoadDialogComponent } from './components/save-load-buttons/load-dialog/load-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -73,6 +81,9 @@ export function setupTranslateFactory(service : TranslateService): Function {
     NavbarComponent,
     FooterComponent,
     LanguageSwitcherComponent,
+    SaveLoadButtonsComponent,
+    SaveDialogComponent,
+    LoadDialogComponent
 
   ],
   imports: [
@@ -90,8 +101,13 @@ export function setupTranslateFactory(service : TranslateService): Function {
         deps: [HttpClient]
       }
     }),
-    BrowserAnimationsModule
-  ],
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule
+    ],
   providers: [
     MathService,
     TranslateService,

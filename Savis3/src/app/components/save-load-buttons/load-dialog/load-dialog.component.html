@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Load Data</h2>
+<mat-dialog-content>
+  <p>What file do you want to load data from?</p>
+  <mat-form-field>
+    <mat-label>Select a file</mat-label>
+    <mat-select [(value)]="selectedFile">
+      <mat-option *ngFor="let file of files" [value]="file">
+        {{ file.fileName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Edit the data</mat-label>
+    <textarea 
+      *ngIf="selectedFile" 
+      matInput
+      style="
+        width: 100%;
+        height: 200px;
+        ">{{ selectedFile.data }}
+    </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Load File</button>
+  <button mat-button cdkFocusInitial>Edit File</button>
+  <button mat-button cdkFocusInitial>Delete file</button>
+</mat-dialog-actions>

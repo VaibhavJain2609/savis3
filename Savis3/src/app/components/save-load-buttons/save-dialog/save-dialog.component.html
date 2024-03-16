@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Save Data</h2>
+<mat-dialog-content class="overflow">
+  <p>Would you like to save this data?</p>
+  <mat-form-field>
+    <mat-label>File Name</mat-label>
+    <input matInput [(ngModel)]="fileName">
+  </mat-form-field>
+  <div>
+    <mat-label>Data</mat-label>
+    <pre class="preview" matInput>{{data}}</pre>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="{fileName: fileName, data}" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
