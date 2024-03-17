@@ -13,6 +13,6 @@
 <br>
 <p>In order to save data, you must enter a file name & have data in the input field</p>
 <mat-dialog-actions>
-  <button mat-button class="save" [mat-dialog-close]="{save: true, fileName: fileName.value, data: data}" [disabled]="!fileName || !data || !isFileNameUnique" cdkFocusInitial>Save Data</button>
+  <button mat-button class="save" [mat-dialog-close]="{save: true, fileName: fileName.value, data: data}" [disabled]="!fileName.value || !data || !isFileNameUnique" cdkFocusInitial>Save Data</button>
   <button mat-button class="close" [mat-dialog-close]="{save: false}">Close</button>
 </mat-dialog-actions>
