@@ -4,6 +4,7 @@ import { SharedService } from '../../../services/shared.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-load-dialog',
@@ -36,40 +37,51 @@ export class LoadDialogComponent {
   }
 
   editFile(): void {
-    const selectedData = this.selectedFile.data
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      const selectedData = this.selectedFile.data
 
-    this.af.authState.pipe(take(1)).subscribe(user => {
-      if (user) {
-        const userId = user.uid
-        this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
-          .get()
-          .toPromise()
-          .then(querySnapshot => {
-            if(!querySnapshot.empty) {
-              const doc = querySnapshot.docs[0]
-              doc.ref.update({ data: selectedData })
-            }
-          })
-          .catch(error => {
-            console.error('Error updating document: ', error)
-          })
-      }
+      this.af.authState.pipe(take(1)).subscribe(user => {
+        if (user) {
+          const userId = user.uid
+          this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
+            .get()
+            .toPromise()
+            .then(querySnapshot => {
+              if(!querySnapshot.empty) {
+                const doc = querySnapshot.docs[0]
+                doc.ref.update({ data: selectedData })
+              }
+            })
+            .catch(error => {
+              console.error('Error updating document: ', error)
+            })
+        }
+      })
     })
   }
 
   deleteFile(): void {
-    this.af.authState.pipe(take(1)).subscribe(user => {
-      if (user) {
-        const userId = user.uid
-        this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
-          .get()
-          .toPromise()
-          .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-              doc.ref.delete()
-            });
-          });
-      }
-    });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      this.af.authState.pipe(take(1)).subscribe(user => {
+        if (user) {
+          const userId = user.uid
+          this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
+            .get()
+            .toPromise()
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                doc.ref.delete()
+              })
+            })
+        }
+      })
+    })
   }
 }
