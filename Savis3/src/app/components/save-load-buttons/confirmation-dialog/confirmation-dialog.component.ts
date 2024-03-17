@@ -18,7 +18,7 @@ export class ConfirmationDialogComponent {
   }
 
   onYesClick(): void {
-    this.dialog.closeAll()
+    this.dialogRef.close(true)
   }
 
 }

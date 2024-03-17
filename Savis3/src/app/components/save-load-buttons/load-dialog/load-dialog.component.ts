@@ -41,10 +41,10 @@ export class LoadDialogComponent {
       disableClose: true,
     })
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      const selectedData = this.selectedFile.data
+      if (result){
+        const selectedData = this.selectedFile.data
 
-      this.af.authState.pipe(take(1)).subscribe(user => {
+        this.af.authState.pipe(take(1)).subscribe(user => {
         if (user) {
           const userId = user.uid
           this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
@@ -61,6 +61,9 @@ export class LoadDialogComponent {
             })
         }
       })
+
+      this.dialog.closeAll()
+      }
     })
   }
 
@@ -69,19 +72,23 @@ export class LoadDialogComponent {
       disableClose: true,
     })
     dialogRef.afterClosed().subscribe(result => {
-      this.af.authState.pipe(take(1)).subscribe(user => {
-        if (user) {
-          const userId = user.uid
-          this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
-            .get()
-            .toPromise()
-            .then(querySnapshot => {
-              querySnapshot.forEach(doc => {
-                doc.ref.delete()
+      if (result) {
+        this.af.authState.pipe(take(1)).subscribe(user => {
+          if (user) {
+            const userId = user.uid
+            this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
+              .get()
+              .toPromise()
+              .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                  doc.ref.delete()
+                })
               })
-            })
-        }
-      })
+          }
+        })
+
+        this.dialog.closeAll()
+      }
     })
   }
 }
