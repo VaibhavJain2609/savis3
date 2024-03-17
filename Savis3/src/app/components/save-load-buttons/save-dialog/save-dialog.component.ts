@@ -4,7 +4,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
-import { SharedService } from '../../../services/shared.service';
 
 @Component({
   selector: 'app-save-dialog',

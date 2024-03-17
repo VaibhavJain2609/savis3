@@ -40,6 +40,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { SaveDialogComponent } from './components/save-load-buttons/save-dialog/save-dialog.component';
 import { LoadDialogComponent } from './components/save-load-buttons/load-dialog/load-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ConfirmationDialogComponent } from './components/save-load-buttons/confirmation-dialog/confirmation-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -83,7 +84,8 @@ export function setupTranslateFactory(service : TranslateService): Function {
     LanguageSwitcherComponent,
     SaveLoadButtonsComponent,
     SaveDialogComponent,
-    LoadDialogComponent
+    LoadDialogComponent,
+    ConfirmationDialogComponent
 
   ],
   imports: [

@@ -16,7 +16,7 @@ export class LinearRegressionComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-      this.sharedService.currentData.subscribe(data => this.datapoints = data)
+    this.sharedService.currentData.subscribe(data => this.datapoints = data)
   }
 
   updateChart() {
@@ -37,5 +37,10 @@ export class LinearRegressionComponent implements OnInit{
       };
       reader.readAsText(file);
     }
+  }
+
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnDestroy(): void {
+    this.sharedService.changeData('')
   }
 }
