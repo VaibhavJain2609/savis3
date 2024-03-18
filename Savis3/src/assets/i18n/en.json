@@ -162,6 +162,24 @@
     "nav_download": "Download",
     "nav_user_manual": "User Manual",
     "nav_sign_out": "Sign Out",
-    "nav_copyright": "Copyright ©2024 CSUS. All Rights Reserved."
+    "nav_copyright": "Copyright ©2024 CSUS. All Rights Reserved.",
+    "//Login": "These are the translations for the Login component",
+    "Login": "Login",
+    "ForgotPassword": "Forgot Password",
+    "DontHaveAccount": "Don't have an account",
+    "Signup": "Sign Up",
+    "ContinueAsGuest": "Continue as Guest",
+    "AlreadyHaveAccount": "Already have an account",
+    "Username": "Username",
+    "//Signup": "These are the translations for the Signup component",
+    "FirstName": "First Name",
+    "LastName": "Last Name",
+    "Email": "Email Address",
+    "Password": "Password",
+    "ReEnterPassword": "Re-enter Password",
+    "//ForgotPassword": "These are the translations for the ForgotPassword component",
+    "Submit": "Submit",
+    "ForgotPassword":"Forgot Password",
+    "BackTo": "Back to"
 
 }

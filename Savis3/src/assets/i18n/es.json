@@ -165,5 +165,22 @@
     "nav_download": "Bajar Archivo",
     "nav_user_manual": "Manual del Usuario",
     "nav_sign_out": "Cerrar Sesión",
-    "nav_copyright": "Copyright ©2024 CSUS. Reservados todos los derechos."
+    "nav_copyright": "Copyright ©2024 CSUS. Reservados todos los derechos.",
+    "//Login": "These are the translations for the Login component",
+    "Login": "inicio de sesión",
+    "DontHaveAccount": "no tengo una cuenta",
+    "Signup": "inscríbete",
+    "ContinueAsGuest": "Continuar como invitado",
+    "AlreadyHaveAccount": "Ya tiene cuenta",
+    "Username": "Nombre de usuario",
+    "//Signup": "These are the translations for the Signup component",
+    "FirstName": "Nombre de pila",
+    "LastName": "Apellido",
+    "Email": "Dirección de correo electrónico",
+    "Password": "contraseña",
+    "ReEnterPassword": "Escriba la contraseña otra vez",
+    "//ForgotPassword": "These are the translations for the ForgotPassword component",
+    "Submit": "Enviar",
+    "ForgotPassword": "Contraseña olvidada",
+    "BackTo": "de regreso"
 }

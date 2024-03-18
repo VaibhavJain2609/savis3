@@ -8,7 +8,7 @@
             <div class="offset-md-12 col-lg-15 col-md-4 offset-lg-4 offset-md-3">
                 <div class="panel border bg-white">
                     <app-language-switcher class="language"></app-language-switcher>
-                    <h3 class="panel-heading pt-3 font-weight-bold">Sign Up</h3>
+                    <h3 class="panel-heading pt-3 font-weight-bold">{{"Signup" | translate}}</h3>
                     
                     <div class="panel-body p-3">
                         <form [formGroup]="signUpForm">
@@ -16,14 +16,14 @@
                                 <small *ngIf="signUpForm.controls['firstName'].dirty && signUpForm.hasError('required','firstName')"class ="text-danger">First Name is required</small>
                                 <div class="input-field" [class.error]="signUpForm.controls['firstName'].dirty && signUpForm.hasError('required','firstName')">
                                     <span class="fa fa-user p-2"></span>
-                                    <input formControlName="firstName"type ="text"placeholder="First Name">
+                                    <input formControlName="firstName"type ="text"placeholder="{{'FirstName' | translate}}">
                                 </div>                                
                             </div>
                             <div class="form-group pt-3">
                                 <small *ngIf="signUpForm.controls['lastName'].dirty && signUpForm.hasError('required','lastName')" class ="text-danger">Last Name is required</small>
                                 <div class="input-field" [class.error]="signUpForm.controls['lastName'].dirty && signUpForm.hasError('required','lastName')">
                                     <span class="fa fa-user p-2"></span>
-                                    <input formControlName="lastName"type ="text"placeholder="Last Name">
+                                    <input formControlName="lastName"type ="text"placeholder="{{'LastName' | translate}}">
                                 </div>                                
                             </div>
 
@@ -31,7 +31,7 @@
                                 <small *ngIf="(signUpForm.controls['email'].dirty && signUpForm.hasError('required', 'email')) || (signUpForm.controls['email'].dirty && signUpForm.get('email')?.hasError('valid'))"class ="text-danger">Email is required & must be a valid email</small>
                                 <div class="input-field" [class.error]="(signUpForm.controls['email'].dirty && signUpForm.hasError('required', 'email')) || (signUpForm.controls['email'].dirty && signUpForm.get('email')?.hasError('valid'))">
                                     <span class="fa fa-user p-2"></span>
-                                    <input formControlName="email"type ="email"placeholder="Email Address">
+                                    <input formControlName="email"type ="email"placeholder="{{'Email' | translate}}">
                                 </div>                                
                             </div>
 
@@ -39,7 +39,7 @@
                                 <small *ngIf="(signUpForm?.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty) || (signUpForm.controls['password'].dirty && signUpForm.hasError('required', 'password'))" class="text-danger"> Password is required, must be at least 8 characters, have one number, and one lower & uppercase letter.</small>
                                 <div class="input-field" [class.error]="(signUpForm.get('password')?.hasError('strong') && signUpForm.controls['password'].dirty) || (signUpForm.hasError('required', 'password') && signUpForm.controls['password'].dirty)">
                                     <span class="fa fa-lock p-2"></span>
-                                    <input id="password" formControlName="password"type="password"placeholder="Password" (input)="preventSpaces($event)">
+                                    <input id="password" formControlName="password"type="password"placeholder="{{'Password' | translate}}" (input)="preventSpaces($event)">
                                     <span class="fa fa-eye-slash"></span>
                                 </div>
                             </div>
@@ -48,17 +48,17 @@
                                 <small *ngIf="signUpForm.errors?.matchPassword && signUpForm.get('confirmPassword')?.touched" class="text-danger"> Password does not match</small>
                                 <div class="input-field" [class.error]="signUpForm.errors?.matchPassword && signUpForm.get('confirmPassword')?.touched">
                                     <span class="fa fa-lock p-2"></span>
-                                    <input id="confirmPassword" formControlName="confirmPassword" type="password"placeholder="Re-enter Password" (input)="preventSpaces($event)">
+                                    <input id="confirmPassword" formControlName="confirmPassword" type="password"placeholder="{{'ReEnterPassword' | translate}}" (input)="preventSpaces($event)">
                                     <span class="fa fa-eye-slash"></span>
                                 </div>
                             </div>
                          
                             <div class="signUpButton">
-                                <button (click)="onSignUp()" type="submit" class="button" >Sign Up</button>
+                                <button (click)="onSignUp()" type="submit" class="button" >{{"Signup" | translate}}</button>
                                 <small *ngIf="errorMessage" class="signUpErrorMessage">{{errorMessage}}</small>
                                 <small *ngIf="successMessage" class="signUpSuccessMessage">{{successMessage}}</small>
                             </div>
-                            <div class="loginButton text-gray-500">Already have an account? <a id="forget" routerLink="/login">Login</a></div>
+                            <div class="loginButton text-gray-500">{{"AlreadyHaveAccount" | translate}}? <a id="forget" routerLink="/login">{{"Login" | translate}}</a></div>
                         </form>
                     </div>
                 </div>
