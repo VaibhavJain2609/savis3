@@ -153,5 +153,31 @@
     "correlation_no_file": "No file chosen",
     "correlation_result": "Result of correlation:",
     "correlation_display": "Displaying File Data:",
-    "correlation_two_columns": "Select any two Columns from Available Column Names:"
+    "correlation_two_columns": "Select any two Columns from Available Column Names:",
+
+
+    "//two_proportions_confidence_interval": "These are the translations for the Two Proportions Confidence Interval component",
+    "tpci_title": "Two Proportions Confidence Interval",
+    "tpci_enter_data": "Enter Data",
+    "tpci_group_a": "Group A",
+    "tpci_group_b": "Group B",
+    "tpci_successes": "Successes",
+    "tpci_failures": "Failures",
+    "tpci_load_data": "Load Data",
+    "tpci_increase_by": "Increase by",
+    "tpci_run_simulations": "Run Simulations",
+    "tpci_number_of_simulations": "Number of Simulations",
+    "tpci_proportion_a": "Proportion of Randomized to Group A (pA):",
+    "tpci_proportion_b": "Proportion of Randomized to Group B (pB):",
+    "tpci_difference_proportions": "Difference of Proportions (pA - pB):",
+    "tpci_most_recent_draw": "Most Recent Draw",
+    "tpci_sampling_distribution_difference": "Sampling Distribution of Difference of Proportions",
+    "tpci_confidence_level": "Confidence Level",
+    "tpci_build": "Build",
+    "tpci_original_dataset_difference": "Original Dataset Difference:",
+    "tpci_mean_sample_differences": "Mean of Sample Differences:",
+    "tpci_standard_deviation": "Standard Deviation:",
+    "tpci_lower_bound": "Lower Bound:",
+    "tpci_upper_bound": "Upper Bound:",
+    "tpci_total_number_samples": "Total Number of Samples:"
 }
