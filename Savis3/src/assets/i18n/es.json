@@ -156,5 +156,32 @@
     "correlation_no_file": "Ningún archivo elegido",
     "correlation_result": "Resultado de la correlación:",
     "correlation_display": "Visualización de datos de archivo:",
-    "correlation_two_columns": "Seleccione dos columnas cualesquiera de los nombres de columnas disponibles:"
+    "correlation_two_columns": "Seleccione dos columnas cualesquiera de los nombres de columnas disponibles:",
+
+
+    
+    "//two_proportions_confidence_interval": "Estas son las traducciones para el componente Intervalo de Confianza de Dos Proporciones",
+    "tpci_title": "Intervalo de Confianza de Dos Proporciones",
+    "tpci_enter_data": "Ingresar Datos",
+    "tpci_group_a": "Grupo A",
+    "tpci_group_b": "Grupo B",
+    "tpci_successes": "Éxitos",
+    "tpci_failures": "Fracasos",
+    "tpci_load_data": "Cargar Datos",
+    "tpci_increase_by": "Aumentar por",
+    "tpci_run_simulations": "Ejecutar Simulaciones",
+    "tpci_number_of_simulations": "Número de Simulaciones",
+    "tpci_proportion_a": "Proporción de Éxitos Aleatorizados al Grupo A (pA):",
+    "tpci_proportion_b": "Proporción de Éxitos Aleatorizados al Grupo B (pB):",
+    "tpci_difference_proportions": "Diferencia de Proporciones (pA - pB):",
+    "tpci_most_recent_draw": "Último Sorteo",
+    "tpci_sampling_distribution_difference": "Distribución Muestral de la Diferencia de Proporciones",
+    "tpci_confidence_level": "Nivel de Confianza",
+    "tpci_build": "Construir",
+    "tpci_original_dataset_difference": "Diferencia en el Conjunto de Datos Original:",
+    "tpci_mean_sample_differences": "Media de Diferencias Muestrales:",
+    "tpci_standard_deviation": "Desviación Estándar:",
+    "tpci_lower_bound": "Límite Inferior:",
+    "tpci_upper_bound": "Límite Superior:",
+    "tpci_total_number_samples": "Número Total de Muestras:"
 }
