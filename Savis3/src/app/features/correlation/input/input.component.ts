@@ -5,6 +5,7 @@ import { EventEmitter } from '@angular/core';
 import { read } from 'xlsx';
 import * as XLSX from 'xlsx';
 import Papa, { ParseResult } from 'papaparse';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-input',
@@ -12,7 +13,7 @@ import Papa, { ParseResult } from 'papaparse';
   styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
-  constructor() {}
+  constructor(private translate: TranslateService) {}
 
   @Output() xValuesArrayEmitter: EventEmitter<number[]> = new EventEmitter<
     number[]

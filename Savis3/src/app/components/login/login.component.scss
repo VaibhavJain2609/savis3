@@ -1,43 +1,29 @@
 .outer {
-    margin: 5.5px;
     margin-left: 0px;
+    min-height: 90vh;
     padding: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 82vh;
+    height: auto;
     background-color: #fff2eb;
+    overflow: hidden;
 }
-
-
-
-
-
-
-
 
 .panel-heading {
     font-size: 30px;
     text-align: center;
-    margin-bottom: 10px;
     color: #54c242;
 }
-
-
-
 
 .title {
     font-size: 30px;
     text-align: center;
-    padding: 1px;
     color: #54c242;
 }
 .copyright{
- padding: 15px;
+    color: #54c242;
 }
-
-
-
 
 .header,
 .footer {
@@ -45,18 +31,10 @@
     padding: 0;
     background-color: #333;
     height: 80px;
+    width: 100%;
     color: #fff;
     text-align: center;
 }
-
-
-
-
-.copyright {
-    text-align: center;
-    color: #54c242;
-}
-
 
 .font-weight-bold{
     display: flex;
@@ -87,22 +65,15 @@
 }
 
 
-
 A:hover {
     text-decoration: none;
 }
-
-
-
 
 .form-inline label {
     padding-left: 10px;
     margin: 0;
     cursor: pointer;
 }
-
-
-
 
 .btn {
     margin-top: 25px;
@@ -119,54 +90,39 @@ A:hover {
     margin-right: auto;
 }
 
-
-
-
 .btn:hover {
     background-color: #388e3c;
 }
 
-
-
-
 .panel {
     box-shadow: 20px 0px 90px rgba(84, 194, 66, 0.5);
     border-radius: 12px;
-    width: 320px;
     background-color: #fff;
     padding: 20px;
-    margin-left: 620px;
+    margin: auto;
+    width: 100%;
+    max-width: 300px;
+    max-height: 100vh;
+    overflow: hidden;
+    align-self: center;
 }
-
-
-
 
 .input-field {
     border-radius: 20px;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     align-items: center;
     cursor: pointer;
-    border: 1px solid #ddd;
-    color: #54c242;
+    border: 2px solid #54c242;
+    color: gray;
     margin-bottom: 5px;
     margin-top: 15px;
-
-
-
-
 }
-
-
-
 
 .input-field.error {
-    border: 1px solid red;
+    border: 2px solid red;
     color: red;
 }
-
-
-
 
 input[type='email'],
 input[type='password'],
@@ -181,4 +137,20 @@ input[type='text'] {
 .text-danger {
     color: red;
    
+}
+
+.language {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+
+    ::ng-deep span {
+        color: #54c242 !important;
+    }
 }

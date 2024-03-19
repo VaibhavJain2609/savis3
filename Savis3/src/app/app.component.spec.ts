@@ -8,7 +8,6 @@ import { AboutComponent } from "./components/about/about.component"
 import { CsvFileUploadComponent } from "./components/csv-file-upload/csv-file-upload.component"
 import { ForgotpasswordComponent } from "./components/forgotpassword/forgotpassword.component"
 import { HomepageComponent } from "./components/homepage/homepage.component"
-import { BivariantComponent } from "./features/bivariant/bivariant.component"
 import { ChartComponent } from "./features/correlation/chart/chart.component"
 import { CorrelationComponent } from "./features/correlation/correlation.component"
 import { InputComponent } from "./features/correlation/input/input.component"
@@ -33,6 +32,7 @@ import { HttpClient } from "@angular/common/http"
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core"
 import { HttpLoaderFactory } from "./app.module"
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -50,7 +50,6 @@ describe('AppComponent', () => {
         TwoProportionsCIComponent,
         OneProportionCIComponent,
         LinearRegressionComponent,
-        BivariantComponent,
         CorrelationComponent,
         HomepageComponent,
         ScatterPlotComponent,
@@ -76,7 +75,8 @@ describe('AppComponent', () => {
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
           }
-        })
+        }),
+        BrowserAnimationsModule
       ],
       providers:[
         MathService,

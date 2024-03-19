@@ -1,237 +1,185 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" content="application/javascript">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SAVIS | Two Means Confidence Interval
-</title>
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  </head>
-  <app-navbar></app-navbar>
-  <body>
-    <nav id="navbar">
-      <h1 class="logo"><a href="./../../" class="text-primary">SAVIS</a></h1>
-      <ul>
-        <li><a href="./../index.html">Home
-</a></li>
-        
-        <li><a href="./../about/index.html">About
-</a></li>
-
-        <li><a href="https://www.csus.edu/faculty/d/rdiaz/">Download
-</a></li>
-
-
-        <li><a href="https://www.csus.edu/faculty/d/rdiaz/">User Manual
-</a></li>
-
-        
-      </ul>
-    </nav>
-    <div id="main-content">
-      <!-- <link rel="stylesheet" href="two-means-ci.component.scss"> -->
-<div id="two-mean">
-  <h1>Two Means Confidence Interval
-</h1>
-  <h2>1. Enter Data
-</h2>
-  <input type="checkbox" style="float:right" checked>
-  <div class="section">
-    <div class="lhs">
-      <div class="lhs">
-        <select id="sample-select">
-          <option disabled selected>Select Sample Data
-</option>
-          
-        </select>
-        <textarea id="csv-input" placeholder="Enter or Drop CSV with first column as group number (1 or 2) and second column as variable. No colunm names (see sample data in drop down menu)
-"></textarea>
-        <button id = "load-btn" class="btn">Load Data
-</button>
-        <button style= "margin-top: 5px" onclick="twoMean.reset()" class="btn">Reset
-</button>
-        <button class = "btn" id = "upload-btn" style = "margin-top: 5px"> Upload Data File
-</button>
-        <input type = "file" id = "fileInput"  style  = "display: none;">
+<app-navbar></app-navbar>
+<div class="p-4">
+  <h1 class="text-xl font-bold text-center my-5">Two Means Hypothesis Testing
+  </h1>
+  <div class="flex justify-between">
+    <h2 class="text-xl font-bold">1. Enter Data
+    </h2>
+    <input type="checkbox" (change)="toggleSection($event,'sectionOne')" checked>
+  </div>
+  <div class="flex gap-3"  [ngClass]="sections.sectionOne ? '' : 'hidden'">
+    <div class="w-3/12">
+      <div class="w-full">
+        <div class="border border-gray-300 rounded-md">
+          <select (change)="sampleSelect($event)"
+            class="w-full border-t-0 border-l-0 border-r-0 border-b focus:outline-none rounded-lg p-1">
+            <option disabled selected>Select Sample Data</option>
+            <option value="sample1">Sample 1</option>
+            <option value="sample2">Sample 2</option>
+          </select>
+          <textarea 
+          (drop)="onDrop($event)"  [(ngModel)]="csvraw" class="text-sm w-full p-1.5 placeholder:text-xs focus:outline-none  " rows="5"
+            placeholder="Enter or Drop CSV with first column as group number (1 or 2) and second column as variable. No colunm names (see sample data in drop down menu)"></textarea>
+        </div>
+        <button (click)="loadData()"
+          class="mt-1 border bg-primary text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">Load
+          Data</button>
+        <button (click)="onResetChart()"
+          class="mt-1 border bg-primary text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">Reset</button>
+        <label
+          class="mt-1 block text-center border bg-primary text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full"
+          for="fileInput"> Upload Data File </label>
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
       </div>
-      <div id="data-summary" class="stats">
-        <div>
-          <span id = "size1">Size n (Group 1):
- </span>
-          <br>
+      <div class="text-sm font-medium mb-1">
+        <div class="flex justify-between">
+          <span>Size n (Group 1):</span>
+          <span>{{dataSize1}}</span>
         </div>
-        <div>
-          <span id = "dataMean1">Mean 1 (Group 1):
- </span>
-          <br>
+        <div class="flex justify-between">
+          <span>Mean 1 (Group 1): </span>
+          <span>{{datamean1}}</span>
         </div>
-        <div>
-          <span id = "dataSD1">Standard Deviation (Group 1):
-</span>
-          <br>
+        <div class="flex justify-between">
+          <span>Standard Deviation (Group 1): </span>
+          <span>{{datamean1}}</span>
         </div>
-        <div>
-          <span id = "size2">Size n (Group 2):
- </span>
-          <br>
+        <div class="flex justify-between">
+          <span>Size n (Group 2):</span>
+          <span> {{dataSize2}}</span>
         </div>
-        <div>
-          <span id = "dataMean2">Mean 2 (Group 2):
-</span>
-          <br>
+        <div class="flex justify-between">
+          <span>Mean 2 (Group 2):</span>
+          <span>{{datamean2}}</span>
         </div>
-        <div>
-          <span id = "dataSD2">Standard Deviation (Group 2):
-</span>
-          <br>
+        <div class="flex justify-between">
+          <span>Standard Deviation (Group 2): </span>
+          <span>{{datamean1}}</span>
         </div>
-        <div>
-          <span id = "dataMeanDiff">Difference of Means (Mean 1 - Mean 2):
-</span>
-          <br>
+        <div class="flex justify-between">
+          <span>Difference of Means (Mean 1 - Mean 2):</span>
+          <span>{{mean_diff}}</span>
         </div>
       </div>
     </div>
-    <div class="rhs">
-      <div class="chart-wrap"><canvas id="data-chart-1"></canvas></div>
-      <div style = "width: 30%; margin: auto">
-          <label for = "multiply-group1" style = "font-size: 13px"> Increase By (Group 1)
-</label>
-          <input type = "number" step = "1" min = "10" value = "10" id = "multiply-group1" style = "width: 20%; text-align: center"/>
+    <div class="w-9/12">
+      <div style="display: block">
+        <div class="chart-wrap"><canvas id="data-chart-1" height="220"></canvas></div>
+        <p>
+          {{ 'opc_increase' | translate }}
+          <input type = "number" step = "1" min = "10" id = "increment" [(ngModel)]="increment"/>
+          <button class = "incrementButton">
+              <button class="custom-button">+</button>
+          </button>
+      </p>
+
       </div>
-      <div style = "width: 10%; margin: auto">
-        <button class = "incrementButton" ><span class="material-icons">add_circle</span></button>
-      </div>
-      <div class="chart-wrap"><canvas id="data-chart-2"></canvas></div>
-        <div style = "width: 30%; margin: auto">
-          <label for = "multiply-group2" style = "font-size: 13px"> Increase By (Group 2)
-</label>
-          <input type = "number" step = "1" min = "10" value = "10" id = "multiply-group2" style = "width: 20%; text-align: center"/>
-      </div>
-      <div style = "width: 10%; margin: auto">
-        <button class = "incrementButton" ><span class="material-icons">add_circle</span></button>
+      <div style="display: block">
+        <div class="chart-wrap"><canvas id="data-chart-2" height="220"></canvas></div>
+        <p>
+          {{ 'opc_increase' | translate }}
+          <input type = "number" step = "1" min = "10" id = "increment" [(ngModel)]="increment"/>
+          <button class = "incrementButton">
+              <button class="custom-button">+</button>
+          </button>
+        </p>
       </div>
     </div>
   </div>
-  <h2>2. Run Simulations
-</h2>
-  <input type="checkbox" style="float:right" checked/>
-  <div class="section">
-    <div class="lhs">
-      <h3># of Simulations
-</h3>
-      <input id="num-simulations" type="number" value="1" min="1" max="100" disabled />
-      <button class="btn" id = "runSimButton" disabled>Run Simulation
-</button>
-      <div class="stats">
-        <div>
-          <span id = "sampleMean1">Mean of Randomized Sample to Group 1:
-</span>
-          <br>
+  <div class="flex justify-between">
+    <h2 class="text-xl font-bold">2. Run Simulations</h2>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionTwo')">
+  </div>
+  <div class="flex gap-3" [ngClass]="sections.sectionTwo ? '' : 'hidden'">
+    <div class="w-3/12">
+      <h3 class="font-bold"># of Simulations
+      </h3>
+      <input [(ngModel)]="numofSem" [disabled]="!activateSim"
+        class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
+        type="number" value="1" min="1" max="100" />
+      <button (click)="runSim()" *ngIf="activateSim"
+        class="mt-1 border bg-primary disabled: text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">Run
+        Simulation
+      </button>
+      <button [disabled]="true" *ngIf="!activateSim"
+        class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">Run
+        Simulation
+      </button>
+      <div class="text-sm font-medium mb-1">
+        <div class="flex justify-between">
+          <span>Mean of Randomized Sample to Group 1: </span>
+          <span summary="sampleMean1">{{simsummary.sampleMean1}} </span>
         </div>
-        <div>
-          <span id = "sampleSD1">Standard Deviation of Randomized Sample to Group 1:
-</span>
-          <br>
-
+        <div class="flex justify-between">
+          <span>Mean of Randomized Sample to Group 2:</span>
+          <span summary="sampleMean2">{{simsummary.sampleMean2}}</span>
         </div>
-
-        <div>
-          <span id = "sampleMean2"> Mean of Randomized Sample to Group 2:
-</span>
-          <br>
-
-        </div>
-        <div>
-          <span id = "sampleSD2">Standard Deviation of Randomized Sample to Group 2:
-</span>
-          <br>
-
-        </div>
-        <div>
-          <span id = "sampleMeanDiff">Difference of Means (Randomized Samples):
-</span>
-          <br>
-
+        <div class="flex justify-between">
+          <span>Difference of Means (Randomized Samples):</span>
+          <span summary="sampleMeanDiff">{{simsummary.sampleMeanDiff}}</span>
         </div>
       </div>
     </div>
-    <div class="rhs">
+    <div class="rhs w-9/12">
       <h3>Most Recent Draw
-</h3>
-      <div class="chart-wrap"><canvas id="sample-chart-1"></canvas></div>
-      <div class="chart-wrap"><canvas id="sample-chart-2"></canvas></div>
+      </h3>
+      <div class="chart-wrap"><canvas id="data-chart-3" height="200"></canvas></div>
+      <div class="chart-wrap"><canvas id="data-chart-4" height="200"></canvas></div>
     </div>
   </div>
-  <h2>3. Sampling Distribution of Difference of Means
-</h2>
-  <input type="checkbox" style="float:right" checked/>
-  <div id="two-mean-diff" class="section">
+  <div class="flex justify-between">
 
-    <div class="lhs">
-      <div>
-      <label for="confidence-level"> Confidence Level
-<span id="confidence-level-display">95</span
-        >%</label>
-      </div>
-      <input type="range"  style = "width: 50%" min="1" max="100" step="1" id="confidence-level" value="95"/>
-      <button type = "button"  class = "btn" style = "width:50%" id = "buildci"> Build
- </button>
-      <br>
-      <div class="stats">
-        
+    <h2 class="text-xl font-bold">3. Sampling Distribution of Difference of Means
+    </h2>
+    <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
+  </div>
+  <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
+    <div class="w-3/12">
+      <select [disabled]="!samDisActive" (change)="selectedTest($event)" class="if-disabled w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
+        <option value="null" disabled selected>Type of Test
+        </option>
+        <option value="oneTailRight">One Tail Right
+        </option>
+        <option value="oneTailLeft">One Tail Left
+        </option>
+        <option value="TwoTail">Two Tails
+        </option>
 
-
-  
-
-        <div>
-          <span>Original Dataset Difference of Means:
-</span>
-          <span id ="originalDiff"></span>
+      </select>
+      <span>Select differences at least as extreme as</span>
+      <input [disabled]="!samDisActive" type="number"  id="tail-input" value="0" [(ngModel)]="mean_diff" step="any"
+        class="w-full border if-disabled border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
+      <hr>
+      <div class="text-sm font-medium mb-1">
+        <div class="flex justify-between">
+          <span>Original Dataset Difference of Means:</span>
+          <span summary="dataMeanDiff">{{mean_diff}}</span>
         </div>
-        <div>
-          <span>Mean of Sample Differences:
-</span>
-          <span id ="mean"></span>
+        <div class="flex justify-between">
+          <span>Mean of Sample Differences:</span>
+          <span summary="mean">{{simsummary.sampleMeanDiff}}</span>
         </div>
-        <div>
-          <span>Standard Deviation:
-</span>
-          <span id ="stddev"></span>
+        <div class="flex justify-between">
+          <span>Standard Deviation:</span>
+          <span summary="stddev">{{lastSummary?.stddev}}</span>
         </div>
-        <div>
-          <span>Lower Bound:
-</span>
-          <span id ="lower"></span>
+        <div class="flex justify-between">
+          <span>Total # samples: </span>
+          <span summary="total" summaryint>{{lastSummary?.total}}</span>
         </div>
-        <div>
-          <span>Upper Bound:
-</span>
-          <span id ="upper"></span>
+        <div class="flex justify-between">
+          <span># of Extreme Differences: </span>
+          <span summary="chosen" summaryint>{{lastSummary?.chosen }}</span>
         </div>
-        <div>
-          <span>Total # samples:
-</span>
-          <span id ="total"></span>
+        <div class="flex justify-between">
+          <span>Proportion of Extreme Differences</span>
+          <span summary="proportion">{{lastSummary?.proportion }}</span>
         </div>
-
-        
       </div>
     </div>
-    <div class="rhs">
-      <div ><canvas id="diff-chart" style = "height: 300px"></canvas></div>
+    <div class="rhs w-9/12">
+      <canvas id="diff-chart"></canvas>
     </div>
   </div>
-</div>
-
-<script src="../lib/Chart.bundle.min.js"></script>
-
-<script src="./twoMeanEntry.js" type="module"></script>
-
-
 </div>
 <app-footer></app-footer>
-  </body>
-  
-</html>

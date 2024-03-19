@@ -1,0 +1,2 @@
+<button mat-button *ngIf="loggedIn" [disabled]="!data" (click)="saveDialog()">Save Data</button>
+<button mat-button *ngIf="loggedIn" (click)="loadDialog()">Load Data</button>

@@ -14,7 +14,6 @@ import { TwoMeansCIComponent } from './features/two-means-ci/two-means-ci.compon
 import { TwoProportionsCIComponent } from './features/two-proportions-ci/two-proportions-ci.component';
 import { OneProportionCIComponent } from './features/one-proportion-ci/one-proportion-ci.component';
 import { LinearRegressionComponent } from './features/linear-regression/linear-regression.component';
-import { BivariantComponent } from './features/bivariant/bivariant.component';
 import { CorrelationComponent } from './features/correlation/correlation.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ScatterPlotComponent } from './features/linear-regression/scatter-plot/scatter-plot.component';
@@ -32,6 +31,16 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SaveLoadButtonsComponent } from './components/save-load-buttons/save-load-buttons.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button'
+import { SaveDialogComponent } from './components/save-load-buttons/save-dialog/save-dialog.component';
+import { LoadDialogComponent } from './components/save-load-buttons/load-dialog/load-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { ConfirmationDialogComponent } from './components/save-load-buttons/confirmation-dialog/confirmation-dialog.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -62,7 +71,6 @@ export function setupTranslateFactory(service : TranslateService): Function {
     TwoProportionsCIComponent,
     OneProportionCIComponent,
     LinearRegressionComponent,
-    BivariantComponent,
     CorrelationComponent,
     HomepageComponent,
     ScatterPlotComponent,
@@ -74,6 +82,10 @@ export function setupTranslateFactory(service : TranslateService): Function {
     NavbarComponent,
     FooterComponent,
     LanguageSwitcherComponent,
+    SaveLoadButtonsComponent,
+    SaveDialogComponent,
+    LoadDialogComponent,
+    ConfirmationDialogComponent
 
   ],
   imports: [
@@ -90,8 +102,14 @@ export function setupTranslateFactory(service : TranslateService): Function {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
-  ],
+    }),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule
+    ],
   providers: [
     MathService,
     TranslateService,
