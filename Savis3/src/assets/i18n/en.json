@@ -156,6 +156,7 @@
     "correlation_two_columns": "Select any two Columns from Available Column Names:",
 
 
+    
     "//two_proportions_confidence_interval": "These are the translations for the Two Proportions Confidence Interval component",
     "tpci_title": "Two Proportions Confidence Interval",
     "tpci_enter_data": "Enter Data",
