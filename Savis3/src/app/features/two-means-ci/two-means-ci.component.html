@@ -42,7 +42,7 @@
         </div>
         <div class="flex justify-between">
           <span>Standard Deviation (Group 1): </span>
-          <span>{{datamean1}}</span>
+          <span>{{stDev1}}</span>
         </div>
         <div class="flex justify-between">
           <span>Size n (Group 2):</span>
@@ -54,7 +54,7 @@
         </div>
         <div class="flex justify-between">
           <span>Standard Deviation (Group 2): </span>
-          <span>{{datamean1}}</span>
+          <span>{{stDev2}}</span>
         </div>
         <div class="flex justify-between">
           <span>Difference of Means (Mean 1 - Mean 2):</span>
@@ -67,9 +67,9 @@
         <div class="chart-wrap"><canvas id="data-chart-1" height="220"></canvas></div>
         <p>
           {{ 'opc_increase' | translate }}
-          <input type = "number" step = "1" min = "10" id = "increment" [(ngModel)]="increment"/>
+          <input type="number" [(ngModel)]="multiplier" step="1" min="1" id="increment" />
           <button class = "incrementButton">
-              <button class="custom-button">+</button>
+              <button (click) ="incrementYValues('chart1')" class="custom-button">+</button>
           </button>
       </p>
 
@@ -111,8 +111,16 @@
           <span summary="sampleMean1">{{simsummary.sampleMean1}} </span>
         </div>
         <div class="flex justify-between">
+          <span>Standard Deviation Group 1: </span>
+          <span summary="sampleMean1">{{simsummary.stdev1sim}} </span>
+        </div>
+        <div class="flex justify-between">
           <span>Mean of Randomized Sample to Group 2:</span>
           <span summary="sampleMean2">{{simsummary.sampleMean2}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Standard Deviation Group 2: </span>
+          <span summary="sampleMean1">{{simsummary.stdev2sim}} </span>
         </div>
         <div class="flex justify-between">
           <span>Difference of Means (Randomized Samples):</span>

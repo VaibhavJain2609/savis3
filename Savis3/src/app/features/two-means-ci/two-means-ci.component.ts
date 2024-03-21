@@ -17,6 +17,7 @@ export class TwoMeansCIComponent implements OnInit {
   dataSize2: number = 0
   datamean2: number = 0
   datamean1: number = 0
+  multiplier: number = 1
   mean_diff: number = 0
   numofSem: number = 1
   increment: number = 10
@@ -28,6 +29,8 @@ export class TwoMeansCIComponent implements OnInit {
   chart4: any
   chart5: any
   minmax: any
+  stDev1: number = 0
+  stDev2: number = 0
   csvraw: any
   csv: any
   sections: any = {
@@ -39,6 +42,8 @@ export class TwoMeansCIComponent implements OnInit {
     sampleMean1: NaN,
     sampleMean2: NaN,
     sampleMeanDiff: NaN,
+    stdev1sim: NaN,
+    stdev2sim: NaN
   }
   demodata: any = [
   ]
@@ -81,6 +86,11 @@ export class TwoMeansCIComponent implements OnInit {
     let dataValues = this.csv[0].concat(this.csv[1]);
     let min = Math.min.apply(undefined, dataValues);
     let max = Math.max.apply(undefined, dataValues);
+    // Calculate standard deviations
+  const stdDev1 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
+  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(2));
+    this.stDev1 = stdDev1
+    this.stDev2 = stdDev2
     this.minmax = {
       "min": min,
       "max": max,
@@ -106,7 +116,39 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart2.chart.update(0)
     this.activateSim = true
   }
+  calculateStandardDeviation(data: number[]): number {
+    if (data.length === 0) return 0;
+  
+    const mean = data.reduce((sum, value) => sum + value, 0) / data.length;
+    const variance = data.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / data.length;
+    return Math.sqrt(variance);
+  }
 
+  incrementYValues(chartIdentifier: string): void {
+    let chartToIncrement: any;
+
+    if (chartIdentifier === 'chart1') {
+      chartToIncrement = this.chart1;
+    } else if (chartIdentifier === 'chart2') {
+      chartToIncrement = this.chart2;
+    }
+    console.log('Before update', chartToIncrement.chartData);
+    if (chartToIncrement && this.multiplier) {
+      chartToIncrement.chartData.forEach((dataset: any) => {
+        dataset.data = dataset.data.map((point: any) => {
+          if (typeof point === 'object' && point.y !== undefined) {
+            return { x: point.x, y: point.y * this.multiplier };
+          } else if (typeof point === 'number') {
+            return point * this.multiplier;
+          }
+          return point;
+        });
+      });
+      console.log('After update', chartToIncrement.chartData);
+      // Assuming you have a method to update the chart
+      //chartToIncrement.updateChart();
+    }
+  }
   calculateMean(data: number[]) {
     if (data.length === 0) {
       return 0;
@@ -199,10 +241,6 @@ export class TwoMeansCIComponent implements OnInit {
     console.log('Running', this.numberOfSimulations, 'simulations');
   }
 
-
-
-
-
   sampleSelect(e: any) {
     this.csv = null
     let link = ""
@@ -262,13 +300,17 @@ export class TwoMeansCIComponent implements OnInit {
       let sampleValues = [chosen.map(a => a.value), unchosen.map(a => a.value)];
       let mean0 = this.calculateMean(sampleValues[0]);
       let mean1 = this.calculateMean(sampleValues[1]);
+      let stdevSim1 = this.calculateStandardDeviation(sampleValues[0]);
+      let stdevSim2 = this.calculateStandardDeviation(sampleValues[1]);
       let sampleDiffOfMeans = mean1 - mean0;
       results.push(sampleDiffOfMeans);
 
       this.simsummary = {
         sampleMean1: Number(mean0.toFixed(3)),
         sampleMean2: Number(mean1.toFixed(3)),
-        sampleMeanDiff: Number(sampleDiffOfMeans.toFixed(3))
+        sampleMeanDiff: Number(sampleDiffOfMeans.toFixed(3)),
+        stdev1sim: Number(stdevSim1.toFixed(3)),
+        stdev2sim: Number(stdevSim2.toFixed(3)),
       };
       this.tail.addAllResults(results)
     }
