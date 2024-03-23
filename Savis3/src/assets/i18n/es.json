@@ -188,8 +188,6 @@
     "homepage_Graphs": "Graficos",
     "homepage_barChart": "Gráfico de barras",
     "homepage_dotPlot": "Gráfica de puntos",
-
-
     "//two_proportions_confidence_interval": "Estas son las traducciones para el componente Intervalo de Confianza de Dos Proporciones",
     "tpci_title": "Intervalo de Confianza de Dos Proporciones",
     "tpci_enter_data": "Ingresar Datos",
