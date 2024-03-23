@@ -1,26 +1,18 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { sampleCorrelation } from 'simple-statistics';
-import { EventEmitter } from '@angular/core';
 import { read } from 'xlsx';
 import * as XLSX from 'xlsx';
-import Papa, { ParseResult } from 'papaparse';
 import { TranslateService } from '@ngx-translate/core';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  styleUrls: ['./input.component.scss', '../../scss/base.scss'],
 })
 export class InputComponent implements OnInit {
   constructor(private translate: TranslateService) {}
-
-  @Output() xValuesArrayEmitter: EventEmitter<number[]> = new EventEmitter<
-    number[]
-  >();
-  @Output() yValuesArrayEmitter: EventEmitter<number[]> = new EventEmitter<
-    number[]
-  >();
 
   isFileData: boolean = false;
   extension: string | undefined = undefined;
@@ -30,7 +22,76 @@ export class InputComponent implements OnInit {
   select1 = new FormControl();
   select2 = new FormControl();
 
-  correlationValue: string | null = null;
+  chart1: any;
+  chart2: any;
+  demodata1: any[] = [
+    // { x: 10, y: 10 },
+    // { x: 11, y: 11 },
+  ];
+  demodata2: any[] = [
+    // { x: 10, y: 10 },
+    // { x: 11, y: 11 },
+  ];
+  datasets = {
+    label: 'Correlation Values',
+    legend: true,
+    backgroundColor: 'orange',
+    data: this.demodata1,
+  };
+  chartOptions = {
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: this.datasets.label,
+          data: this.datasets.data,
+          backgroundColor: this.datasets.backgroundColor,
+          pointRadius: 4,
+        },
+      ],
+    },
+    options: {
+      legend: {
+        display: this.datasets.legend,
+      },
+      scales: {
+        xAxes: [
+          {
+            ticks: {
+              fontColor: 'black',
+              fontSize: 16,
+              padding: 0,
+            },
+            scaleLabel: {
+              display: false,
+            },
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              fontColor: 'black',
+              fontSize: 16,
+              padding: 0,
+            },
+            scaleLabel: {
+              display: true,
+            },
+          },
+        ],
+      },
+
+      responsive: true,
+      maintainAspectRatio: false,
+      tooltips: {
+        backgroundColor: 'rgba(0,0,0,1.0)',
+        bodyFontStyle: 'normal',
+      },
+    },
+  };
+
+  correlationValue1: string | null = null;
+  correlationValue2: string | null = null;
 
   formGroupValues: FormGroup = new FormGroup({
     xValues: new FormControl(),
@@ -61,14 +122,13 @@ export class InputComponent implements OnInit {
     return [xValuesArray, yValuesArray];
   }
 
-  emitArrayValues(xValues: number[], yValues: number[]) {
-    this.xValuesArrayEmitter.emit(xValues);
-    this.yValuesArrayEmitter.emit(yValues);
-  }
-
   calculate() {
     let [xValuesArray, yValuesArray] = this.getFormValues();
-    // console.log(xValuesArray.length);
+    // this.demodata = [];
+    // console.log(this.demodata1);
+    xValuesArray.forEach((val: number, idx: number) => {
+      this.demodata1.push({ x: val, y: yValuesArray[idx] });
+    });
 
     if (xValuesArray.length != yValuesArray.length || xValuesArray < 2) {
       alert('Incorrect Inputs');
@@ -76,15 +136,20 @@ export class InputComponent implements OnInit {
       this.yValues?.setErrors({ notEqual: true });
       return;
     }
-    this.emitArrayValues(xValuesArray, yValuesArray);
     // console.log(xValuesArray, yValuesArray);
-    this.correlationValue = sampleCorrelation(
+    this.correlationValue1 = sampleCorrelation(
       xValuesArray,
       yValuesArray
     ).toFixed(2);
     // Disable file input
-    this.isFileData = false;
-    // console.log(this.correlationValue);
+    // this.isFileData = false;
+    this.updateChart(this.chart1, this.demodata1);
+    this.demodata1 = [];
+  }
+
+  updateChart(chart: any, data: any) {
+    chart!.data.datasets[0].data = data;
+    chart!.update();
   }
 
   calculateFile() {
@@ -98,12 +163,16 @@ export class InputComponent implements OnInit {
       xValuesArray.push(data[selected1]);
       yValuesArray.push(data[selected2]);
     }
-    this.emitArrayValues(xValuesArray, yValuesArray);
+    xValuesArray.forEach((val: number, idx: number) => {
+      this.demodata2.push({ x: val, y: yValuesArray[idx] });
+    });
     // console.log(xValuesArray, yValuesArray);
-    this.correlationValue = sampleCorrelation(
+    this.correlationValue2 = sampleCorrelation(
       xValuesArray,
       yValuesArray
     ).toFixed(2);
+    this.updateChart(this.chart2, this.demodata2);
+    this.demodata2 = [];
   }
 
   readFileMethod(file: File): Promise<string> {
@@ -180,6 +249,10 @@ export class InputComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.chart1 = new chatClass('data-chart-1', this.datasets[0]);
+    this.chart1 = new Chart('data-chart-1', this.chartOptions);
+    this.chart2 = new Chart('data-chart-2', this.chartOptions);
+
     this.xValues?.valueChanges.subscribe({
       next: (e) => {
         this.xValues?.clearValidators();
