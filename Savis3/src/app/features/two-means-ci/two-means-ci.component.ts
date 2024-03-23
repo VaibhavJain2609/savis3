@@ -9,49 +9,63 @@ import * as XLS from 'xlsx';
 @Component({
   selector: 'app-two-mean-ci',
   templateUrl: './two-means-ci.component.html',
-  styleUrls: ['./two-means-ci.component.scss']
+  styleUrls: ['./two-means-ci.component.scss'],
 })
 export class TwoMeansCIComponent implements OnInit {
-  activateSim: boolean = false
-  dataSize1: number = 0
-  dataSize2: number = 0
-  datamean2: number = 0
-  datamean1: number = 0
-  multiplier: number = 1
-  mean_diff: number = 0
-  numofSem: number = 1
-  increment: number = 10
-  samDisActive = false
-  lastSummary: any
-  chart1: any
-  chart2: any
-  chart3: any
-  chart4: any
-  chart5: any
-  minmax: any
-  stDev1: number = 0
-  stDev2: number = 0
-  csvraw: any
-  csv: any
+  activateSim: boolean = false;
+  dataSize1: number = 0;
+  dataSize2: number = 0;
+  datamean2: number = 0;
+  datamean1: number = 0;
+  mean_diff: number = 0;
+  numofSem: number = 1;
+  increment: number = 10;
+  samDisActive = false;
+  lastSummary: any;
+  chart1: any;
+  chart2: any;
+  chart3: any;
+  chart4: any;
+  chart5: any;
+  minmax: any;
+  csvraw: any;
+  csv: any;
   sections: any = {
     sectionOne: true,
     sectionTwo: true,
-    sectionThree: true
-  }
+    sectionThree: true,
+  };
   simsummary: any = {
     sampleMean1: NaN,
     sampleMean2: NaN,
     sampleMeanDiff: NaN,
-    stdev1sim: NaN,
-    stdev2sim: NaN
-  }
-  demodata: any = [
-  ]
+  };
+  demodata: any = [];
   datasets = [
-    { label: "Group 1", legend: true, backgroundColor: 'orange', data: this.demodata },
-    { label: "Group 2", legend: true, backgroundColor: 'rebeccapurple', data: this.demodata },
-    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
-    { label: "Group 3", legend: false, backgroundColor: 'rebeccapurple', data: this.demodata },
+    {
+      label: 'Group 1',
+      legend: true,
+      backgroundColor: 'orange',
+      data: this.demodata,
+    },
+    {
+      label: 'Group 2',
+      legend: true,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
+    {
+      label: 'Group 3',
+      legend: false,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
+    {
+      label: 'Group 3',
+      legend: false,
+      backgroundColor: 'rebeccapurple',
+      data: this.demodata,
+    },
   ];
 
   chartData: ChartDataSets[] = [];
@@ -65,144 +79,109 @@ export class TwoMeansCIComponent implements OnInit {
 
   summaryData: ChartDataSets[] = [];
 
-
-
   numberOfSimulations: number;
+  component: any;
 
-  constructor(private smp: Sampling, private tail: TailchartService) {
-
-  }
+  constructor(public smp: Sampling, public tail: TailchartService) {}
   toggleSection(e: any, sec: string) {
-    this.sections[sec] = e.target.checked
+    this.sections[sec] = e.target.checked;
   }
   dataTextArea: string = '';
-  data: any
+  data: any;
   updateData(data: any) {
-    this.dataSize1 = this.csv[0].length
-    this.dataSize2 = this.csv[1].length
-    this.datamean1 = Number(this.calculateMean(this.csv[0]).toFixed(3))
-    this.datamean2 = Number(this.calculateMean(this.csv[1]).toFixed(3))
-    this.mean_diff = Number((this.datamean1 - this.datamean2).toFixed(3))
+    this.dataSize1 = this.csv[0].length;
+    this.dataSize2 = this.csv[1].length;
+    this.datamean1 = Number(this.calculateMean(this.csv[0]).toFixed(3));
+    this.datamean2 = Number(this.calculateMean(this.csv[1]).toFixed(3));
+    this.mean_diff = Number((this.datamean1 - this.datamean2).toFixed(3));
     let dataValues = this.csv[0].concat(this.csv[1]);
     let min = Math.min.apply(undefined, dataValues);
     let max = Math.max.apply(undefined, dataValues);
-    // Calculate standard deviations
-  const stdDev1 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
-  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(2));
-    this.stDev1 = stdDev1
-    this.stDev2 = stdDev2
     this.minmax = {
-      "min": min,
-      "max": max,
-    }
+      min: min,
+      max: max,
+    };
     let rData = {
-      "minmax": this.minmax,
-      "data": [this.csv[0]],
-      "label": "Group 1",
-      "backgroundColor": "orange"
-    }
+      minmax: this.minmax,
+      data: [this.csv[0]],
+      label: 'Group 1',
+      backgroundColor: 'orange',
+    };
     let rData2 = {
-      "minmax": this.minmax,
-      "data": [this.csv[1]],
-      "label": "Group 2",
-      "backgroundColor": "rebeccapurple"
-    }
+      minmax: this.minmax,
+      data: [this.csv[1]],
+      label: 'Group 2',
+      backgroundColor: 'rebeccapurple',
+    };
 
-    this.chart1.setScale(min, max)
-    this.chart2.setScale(min, max)
-    this.chart1.setDataFromRaw(rData)
-    this.chart2.setDataFromRaw(rData2)
-    this.chart1.chart.update(0)
-    this.chart2.chart.update(0)
-    this.activateSim = true
-  }
-  calculateStandardDeviation(data: number[]): number {
-    if (data.length === 0) return 0;
-  
-    const mean = data.reduce((sum, value) => sum + value, 0) / data.length;
-    const variance = data.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / data.length;
-    return Math.sqrt(variance);
+    this.chart1.setScale(min, max);
+    this.chart2.setScale(min, max);
+    this.chart1.setDataFromRaw(rData);
+    this.chart2.setDataFromRaw(rData2);
+    this.chart1.chart.update(0);
+    this.chart2.chart.update(0);
+    this.activateSim = true;
   }
 
-  incrementYValues(chartIdentifier: string): void {
-    let chartToIncrement: any;
-
-    if (chartIdentifier === 'chart1') {
-      chartToIncrement = this.chart1;
-    } else if (chartIdentifier === 'chart2') {
-      chartToIncrement = this.chart2;
-    }
-    console.log('Before update', chartToIncrement.chartData);
-    if (chartToIncrement && this.multiplier) {
-      chartToIncrement.chartData.forEach((dataset: any) => {
-        dataset.data = dataset.data.map((point: any) => {
-          if (typeof point === 'object' && point.y !== undefined) {
-            return { x: point.x, y: point.y * this.multiplier };
-          } else if (typeof point === 'number') {
-            return point * this.multiplier;
-          }
-          return point;
-        });
-      });
-      console.log('After update', chartToIncrement.chartData);
-      // Assuming you have a method to update the chart
-      //chartToIncrement.updateChart();
-    }
-  }
   calculateMean(data: number[]) {
     if (data.length === 0) {
       return 0;
     }
-    const sum = data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const sum = data.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
     const mean = sum / data.length;
     return mean;
   }
   onResetChart() {
-    this.chart1.clear()
-    this.chart2.clear()
-    this.chart3.clear()
-    this.chart4.clear()
-    this.chart1.chart.update(0)
-    this.chart2.chart.update(0)
-    this.chart3.chart.update(0)
-    this.chart4.chart.update(0)
+    this.chart1.clear();
+    this.chart2.clear();
+    this.chart3.clear();
+    this.chart4.clear();
+    this.chart1.chart.update(0);
+    this.chart2.chart.update(0);
+    this.chart3.chart.update(0);
+    this.chart4.chart.update(0);
   }
 
   async ngOnInit() {
-    this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
-    this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
-    this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
-    this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
-    this.chart5 = new chatClass("diff-chart", this.datasets[0]);
-   
+    this.chart1 = new chatClass('data-chart-1', this.datasets[0]);
+    this.chart2 = new chatClass('data-chart-2', this.datasets[1]);
+    this.chart3 = new chatClass('data-chart-3', this.datasets[3]);
+    this.chart4 = new chatClass('data-chart-4', this.datasets[3]);
+    this.chart5 = new chatClass('diff-chart', this.datasets[0]);
   }
-  ngAfterContentInit(){
-    let leg = [`Differences `, `NaN`]
-    let color = [`orange `, `red`]
-    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
-      "minmax": [0 ,1],
-      "data": [[],[]],
-      "backgroundColor": "rebeccapurple"
-    }
-   
-    this.chart5.setDataFromRaw(rData2);
-    this.chart5.setLengend(leg,color)
+  ngAfterContentInit() {
+    let leg = [`Differences `, `NaN`];
+    let color = [`orange `, `red`];
+    let rData2: {
+      minmax: [number, number];
+      data: any[][];
+      backgroundColor: string;
+    } = {
+      minmax: [0, 1],
+      data: [[], []],
+      backgroundColor: 'rebeccapurple',
+    };
 
-    this.chart5.chart.update(0) 
+    this.chart5.setDataFromRaw(rData2);
+    this.chart5.setLengend(leg, color);
+
+    this.chart5.chart.update(0);
   }
   loadData(): void {
     this.csv = this.parseData(this.csvraw.trim());
     console.log(this.csv);
-    this.updateData(this.csv)
+    this.updateData(this.csv);
 
     // this.updateChart(data);
     // this.updateSummaryChart(data);
   }
 
   updateChart(data: string): void {
-    
     const rows = data.split('\n');
-    const parsedData = rows.map(row => {
+    const parsedData = rows.map((row) => {
       const [group, value] = row.split(',').map(Number);
       return { x: value, y: group };
     });
@@ -219,19 +198,31 @@ export class TwoMeansCIComponent implements OnInit {
   }
   updateSummaryChart(data: string): void {
     const rows = data.split('\n');
-    const group1Data = rows.map(row => parseFloat(row.split(',')[1])).filter(value => !isNaN(value));
-    const group2Data: any = [];  // Assuming data for Group 2 is not available in the provided example
+    const group1Data = rows
+      .map((row) => parseFloat(row.split(',')[1]))
+      .filter((value) => !isNaN(value));
+    const group2Data: any = []; // Assuming data for Group 2 is not available in the provided example
 
     const sizeGroup1 = group1Data.length;
-    const meanGroup1 = sizeGroup1 > 0 ? group1Data.reduce((acc, val) => acc + val, 0) / sizeGroup1 : NaN;
+    const meanGroup1 =
+      sizeGroup1 > 0
+        ? group1Data.reduce((acc, val) => acc + val, 0) / sizeGroup1
+        : NaN;
 
     const sizeGroup2 = group2Data.length;
-    const meanGroup2 = sizeGroup2 > 0 ? group2Data.reduce((acc: any, val: any) => acc + val, 0) / sizeGroup2 : NaN;
+    const meanGroup2 =
+      sizeGroup2 > 0
+        ? group2Data.reduce((acc: any, val: any) => acc + val, 0) / sizeGroup2
+        : NaN;
 
-    const diffOfMeans = isNaN(meanGroup1) || isNaN(meanGroup2) ? NaN : meanGroup1 - meanGroup2;
+    const diffOfMeans =
+      isNaN(meanGroup1) || isNaN(meanGroup2) ? NaN : meanGroup1 - meanGroup2;
 
     this.summaryData = [
-      { data: [sizeGroup1, meanGroup1, sizeGroup2, meanGroup2, diffOfMeans], label: 'Summary Statistics' },
+      {
+        data: [sizeGroup1, meanGroup1, sizeGroup2, meanGroup2, diffOfMeans],
+        label: 'Summary Statistics',
+      },
     ];
   }
 
@@ -242,20 +233,19 @@ export class TwoMeansCIComponent implements OnInit {
   }
 
   sampleSelect(e: any) {
-    this.csv = null
-    let link = ""
-    if (e.target.value == "sample1") {
-      link = "../../../assets/twomean_sample1.csv"
+    this.csv = null;
+    let link = '';
+    if (e.target.value == 'sample1') {
+      link = '../../../assets/twomean_sample1.csv';
     } else {
-      link = "../../../assets/twomean_sample2.csv"
-
+      link = '../../../assets/twomean_sample2.csv';
     }
-    fetch(link).then(data => data.text())
+    fetch(link)
+      .then((data) => data.text())
       .then((data) => {
-        this.csvraw = data
+        this.csvraw = data;
         this.csv = this.parseData(data.trim());
-
-      })
+      });
   }
 
   parseData(dataText: any) {
@@ -290,18 +280,22 @@ export class TwoMeansCIComponent implements OnInit {
       if (allData.length === 0) {
         return;
       }
-      let { chosen, unchosen } = this.smp.randomSubset(allData, this.csv[0].length);
+      let { chosen, unchosen } = this.smp.randomSubset(
+        allData,
+        this.csv[0].length
+      );
       this.chart3.setDataFromRaw(this.addSimulationSample(chosen));
       this.chart4.setDataFromRaw(this.addSimulationSample(unchosen));
       this.chart3.chart.update();
       this.chart4.chart.update();
 
       // TODO(matthewmerrill): This is very unclear.
-      let sampleValues = [chosen.map(a => a.value), unchosen.map(a => a.value)];
+      let sampleValues = [
+        chosen.map((a) => a.value),
+        unchosen.map((a) => a.value),
+      ];
       let mean0 = this.calculateMean(sampleValues[0]);
       let mean1 = this.calculateMean(sampleValues[1]);
-      let stdevSim1 = this.calculateStandardDeviation(sampleValues[0]);
-      let stdevSim2 = this.calculateStandardDeviation(sampleValues[1]);
       let sampleDiffOfMeans = mean1 - mean0;
       results.push(sampleDiffOfMeans);
 
@@ -309,68 +303,66 @@ export class TwoMeansCIComponent implements OnInit {
         sampleMean1: Number(mean0.toFixed(3)),
         sampleMean2: Number(mean1.toFixed(3)),
         sampleMeanDiff: Number(sampleDiffOfMeans.toFixed(3)),
-        stdev1sim: Number(stdevSim1.toFixed(3)),
-        stdev2sim: Number(stdevSim2.toFixed(3)),
       };
-      this.tail.addAllResults(results)
+      this.tail.addAllResults(results);
     }
-    this.samDisActive = true
+    this.samDisActive = true;
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
 
   addSimulationSample(sample: any[]) {
-    let a: any = []
-    let b: any = []
+    let a: any = [];
+    let b: any = [];
     let facetedArrays = [a, b];
     for (let item of sample) {
       facetedArrays[item.datasetId].push(item.value);
     }
     let rData2 = {
-      "minmax": this.minmax,
-      "data": facetedArrays
-    }
-    return rData2
+      minmax: this.minmax,
+      data: facetedArrays,
+    };
+    return rData2;
   }
   selectedTest(e: any) {
-    this.tail.setTailDirection(e.target.value)
-    let data = this.tail.updateChart2(this.chart5)
+    this.tail.setTailDirection(e.target.value);
+    let data = this.tail.updateChart2(this.chart5);
     this.chart5.setDataFromRaw(data);
-    this.lastSummary = this.tail.getSummary()
-    let leg = [`Differences < ${this.mean_diff}`, `Differences > = ${this.mean_diff}`]
-    let color
-    if (e.target.value == "oneTailRight") {
-      color = [`green`, `red`]
+    this.lastSummary = this.tail.getSummary();
+    let leg = [
+      `Differences < ${this.mean_diff}`,
+      `Differences > = ${this.mean_diff}`,
+    ];
+    let color;
+    if (e.target.value == 'oneTailRight') {
+      color = [`green`, `red`];
+    } else {
+      color = [`red`, `green`];
     }
-    else{
-       color = [`red`, `green`]
-     }
-    this.chart5.setLengend(leg,color)
-    this.chart5.chart.update(0)
-
+    this.chart5.setLengend(leg, color);
+    this.chart5.chart.update(0);
   }
   onFileSelected(e: any) {
     const files = e.target.files || e.dataTransfer?.files;
     if (files.length) {
-      const file = files[0]
+      const file = files[0];
       const filereader = new FileReader();
-      filereader.readAsBinaryString(file)
+      filereader.readAsBinaryString(file);
       filereader.onload = (event: any) => {
-        const wb = XLS.read(filereader.result, { type: 'binary' })
+        const wb = XLS.read(filereader.result, { type: 'binary' });
         const sheets = wb.SheetNames;
         if (sheets.length) {
-          const row = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]])
-          this.csvraw = row
-          this.csv = this.parseData(this.csvraw.trim())
+          const row = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]]);
+          this.csvraw = row;
+          this.csv = this.parseData(this.csvraw.trim());
         }
-      }
+      };
     }
-
   }
 
   onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    this.onFileSelected(event)
+    this.onFileSelected(event);
   }
 }
