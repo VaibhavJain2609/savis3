@@ -12,10 +12,7 @@ describe('InputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InputComponent, LanguageSwitcherComponent],
-      imports: [
-        ReactiveFormsModule,
-        TranslateModule.forRoot()
-      ],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -228,7 +225,7 @@ describe('InputComponent', () => {
       // Verify emitArrayValues was called with the correct parameters
       expect(component.emitArrayValues).toHaveBeenCalledWith([1, 3], [2, 4]);
 
-      expect(component.correlationValue).toBe('1.00');
+      expect(component.correlationValue1).toBe('1.00');
     });
   });
 
