@@ -41,6 +41,8 @@ import { SaveDialogComponent } from './components/save-load-buttons/save-dialog/
 import { LoadDialogComponent } from './components/save-load-buttons/load-dialog/load-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ConfirmationDialogComponent } from './components/save-load-buttons/confirmation-dialog/confirmation-dialog.component';
+import { BarChartComponent } from './features/bar-chart/bar-chart.component';
+import { DotChartComponent } from './features/dot-chart/dot-chart.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -85,7 +87,9 @@ export function setupTranslateFactory(service : TranslateService): Function {
     SaveLoadButtonsComponent,
     SaveDialogComponent,
     LoadDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    BarChartComponent,
+    DotChartComponent
 
   ],
   imports: [
