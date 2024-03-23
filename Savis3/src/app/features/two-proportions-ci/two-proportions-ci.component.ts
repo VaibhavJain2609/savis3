@@ -1,7 +1,5 @@
 
 
-
-
 import { ChartDataSets, ChartOptions, ChartPoint, ChartType, ChartXAxe } from 'chart.js';
 import { BaseChartDirective,Label } from 'ng2-charts';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
