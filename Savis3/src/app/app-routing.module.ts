@@ -16,6 +16,8 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-upload.component';
 import { AboutComponent } from './components/about/about.component';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import { BarChartComponent } from './features/bar-chart/bar-chart.component';
+import { DotChartComponent } from './features/dot-chart/dot-chart.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,7 +36,9 @@ export const routes: Routes = [
   { path: 'homepage', component: HomepageComponent },
   { path: 'csv', component: CsvFileUploadComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'forgotpassword', component: ForgotpasswordComponent }
+  { path: 'forgotpassword', component: ForgotpasswordComponent },
+  { path: 'barchart', component: BarChartComponent },
+  { path: 'dotplot', component: DotChartComponent }
 ];
 
 @NgModule({

@@ -185,8 +185,6 @@
     "homepage_Graphs": "Graphs",
     "homepage_barChart": "Bar Chart",
     "homepage_dotPlot": "Dot Plot",
-
-
     "//two_proportions_confidence_interval": "These are the translations for the Two Proportions Confidence Interval component",
     "tpci_title": "Two Proportions Confidence Interval",
     "tpci_enter_data": "Enter Data",
@@ -210,7 +208,30 @@
     "tpci_standard_deviation": "Standard Deviation:",
     "tpci_lower_bound": "Lower Bound:",
     "tpci_upper_bound": "Upper Bound:",
-    "tpci_total_number_samples": "Total Number of Samples:"
-
-
+    "tpci_total_number_samples": "Total Number of Samples:",
+    "//Login": "These are the translations for the Login component",
+    "Login": "Login",
+    "DontHaveAccount": "Don't have an account",
+    "Signup": "Sign Up",
+    "ContinueAsGuest": "Continue as Guest",
+    "AlreadyHaveAccount": "Already have an account",
+    "Username": "Username",
+    "UsernameRequired": "Username is required",
+    "PasswordRequired": "Password is required",
+    "//Signup": "These are the translations for the Signup component",
+    "FirstName": "First Name",
+    "LastName": "Last Name",
+    "Email": "Email Address",
+    "Password": "Password",
+    "ReEnterPassword": "Re-enter Password",
+    "FirstNameRequired": "First Name is required",
+    "LastNameRequired": "Last Name is required",
+    "EmailRequired": "Email is required and must be a valid email",
+    "PasswordRequiredSignUp": "Password is required, must be at least 8 characters, have one number, one lower and uppercase letter, and one special character",
+    "PasswordMatch": "Password does not match",
+    "//ForgotPassword": "These are the translations for the ForgotPassword component",
+    "Submit": "Submit",
+    "ForgotPassword":"Forgot Password",
+    "BackTo": "Back to",
+    "ValidEmail": "Enter a valid email address"
 }

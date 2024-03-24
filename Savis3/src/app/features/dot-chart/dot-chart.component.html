@@ -1,0 +1,140 @@
+<app-navbar></app-navbar>
+<body class="flex flex-col min-h-screen">
+<div id="dot-chart-tutorial">
+    <h1 class="text-center">Dot Plot</h1>
+    <h3 class="subtitle">1. Enter Data
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showInputForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showInputForm">
+        <div class="data-form">
+            <select id="sample-data-options" (change)="sampleSelect($event)">
+                <option disabled selected>Select sample data</option>
+                <option value="sample1">Sample 1</option>
+                <option value="sample2">Sample 2</option>
+            </select>
+            <textarea
+                [(ngModel)]="csvTextArea"
+                rows="8"
+                id="csv-input"
+                placeholder="Please enter data or drop columns from csv file here (no column titles - see example data in drop down menu)"
+            ></textarea>
+            <button class="btn" id="load-data-btn" (click)="loadDataButton()">Load data</button>
+            <button class="btn" id="reset-btn" (click)="totalReset()">Reset</button>
+            <button class="btn" id="upload-btn">Upload data file</button>
+            <input type="file" id="fileInput" style="display: none;">
+            <br>
+            <form>
+                <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>
+                <label for="population" class="m-1">Population</label>
+                <input type="radio" id="sample-data-ratio" value="sample" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('sample')">
+                <label for="sample" class="m-1">Sample</label>
+            </form>
+            
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                id="input-data-display"
+                readonly
+                class="readonly"
+            >{{ inputDataDisplay }}</textarea>
+            <p>Mean <i>{{ meanSymbol }}</i> :</p>
+            <p>{{ inputDataMean }}</p>
+            <p>Standard Deviation {{ stdSymbol }}:</p>
+            <p>{{ inputDataStd }}</p>
+            <p>Size <i>{{ sizeSymbol }}</i> :</p>
+            <p>{{ inputDataSize }}</p>
+        </div>
+        <div class="chart-wrap">
+            <canvas #inputChart></canvas>
+        </div>
+    </div>
+
+    <div class="green-line"></div>
+
+    <h3>2. Get Sample
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showSampleForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showSampleForm">
+        <div class="data-form">
+            <label for="sample-data-size">Sample size:</label>
+            <input type="number" min="1" step="1" id="sample-data-size" [(ngModel)]="sampleSize" [disabled]="disabledInput">
+            <label for="no-of-sample">Number of simulations</label>
+            <input type="number" min="1" step="1" id="no-of-sample" [(ngModel)]="noOfSim" [disabled]="disabledInput">
+            <br>
+            <button class="btn" id="get-sample-btn" (click)="runSimulationButton()" [disabled]="disabledInput">Run simulations</button>
+            <p id="run-sim-error-msg"></p>
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                readonly
+                class="readonly"
+                id="sample-data-display"
+            >{{ sampleDataDisplay }}</textarea>
+            <p>Mean <i>x̄</i> :</p>
+            <p>{{ sampleDataMean }}</p>
+            <p>Standard Deviation s:</p>
+            <p>{{ sampleDataStd }}</p>
+        </div>
+
+        <div class="chart-wrap">
+            <canvas #sampleChart></canvas>
+        </div>
+    </div>
+
+    <div class="green-line"></div>
+
+    <h3>3. Distribution of sample means
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showMeansForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showMeansForm">
+        <div class="data-form">
+            <p>Means to include in the interval</p>
+
+            <label for="min-tailValue">Min</label>
+            <input type="number" id="min-interValue" step="0.1" [(ngModel)]="minInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
+            <label for="min-tailValue">Include Min?
+                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" [disabled]="sampleMeanDisabled">
+            </label>
+
+            <br>
+
+            <label for="max-tailValue">Max</label>
+            <input type="number" id="max-interValue" step="0.1" [(ngModel)]="maxInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
+            <label for="max-tailValue">Include Max?
+                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="sampleMeanDisabled">
+            </label>
+
+            <br>
+
+            <p>Proportion of samples chosen:</p>
+            <p>{{ sampleMeansChosen }}</p>
+            <p>Proportion of samples unchosen:</p>
+            <p>{{ sampleMeansUnchosen }}</p>
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                readonly
+                class="readonly"
+                id="sample-means-display"
+            >{{ sampleMeansDisplay }}</textarea>
+            <p>Mean of sample means: </p>
+            <p>{{ sampleMeansMean }}</p>
+            <p>Standard Deviation of sample means: </p>
+            <p>{{ sampleMeansStd }}</p>
+            <p>Total samples:</p>
+            <p>{{ sampleMeansSize }}</p>
+        </div>
+
+        <div class="chart-wrap">
+            <canvas #sampleMeansChart></canvas>
+        </div>
+    </div>
+</div>
+<app-footer class="mt-auto"></app-footer>
+</body>
