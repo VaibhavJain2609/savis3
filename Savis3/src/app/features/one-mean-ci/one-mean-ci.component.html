@@ -212,9 +212,9 @@
             <p>{{'omci_TotalSamp' | translate}}
       <span id="total-samples">{{this.meanSamples}}</span></p>
             <p>{{'omci_LowerBound' | translate}}
-      <span id="lower"></span></p>
+      <span id="lower"> {{this.lowerBound95}}</span></p>
             <p>{{'omci_UpperBound' | translate}}
-       <span id="upper"></span></p>
+       <span id="upper">{{this.upperBounds95}}</span></p>
       
       
            <!-- <label for="tailValue"> Sample means at least as extreme as
@@ -233,12 +233,16 @@
           <tr>
             <th>#</th>
             <th>Mean</th>
+            <th>Lower Bound</th>
+            <th>Upper Bound</th>
           </tr>
         </thead>
         <tbody *ngFor="let mean of sampleMeans; let i = index">
         <tr>
           <td>{{i+1}}</td>
           <td>{{mean}}</td>
+          <td>{{this.lowerBounds[i]}}</td>
+          <td>{{this.upperBounds[i]}}</td>
         </tr>
       </tbody>
       </table>

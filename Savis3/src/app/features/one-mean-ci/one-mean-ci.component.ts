@@ -47,13 +47,15 @@ export class OneMeanCIComponent {
   sampleMeans: any = [];
   sampleMeansMean: number = 0;
   sampleMeansStd:number = 0;
+  sampleStds: any = [];
   meanSamples: number = 0;
   extremeSample: number = 0;
   distributionSelected: string = "default";
-
+  sampleStd:  number = 0;
   lowerBound95:number = 0;
   upperBounds95:number =0;
-
+lowerBounds: number[] = [];
+upperBounds: number[] = [];
   // chart data
   public lineChartLegend = true;
   public lineChartType: ChartType = 'scatter';
@@ -564,17 +566,20 @@ export class OneMeanCIComponent {
     }
     // get the mean of the sample
     this.sampleMean = parseFloat(MathService.mean(this.sample).toFixed(2));
+    this.sampleStd = parseFloat(MathService.stddev(this.sample).toFixed(2));
 
     // loop # of samples of times, get a sample size length of the original data and get the mean of each sample
     // clear the sampleMeans array when the sample size changes
     if (this.sampleSizeChange != this.sampleSize) {
       this.sampleSizeChange = this.sampleSize;
       this.sampleMeans = [];
+      this.sampleStds = [];
     }
     
     for (let i = 0; i < this.numSamples; i++) {
       let sample = this.randomSample(this.hypoValuesArray, this.sampleSize);
       this.sampleMeans.push(parseFloat(MathService.mean(sample).toFixed(2)));
+      this.sampleStds.push(parseFloat(MathService.stddev(sample).toFixed(2)));
     }
     this.meanSamples = this.sampleMeans.length;
     this.sampleMeansMean = parseFloat(MathService.mean(this.sampleMeans).toFixed(2));
@@ -621,6 +626,19 @@ export class OneMeanCIComponent {
 
     let points:any = {};
     let pointsArray: any = [];
+    let upperBound: number = this.meanValue + 2 * this.standardDeviation;
+    let lowerBound: number = this.meanValue - 2 * this.standardDeviation;
+    let lowerBounds: number[] = [];
+    let upperBounds: number[] = [];
+    let zScore: number = 1.96;
+    let n: number = this.sampleMeans.length;
+    for(let i = 0; i < n; i++) {
+      lowerBounds.push(this.sampleMeans[i] - (zScore * (this.sampleStds[i] / Math.sqrt(this.sampleSize))));
+      upperBounds.push(this.sampleMeans[i] + (zScore * (this.sampleStds[i] / Math.sqrt(this.sampleSize))));
+    }
+    this.lowerBounds = lowerBounds;
+    this.upperBounds = upperBounds;
+
     for (let i = 0; i < this.sampleMeans.length; i++) {
       let value = this.sampleMeans[i];
       if (points[value] === undefined) {
@@ -631,19 +649,12 @@ export class OneMeanCIComponent {
       pointsArray.push({x: value, y: points[value]});
     }
     console.log(this.distributionSelected);
-    if (this.distributionSelected == "one-right") {
     this.lineChartData4 = [{
-      data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
+      data: pointsArray.map((value: any) => ({ x: value.x, y: value.y })),
       label: 'Sample Means',
-      pointBackgroundColor: pointsArray.map((value:any) => value.x > this.extremeSample ? 'red' : 'orange'),
-    }];
-  } else if (this.distributionSelected == "one-left") {
-    this.lineChartData4 = [{
-      data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-      label: 'Sample Means',
-      pointBackgroundColor: pointsArray.map((value:any) => value.x > this.extremeSample ? 'orange' : 'red'),
-    }];
-  }
+      pointBackgroundColor: pointsArray.map((value: any) => value.x > upperBound || value.x < lowerBound ? 'red' : 'orange'),
+  }];
+  
 }
 
 setMinMax() {
@@ -685,25 +696,4 @@ prepareChartData(data: number[], color: string) {
     pointBackgroundColor: color,
   }];
 }
-// getZScore(confidenceLevel: number): number {
-//   const alpha: number = 1 - confidenceLevel;
-//   const normalDist = new NormalDistribution(0, 1); // Assuming standard normal distribution
-//   return normalDist.invCDF(1 - alpha / 2);
-// }
-// calculateBounds(sampleMeans: number[], sampleStdDev: number, confidenceLevel: number): { lowerBounds: number[], upperBounds: number[] } {
-//   const n: number = sampleMeans.length;
-//   const zScore: number = this.getZScore(confidenceLevel);
-//   const lowerBounds: number[] = [];
-//   const upperBounds: number[] = [];
-
-//   for (let i = 0; i < n; i++) {
-//       const lowerBound: number = sampleMeans[i] - (zScore * (sampleStdDev / Math.sqrt(n)));
-//       const upperBound: number = sampleMeans[i] + (zScore * (sampleStdDev / Math.sqrt(n)));
-//       lowerBounds.push(lowerBound);
-//       upperBounds.push(upperBound);
-//   }
-
-//   return { lowerBounds, upperBounds };
-// }
-  
  }
