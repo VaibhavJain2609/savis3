@@ -79,13 +79,13 @@ export class BarChartComponent implements AfterViewInit{
    */
   datasets: any[] = [
     {
-      label: 'Input data',
+      label: this.translate.instant('barChart_inputData'),
       borderColor: "orange",
       backgroundColor: "orange",
       data: []
     },
     {
-      label: 'Sample drawn',
+      label: this.translate.instant('barChart_sample_drawn'),
       borderColor: 'blue',
       backgroundColor: 'blue',
       data: []
@@ -141,7 +141,7 @@ export class BarChartComponent implements AfterViewInit{
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Proportions',
+                  labelString: this.translate.instant('barChart_proportions'),
                   fontColor: 'black',
                   fontSize: 14,
                   fontStyle: 'bold'
@@ -160,7 +160,7 @@ export class BarChartComponent implements AfterViewInit{
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Categories',
+                  labelString: this.translate.instant('barChart_categories'),
                   fontColor: 'black',
                   fontSize: 14,
                   fontStyle: 'bold'
@@ -204,7 +204,7 @@ export class BarChartComponent implements AfterViewInit{
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Proportion',
+                  labelString: this.translate.instant('barChart_proportions'),
                   fontColor: 'black',
                   fontSize: 14,
                   fontStyle: 'bold'
@@ -223,7 +223,7 @@ export class BarChartComponent implements AfterViewInit{
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Categories',
+                  labelString: this.translate.instant('barChart_categories'),
                   fontColor: 'black',
                   fontSize: 14,
                   fontStyle: 'bold'
@@ -356,14 +356,14 @@ export class BarChartComponent implements AfterViewInit{
       dataDisplay = this.inputDataDisplay
       this.inputDataSizeNum = this.inputDataArray.length.toString()
       this.inputDataTable.nativeElement.style.fontWeight = 'bold'
-      this.inputDataTable.nativeElement.innerText = 'Frequency Table'
+      this.inputDataTable.nativeElement.innerText = this.translate.instant('barChart_frequency_table')
     } else {
       chart = this.sampleChart
       dataArray = this.sampleDataArray
       dataDisplay = this.sampleDataDisplay
       this.sampleDataSizeNum = this.sampleDataArray.length.toString()
       this.sampleDataTable.nativeElement.style.fontWeight = 'bold'
-      this.sampleDataTable.nativeElement.innerText = 'Frequency Table'
+      this.sampleDataTable.nativeElement.innerText = this.translate.instant('barChart_frequency_table')
     }
 
     let valuesArr   = [...dataArray.map(x => x.value)]
@@ -385,9 +385,9 @@ export class BarChartComponent implements AfterViewInit{
     const headerRow = document.createElement('tr')
     const headersTable = [
       'Idx',
-      'Category',
-      'Absolute frequency',
-      'Relative Frequency'
+      this.translate.instant('barChart_category'),
+      this.translate.instant('barChart_absol_freq'),
+      this.translate.instant('barChart_rel_freq')
     ]
 
 

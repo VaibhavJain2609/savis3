@@ -1,32 +1,32 @@
 <app-navbar></app-navbar>
 <div id="bar-chart-tutorial">
-    <h1 class="text-center">Bar Chart</h1>
+    <h1 class="text-center">{{ 'barChart_title' | translate }}</h1>
     <div class="chart-area">
         <div id="control" class="container">
-            <h3>1. Input data</h3>
+            <h3>1. {{ 'barChart_inputData' | translate }}</h3>
             <form>
                 <div class="form-group">
                     <select id="sample-data-options" (change)="sampleSelect($event)">
-                        <option disabled selected>Select sample data</option>
-                        <option value="sample1">Sample 1</option>
-                        <option value="sample2">Sample 2</option>
+                        <option disabled selected>{{ 'barChart_select_sample_data' | translate }}</option>
+                        <option value="sample1">{{ 'barChart_sample1' | translate }}</option>
+                        <option value="sample2">{{ 'barChart_sample2' | translate }}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <textarea name="csvInput" rows="8" id="csv-input" placeholder="Please enter data or drop colum titles from CSV file here" [(ngModel)]="csvTextArea"></textarea>
+                    <textarea name="csvInput" rows="8" id="csv-input" placeholder="{{ 'barChart_placeholder' | translate }}" [(ngModel)]="csvTextArea"></textarea>
                 </div>
                 <div class="form-group">
-                    <button class="btn" id="load-data-btn" (click)="loadDataButton()">Load data</button>
+                    <button class="btn" id="load-data-btn" (click)="loadDataButton()">{{'barChart_loadData' | translate}}</button>
                 </div>
                 <div class="form-group">
-                    <button class="btn" id="reset-btn" (click)="totalReset()">Reset</button>
+                    <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'barChart_reset' | translate }}</button>
                 </div>
                 <div class="form-group">
-                    <button class="btn" id="upload-btn" (click)="triggerFileInput()">Upload data file</button>
+                    <button class="btn" id="upload-btn" (click)="triggerFileInput()">{{ 'barChart_uploadData' | translate }}</button>
                 </div>
                 <input type="file" id="fileInput" #fileInput style="display: none;">
                 <div class="form-group">
-                    <p class="text-display" id="input-data-size-text">Size <i>N</i> : {{ inputDataSizeNum }}</p>
+                    <p class="text-display" id="input-data-size-text">{{ 'barChart_size' | translate }} <i>N</i> : {{ inputDataSizeNum }}</p>
                     <span class="text-error" #input_data_size_number *ngIf="inputErrorMsg">{{ inputErrorMsg }}</span>
                 </div>
             </form>
@@ -45,16 +45,16 @@
 
     <div class="chart-area">
         <div id="control" class="container">
-            <h3>2. Draw Samples</h3>
+            <h3>2. {{ 'barChart_draw_samples' | translate }}</h3>
             <form>
                 <div class="form-group">
-                    <label for="sampleInput">Sample Size:</label>
+                    <label for="sampleInput">{{ 'barChart_sample_size' | translate }}:</label>
                     <input name="sampleInput" type="number" id="sampleInput" min="1" [(ngModel)]="sampleSizeInput" max="10000">
                 </div>
                 <div class="form-group">
-                    <button class="btn" id="get-sample-btn" (click)="updateSampleData()" [disabled]="isInputDataSizeNumNaN()">Rum Simulations</button>
+                    <button class="btn" id="get-sample-btn" (click)="updateSampleData()" [disabled]="isInputDataSizeNumNaN()">{{ 'barChart_run_sim' | translate }}</button>
                 </div>
-                <p class="text-display" id="=sample-data-size-text">Size <i>n</i> : {{ sampleDataSizeNum }}</p>
+                <p class="text-display" id="=sample-data-size-text">{{ 'barChart_size' | translate }} <i>n</i> : {{ sampleDataSizeNum }}</p>
                 <p class="text-error" id="get-sample-error-msg" *ngIf="sampleErrorMsg">{{ sampleErrorMsg }}</p>
             </form>
         </div>

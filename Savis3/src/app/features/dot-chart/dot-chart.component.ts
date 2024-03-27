@@ -97,7 +97,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         data: {
           datasets: [
             {
-              label: 'Input data',
+              label: this.translate.instant('dotPlot_input_data'),
               backgroundColor: 'orange',
               data: []
             }
@@ -116,7 +116,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Data',
+                  labelString: this.translate.instant('dotPlot_data'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -133,7 +133,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Frequencies',
+                  labelString: this.translate.instant('dotPlot_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -160,7 +160,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         data: {
           datasets: [
             {
-              label: 'Last sample drawn',
+              label: this.translate.instant('dotPlot_last_drawn'),
               backgroundColor: 'blue',
               data: []
             },
@@ -179,7 +179,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Data',
+                  labelString: this.translate.instant('dotPlot_data'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -196,7 +196,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Frequencies',
+                  labelString: this.translate.instant('dotPlot_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -223,12 +223,12 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         data: {
           datasets: [
             {
-              label: 'Means in interval',
+              label: this.translate.instant('dotPlot_means_in_interval'),
               backgroundColor: 'green',
               data: []
             },
             {
-              label: 'Means not in interval',
+              label: this.translate.instant('dotPlot_means_not_in_interval'),
               backgroundColor: 'red',
               data: []
             }
@@ -247,7 +247,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Sample Means',
+                  labelString: this.translate.instant('dotPlot_sample_means'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -264,7 +264,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Frequencies',
+                  labelString: this.translate.instant('dotPlot_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -474,7 +474,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         
         dataDisplay = dataArray.reduce(
           (acc, x) => acc + `${x.id}`.padEnd(8, ' ' ) + `${x.value}\n`,
-          `ID`.padEnd(8, ' ') + `Value\n`
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_values')}\n`
         )
 
         if (num === 0) {
@@ -498,7 +498,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         
         dataDisplay = dataArray.reduce(
           (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x}\n`,
-          `ID`.padEnd(8, ' ') + `Mean\n`
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_means')}\n`
         )
 
       }
