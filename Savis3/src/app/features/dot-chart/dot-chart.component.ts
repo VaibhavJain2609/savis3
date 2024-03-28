@@ -498,7 +498,7 @@ export class DotChartComponent implements AfterViewInit, OnInit {
         
         dataDisplay = dataArray.reduce(
           (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x}\n`,
-          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_means')}\n`
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_mean')}\n`
         )
 
       }
