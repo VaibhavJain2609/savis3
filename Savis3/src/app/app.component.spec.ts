@@ -33,6 +33,10 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core"
 import { HttpLoaderFactory } from "./app.module"
 import { LanguageSwitcherComponent } from "./components/language-switcher/language-switcher.component"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { BarChartComponent } from "./features/bar-chart/bar-chart.component"
+import { DotChartComponent } from "./features/dot-chart/dot-chart.component"
+import { SharedService } from "./services/shared.service"
+import { SaveLoadButtonsComponent } from "./components/save-load-buttons/save-load-buttons.component"
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -60,7 +64,10 @@ describe('AppComponent', () => {
         InputComponent,
         NavbarComponent,
         FooterComponent,
-        LanguageSwitcherComponent
+        LanguageSwitcherComponent,
+        SaveLoadButtonsComponent,
+        BarChartComponent,
+        DotChartComponent
       ],
       imports: [
         BrowserModule,
@@ -80,7 +87,8 @@ describe('AppComponent', () => {
       ],
       providers:[
         MathService,
-        { provide: APP_BASE_HREF, useValue: '/' }
+        { provide: APP_BASE_HREF, useValue: '/' },
+        SharedService
       ]
     }).compileComponents()
   })
