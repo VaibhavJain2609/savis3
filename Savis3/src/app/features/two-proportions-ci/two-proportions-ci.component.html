@@ -432,11 +432,11 @@
 
 <app-navbar></app-navbar>
 
-<div id="main-content">
-  <div id="two-proportions">
+<div class="main-content">
+  <div class="two-proportions">
     <h1>{{ 'two_prop_title' | translate }}</h1>
     <h2>1. {{ 'tpci_enter_data' | translate }}</h2>
-    <input type="checkbox" style="float:right" checked/>
+    <!-- <input type="checkbox" style="float:right" checked/> -->
     <div class="section flex-row">
       <div class="rhs">
         <div id="input-section" class="section">
@@ -463,13 +463,13 @@
               </tbody>
             </table>
             <br>
-            <button class="btn" (click)="loadData()">{{ 'tpci_load' | translate }}</button>
+            <button class="btn" (click)="loadData()">{{ 'tpci_load_data' | translate }}</button>
           </div>
         </div>
       
         <!-- Right Column -->
         <div class="rhs">
-          <table style="margin-left: 40em">
+          <table style=" width: 1200px;height: 250px; margin-top: -5rem; margin-left: 40rem; margin-bottom: 3rem;">
             <tr>
               <td style="text-align: right"><span summary="numAFailure" summaryint> {{ numAFailure }}</span> {{ 'tp_failure' | translate }}</td>
               <td rowspan="2" colspan="2">
@@ -488,10 +488,13 @@
                   <label for="multiply-group1" style="font-size: 13px">{{ 'tpci_increase_by' | translate }}</label>
                   <input type="number" step="1" min="10" value="10" id="increment" style="width: 20%; text-align: center" />
                 </div>
-                <div style="width: 10%; margin: auto">
+                <div style="width: 50%; margin: auto">
                   <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
+                    <div style="background-color: rgb(99, 187, 99); border-radius: 50%; width: 30px; height: 30px; color: white; text-align: center; display: inline-block; font-size: 20px; margin-left: 180px; transition-duration: 0.4s; cursor: pointer">
                     <span class="material-icons">+</span>
+                  </div>
                   </button> 
+                
                 </div>
               </td>
               <td><span summary="numBFailure" summaryint>{{ numBFailure }}</span> {{ 'tpci_failures' | translate }}</td>
@@ -508,7 +511,7 @@
   
   <!-- Run Simulations Section -->
   <h2>2. {{ 'tpci_run_simulations' | translate }}</h2>
-  <input type="checkbox" style="float:right" checked/>
+  <!-- <input type="checkbox" style="float:right" checked/> -->
   <div class="section">
     <div class="lhs">
       <label>{{ 'tpci_number_of_simulations' | translate }}:
@@ -532,7 +535,7 @@
     </div>
     <div class="rhs">
       <h3 style="margin-left: 3em">{{ 'tpci_most_recent_draw' | translate }}</h3>
-      <table style="margin-left: 40em">
+      <table style="    width: 1200px;height: 250px; margin-top: -5rem; margin-left: 40rem; margin-bottom: 3rem;">
         <tr>
           <td style="text-align: right">
             <span>{{ sampleAFailure }}</span> {{ 'tpci_failures' | translate }}
@@ -567,7 +570,7 @@
 
   <!-- Sampling Distribution of Difference of Proportions Section -->
   <h2>3. {{ 'tpci_sampling_distribution_difference' | translate }}</h2>
-  <input type="checkbox" style="float:right" checked/>
+  <!-- <input type="checkbox" style="float:right" checked/> -->
   <div class="section flex-row">
     <div class="lhs">
       <div>
@@ -606,6 +609,7 @@
     <td rowspan="2" colspan="2">
       <div class="rhs right-container">
         <table style="margin-left: 60em"></table>
+        <table style="    width: 1200px;height: 250px; margin-top: -5rem; margin-left: 22rem; margin-bottom: 1rem;"></table>
         <div class="chart-container">
           <canvas baseChart
                   [datasets]="barChartData3"
