@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="p-4">
   <div id="two-proportions" class="mb-4">
-    <h1 class="text-2xl font-bold mb-2">{{ 'two_prop_title' | translate }}</h1>
+    <h1 class="text-xl font-bold text-center my-5">{{ 'two_prop_title' | translate }}</h1>
     <h2 class="text-xl font-bold mb-2">{{ 'tp_enter_data' | translate }}</h2>
     <input type="checkbox" class="float-right mr-2" checked />
     <div id="input-section" class="section flex">
@@ -17,16 +17,16 @@
           <tbody>
             <tr>
               <td class="desc">{{ 'tp_successes' | translate }}</td>
-              <td><input type="number" id="a-success" v-model="numASuccess" min="0" step="1"
+              <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"
                   class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
-              <td><input type="number" id="b-success" v-model="numBSuccess" min="0" step="1"
+              <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"
                   class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
             </tr>
             <tr>
               <td class="desc">{{ 'tp_failure' | translate }}</td>
-              <td><input type="number" id="a-failure" v-model="numAFailure" min="0" step="1"
+              <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"
                   class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
-              <td><input type="number" id="b-failure" v-model="numBFailure" min="0" step="1"
+              <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"
                   class="border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg"></td>
             </tr>
           </tbody>
@@ -34,24 +34,35 @@
         <button (click)="loadData()" class="btn border bg-primary text-white px-4 py-2 text-sm font-medium rounded-lg mb-4">Load Data</button>
         <div class="text-sm font-medium mb-3">
           <div class="flex justify-between">
-            <span>{{ 'tp_A_Successes' | translate }} </span>
+            <span>{{ 'tp_A_Successes' | translate }} (p<sub>A</sub>) :</span>
             <span>{{ sampleProportionA }}</span>
           </div>
           <div class="flex justify-between">
-            <span>{{ 'tp_B_Successes' | translate }}</span>
+            <span>{{ 'tp_B_Successes' | translate }} (p<sub>B</sub>) :</span>
             <span>{{ sampleProportionB }}</span>
           </div>
           <div class="flex justify-between">
-            <span>{{ 'tp_diff_1' | translate }}</span>
+            <span>{{ 'tp_diff_1' | translate }} (p<sub>A</sub> - p<sub>B</sub>) :</span>
             <span>{{ sampleProportionDiff }}</span>
           </div>
         </div>
       </div>
       <div class="rhs w-9/12">
-        <div class="chart-wrap"><canvas id="data-chart-1" height="200"></canvas></div>
+        <!-- <div class="chart-wrap"> -->
+          <!-- <div>
+            <p>{{ numASuccess }} successes</p>
+            <p>{{ numAFailure }} failures</p>
+          </div> -->
+          <canvas #chart1 height="200"></canvas>
+          <!-- <div>
+            <p>{{ numBSuccess }} successes</p>
+            <p>{{ numBFailure }} failures</p>
+          </div> -->
+        <!-- </div> -->
       </div>
     </div>
   </div>
+  <div class = "green-line" ></div>
   <div class="flex justify-between">
     <h2 class="text-xl font-bold">{{ 'tp_run_sim_title' | translate }}</h2>
     <input type="checkbox" checked (change)="toggleSection($event,'sectionTwo')">
@@ -68,26 +79,28 @@
       <button [disabled]="true" *ngIf="!activateSim"
         class="mt-1 border bg-gray-400 text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'tp_run_sim' | translate }}
       </button>
+       <hr>
       <div class="text-sm font-medium mb-2">
         <div class="flex justify-between">
-          <span>{{ 'tp_group_A_random_successes' | translate }}</span>
-          <span summary="sampleProportionA">{{simsummary.sampleProportionA}} </span>
+          <span>{{ 'tp_group_A_random_successes' | translate }}  (p<sub>A</sub>) :</span>
+          <span summary="sampleProportionA">{{sampleProportionA_chart2}}</span>
         </div>
         <div class="flex justify-between">
-          <span>{{ 'tp_group_B_random_successes' | translate }}</span>
-          <span summary="sampleProportionB">{{simsummary.sampleProportionB}}</span>
+          <span>{{ 'tp_group_B_random_successes' | translate }} (p<sub>B</sub>) :</span>
+          <span summary="sampleProportionB">{{sampleProportionB_chart2}}</span>
         </div>
         <div class="flex justify-between">
-          <span>{{ 'tp_diff_2' | translate }}</span>
-          <span summary="sampleProportioniff">{{simsummary.sampleProportionDiff}}</span>
+          <span>{{ 'tp_diff_2' | translate }} (p<sub>A</sub> - p<sub>B</sub>) :</span>
+          <span summary="sampleProportioniff">{{sampleProportionDiff_chart2}} </span>
         </div>
       </div>
     </div>
     <div class="rhs w-9/12">
       <h3>{{ 'tp_most_recent' | translate }}</h3>
-      <div class="chart-wrap"><canvas id="data-chart-2" height="200"></canvas></div>
+      <canvas #chart2></canvas>
     </div>
   </div>
+  <div class = "green-line" ></div>
   <div class="flex justify-between">
     <h2 class="text-xl font-bold">{{ 'tp_sampling_distribution' | translate }}</h2>
     <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
@@ -115,7 +128,7 @@
         </div>
         <div class="flex justify-between">
           <span>{{ 'tp_means_sample' | translate }}</span>
-          <span summary="mean">{{simsummary.sampleMeanDiff}}</span>
+          <span summary="mean">{{sampleMeanDiff_chart3}}</span>
         </div>
         <div class="flex justify-between">
           <span>{{ 'tp_standard' | translate }}</span>
@@ -136,9 +149,10 @@
       </div>
     </div>
     <div class="rhs w-9/12">
-      <canvas id="diff-chart"></canvas>
+      <canvas #chart3></canvas>
     </div>
   </div>
 </div>
 
 <app-footer></app-footer>
+<!-- export NODE_OPTIONS=--openssl-legacy-provider -->
