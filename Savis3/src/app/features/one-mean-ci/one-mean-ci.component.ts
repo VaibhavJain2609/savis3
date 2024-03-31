@@ -6,6 +6,7 @@ import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 import * as XLS from 'xlsx';
+import { chatClass } from 'src/app/Utils/stacked-dot';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
@@ -42,7 +43,6 @@ export class OneMeanCIComponent {
   sampleMean: number = 0;
   numSamples: number = 1;
   sample: any = [];
-
   // 4.
   sampleMeans: any = [];
   sampleMeansMean: number = 0;
@@ -54,14 +54,14 @@ export class OneMeanCIComponent {
   sampleStd:  number = 0;
   lowerBound95:number = 0;
   upperBounds95:number =0;
-lowerBounds: number[] = [];
-upperBounds: number[] = [];
+  lowerBounds: number[] = [];
+  upperBounds: number[] = [];
   // chart data
   public lineChartLegend = true;
   public lineChartType: ChartType = 'scatter';
   public lineChartData1: any = [];
   public lineChartLabels1: any = [];
-  
+  chart1: any;
   public lineChartData2: any = [];
   public lineChartLabels2: any = [];
 
@@ -192,20 +192,35 @@ upperBounds: number[] = [];
     // let service = new StackedDotChartService();
     // let chart = service.initChart(this.valuesArray);
     this.lineChartData1 = [{
-      data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
+      data: this.stackData(this.valuesArray),
       label: 'Original Dataset',
       pointBackgroundColor: 'orange',
+      type: 'scatter'
     }];
+    this.chart1 = new chatClass('data-chart-1',this.valuesArray.map((value:number) => ({x: value, y: 1})));
     this.lineChartLabels1 = this.valuesArray.map((index:number) => `Value ${index+1}`);
     this.lineChartData2 = [{
-      data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
+      data: this.stackData(this.valuesArray),
       label: 'Hypothetical Population',
       pointBackgroundColor: 'orange',
     }];
     this.lineChartLabels2 = this.valuesArray.map((index:number) => `Value ${index+1}`);
     this.updateChartOptions();
   }
-
+  stackData(values: number[]): any[] {
+    let stackPoints: any[] = [];
+    let stackCount: { [key: number]: number } = {};
+  
+    // Iterate through values and stack points vertically
+    for (let value of values) {
+      if (!stackCount[value]) {
+        stackCount[value] = 0;
+      }
+      stackPoints.push({ x: value, y: stackCount[value]++ });
+    }
+  
+    return stackPoints;
+  }
   updateChartOptions() {
     let minValue = Math.min(...this.valuesArray);
     let maxValue = Math.max(...this.valuesArray);
@@ -565,8 +580,8 @@ upperBounds: number[] = [];
       this.lineChartLabels3 = sample.map((index:number) => `Value ${index+1}`);
     }
     // get the mean of the sample
-    this.sampleMean = parseFloat(MathService.mean(this.sample).toFixed(2));
-    this.sampleStd = parseFloat(MathService.stddev(this.sample).toFixed(2));
+    this.sampleMean = parseFloat(MathService.mean(this.sampleMeans).toFixed(2));
+    this.sampleStd = parseFloat(MathService.sampleStddev(this.sampleMeans).toFixed(2));
 
     // loop # of samples of times, get a sample size length of the original data and get the mean of each sample
     // clear the sampleMeans array when the sample size changes
@@ -579,11 +594,14 @@ upperBounds: number[] = [];
     for (let i = 0; i < this.numSamples; i++) {
       let sample = this.randomSample(this.hypoValuesArray, this.sampleSize);
       this.sampleMeans.push(parseFloat(MathService.mean(sample).toFixed(2)));
-      this.sampleStds.push(parseFloat(MathService.stddev(sample).toFixed(2)));
-    }
+      this.sampleStds.push(parseFloat(MathService.sampleStddev(sample).toFixed(2)));
+    } 
+    
+    console.log(this.sampleStds)
+
     this.meanSamples = this.sampleMeans.length;
     this.sampleMeansMean = parseFloat(MathService.mean(this.sampleMeans).toFixed(2));
-    this.sampleMeansStd = parseFloat(MathService.stddev(this.sampleMeans).toFixed(2));
+    this.sampleMeansStd = parseFloat(MathService.sampleStddev(this.sampleMeans).toFixed(2));
 
     let points:any = {};
     let pointsArray: any = [];
@@ -602,6 +620,7 @@ upperBounds: number[] = [];
       label: 'Sample Means',
       pointBackgroundColor: 'orange',
     }];
+    this.extremeSampleFunc();
   }
 
   randomSample(arr: any, n: number) { 
@@ -628,16 +647,14 @@ upperBounds: number[] = [];
     let pointsArray: any = [];
     let upperBound: number = this.meanValue + 2 * this.standardDeviation;
     let lowerBound: number = this.meanValue - 2 * this.standardDeviation;
-    let lowerBounds: number[] = [];
-    let upperBounds: number[] = [];
+    let lowerBounds1: number[] = [];
+    let upperBounds1: number[] = [];
     let zScore: number = 1.96;
     let n: number = this.sampleMeans.length;
     for(let i = 0; i < n; i++) {
-      lowerBounds.push(this.sampleMeans[i] - (zScore * (this.sampleStds[i] / Math.sqrt(this.sampleSize))));
-      upperBounds.push(this.sampleMeans[i] + (zScore * (this.sampleStds[i] / Math.sqrt(this.sampleSize))));
+      this.lowerBounds.push(parseFloat((this.sampleMeans[i] - 2 * this.sampleStds[i]).toFixed(2)));
+      this.upperBounds.push(parseFloat((this.sampleMeans[i] + 2 * this.sampleStds[i]).toFixed(2)));
     }
-    this.lowerBounds = lowerBounds;
-    this.upperBounds = upperBounds;
 
     for (let i = 0; i < this.sampleMeans.length; i++) {
       let value = this.sampleMeans[i];
@@ -648,7 +665,8 @@ upperBounds: number[] = [];
       }
       pointsArray.push({x: value, y: points[value]});
     }
-    console.log(this.distributionSelected);
+    console.log(this.lowerBounds);
+    console.log(this.upperBounds);
     this.lineChartData4 = [{
       data: pointsArray.map((value: any) => ({ x: value.x, y: value.y })),
       label: 'Sample Means',

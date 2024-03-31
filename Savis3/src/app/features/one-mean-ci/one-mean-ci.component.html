@@ -57,58 +57,17 @@
         [chartType]="lineChartType"
         height="300"
       ></canvas>
+      <!-- <canvas id="data-chart-1" height="100"></canvas> -->
     </div>
   </div>
 
   <hr class="line-break mt-2">
 
-  <div>
-    <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. {{'hypothetical_pop' | translate}}</h3>
-    <div id="hypothetical-output">
-      <div id="chart-input-form">
-        <label>{{'shift_mean' | translate}}</label>
-        <input type="number" step="0.1" value="0" [(ngModel)]="meanValue" (change)="increaseData()" class="border border-gray-300 rounded-md pl-2">
-        <label>{{'increase_data' | translate}} <span>{{rangeValue}}</span> times</label>
-        <input type="range" min="1" max="50" step="1" value="1" [(ngModel)]="rangeValue" (change)="increaseRange()">
-      </div>
-      <div id="display-container">
-      <div class="data-display">
-        <table id="hypothetical-data-table">
-          <thead *ngIf="hypoValuesArray.length > 0">
-            <tr>
-              <th>ID</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let value of hypoValuesArray; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{value}}</td>
-          </tr>
-        </tbody>
-        </table>
-      </div>
-      <div id="p-display">
-        <p id="mean-display">{{'mean' | translate}}: {{hypoInputMean}}</p>
-        <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
-      </div>
-    </div>
-      <div id="chart-wrap">
-        <canvas baseChart
-          [datasets]="lineChartData2"
-          [labels]="lineChartLabels2"
-          [options]="lineChartOptions2"
-          [legend]="lineChartLegend"
-          [chartType]="lineChartType"
-          height="300"
-        ></canvas>
-      </div>
-    </div>
-  </div>
+  
   
   <hr class="line-break">
   
-  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">3. {{'draw_sample' | translate}}</h3>
+  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. {{'draw_sample' | translate}}</h3>
   <div id="sample-container">
     <div id="chart-input-form">
       
@@ -126,18 +85,23 @@
         <thead *ngIf="sample.length > 0">
           <tr>
             <th>ID</th>
-            <th>Value</th>
+            <th>Mean</th>
+            <th>Standard Deviation</th>
           </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let value of sample; let i = index">
+        <tr *ngFor="let value of sampleMeans; let i = index">
           <td> {{i+1}} </td>
           <td>{{value}}</td>
+          <td>
+            {{sampleStds[i]}}
+          </td>
         </tr>
       </tbody>
       </table>
   </div>
     <p>{{'mean' | translate}}: {{this.sampleMean}}</p>
+    <p>{{'standard_deviation' | translate}}: {{this.sampleStd}}</p>
   </div>
 
   
@@ -160,7 +124,7 @@
     <hr class="line-break">
   
     <div>
-      <h3 id="subtitle">4.{{'omci_setMinMax' | translate }}</h3>
+      <h3 id="subtitle">3.{{'omci_setMinMax' | translate }}</h3>
       <div id="hypothetical-output">
         <div id="chart-input-form">
           <label>{{'omci_Enter_min' | translate }}: </label>
@@ -204,7 +168,7 @@
     </div>
     
     <hr class="line-break">
-    <h3>5. {{'omci_Sample95' | translate}}</h3>
+    <h3>4. {{'omci_Sample95' | translate}}</h3>
     <div id="sampling-container">
     <div id="section-4-div">
         <div class="data-form">
