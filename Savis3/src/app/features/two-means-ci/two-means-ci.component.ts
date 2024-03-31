@@ -6,6 +6,7 @@ import { chatClass } from 'src/app/Utils/stacked-dot';
 import { Sampling } from 'src/app/Utils/sampling';
 import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
+import { MathService } from 'src/app/Utils/math.service';
 @Component({
   selector: 'app-two-mean-ci',
   templateUrl: './two-means-ci.component.html',
@@ -20,6 +21,7 @@ export class TwoMeansCIComponent implements OnInit {
   multiplier: number = 1
   mean_diff: number = 0
   numofSem: number = 1
+  confidenceLevel:number = 95
   increment: number = 10
   samDisActive = false
   lastSummary: any
@@ -31,8 +33,11 @@ export class TwoMeansCIComponent implements OnInit {
   minmax: any
   stDev1: number = 0
   stDev2: number = 0
+  meansOfMeans: any = []
   csvraw: any
   csv: any
+  lowerBound: number = 0
+  upperBound: number = 0
   sections: any = {
     sectionOne: true,
     sectionTwo: true,
@@ -126,16 +131,25 @@ export class TwoMeansCIComponent implements OnInit {
 
   incrementYValues(chartIdentifier: string): void {
     let chartToIncrement: any;
-
-    if (chartIdentifier === 'chart1') {
+  
+    if (chartIdentifier === 'chart1') { 
       chartToIncrement = this.chart1;
     } else if (chartIdentifier === 'chart2') {
       chartToIncrement = this.chart2;
     }
+
+    console.log(chartToIncrement)
+    console.log(chartToIncrement.chart.config)
+    let maxY = Number.MIN_SAFE_INTEGER;
+    let minY = Number.MAX_SAFE_INTEGER;
+
     console.log('Before update', chartToIncrement.chartData);
     if (chartToIncrement && this.multiplier) {
-      chartToIncrement.chartData.forEach((dataset: any) => {
+      chartToIncrement.chart.config.data.datasets.forEach((dataset: any) => {
         dataset.data = dataset.data.map((point: any) => {
+          let newY = (typeof point.y !== 'undefined' ? point.y * this.multiplier : point * this.multiplier);
+          if (newY > maxY) maxY = newY;
+          if (newY < minY) minY = newY;
           if (typeof point === 'object' && point.y !== undefined) {
             return { x: point.x, y: point.y * this.multiplier };
           } else if (typeof point === 'number') {
@@ -145,10 +159,18 @@ export class TwoMeansCIComponent implements OnInit {
         });
       });
       console.log('After update', chartToIncrement.chartData);
-      // Assuming you have a method to update the chart
-      //chartToIncrement.updateChart();
+      // Call the update method on the chart
+      if (chartToIncrement.chart.options.scales.yAxes) {
+        chartToIncrement.chart.options.scales.yAxes[0].ticks.min = minY;
+        chartToIncrement.chart.options.scales.yAxes[0].ticks.max = maxY;
+      } else if (chartToIncrement.chart.options.scales.y) { // For Chart.js 3.x
+        chartToIncrement.chart.options.scales.y.min = minY;
+        chartToIncrement.chart.options.scales.y.max = maxY;
+      }
+      chartToIncrement.chart.update(); // Assuming this is the correct method to update your chart
     }
   }
+  
   calculateMean(data: number[]) {
     if (data.length === 0) {
       return 0;
@@ -166,8 +188,21 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart2.chart.update(0)
     this.chart3.chart.update(0)
     this.chart4.chart.update(0)
-  }
+    this.chart1.options.scales.yAxes[0].ticks.min = 0
 
+    this.chart1.options.scales.yAxes[0].ticks.max = 10
+  }
+  resetAxis(chartInstance: any) {
+    if (chartInstance.chart.options.scales.yAxes) {
+        // Reset for Chart.js 2.x
+        chartInstance.chart.options.scales.yAxes[0].ticks.min = 'auto';
+        chartInstance.chart.options.scales.yAxes[0].ticks.max = 'auto';
+    } else if (chartInstance.chart.options.scales.y) {
+        // Reset for Chart.js 3.x
+        chartInstance.chart.options.scales.y.min = 'auto';
+        chartInstance.chart.options.scales.y.max = 'auto';
+    }
+}
   async ngOnInit() {
     this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
     this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
@@ -304,7 +339,7 @@ export class TwoMeansCIComponent implements OnInit {
       let stdevSim2 = this.calculateStandardDeviation(sampleValues[1]);
       let sampleDiffOfMeans = mean1 - mean0;
       results.push(sampleDiffOfMeans);
-
+      this.meansOfMeans.push(sampleDiffOfMeans)
       this.simsummary = {
         sampleMean1: Number(mean0.toFixed(3)),
         sampleMean2: Number(mean1.toFixed(3)),
@@ -315,6 +350,7 @@ export class TwoMeansCIComponent implements OnInit {
       this.tail.addAllResults(results)
     }
     this.samDisActive = true
+    this.confidenceInteval()
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
@@ -348,6 +384,41 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart5.setLengend(leg,color)
     this.chart5.chart.update(0)
 
+  }
+  confidenceInteval(){
+    let sumOfMeans = this.meansOfMeans.reduce((a: any, b:any) => a + b, 0);
+    let stdev: number = parseFloat(MathService.sampleStddev(this.meansOfMeans).toFixed(2));
+    let lowerBound: number = sumOfMeans - 2 * stdev
+    let upperBound: number = sumOfMeans + 2* stdev
+    let invalidValues: number[] = [];
+    let valid: number[] = [];
+    console.log(this.meansOfMeans[0])
+this.meansOfMeans.forEach((mean: number) => {
+  if (mean < lowerBound || mean > upperBound) {
+    // Do something with the value if needed
+    console.log(`Invalid value: ${mean}`);
+    invalidValues.push(mean);
+  }
+  else valid.push(mean);
+});
+let chartData = [
+  {
+    label: 'Valid Data',
+    data: valid.map((value: number) => ({ x: value, y: 0 })), // Assuming a simple scatter plot on the X-axis
+    backgroundColor: 'green', // Valid data points in green
+    pointRadius: 5,
+  },
+  {
+    label: 'Invalid Data',
+    data: invalidValues.map(value => ({ x: value, y: 0 })), // Assuming a simple scatter plot on the X-axis
+    backgroundColor: 'red', // Invalid data points in red
+    pointRadius: 5,
+  }
+];
+
+// Assuming chart4 is already initialized and is a Chart.js instance
+this.chart5.chart.config.data.datasets = chartData;
+this.chart5.chart.update();
   }
   onFileSelected(e: any) {
     const files = e.target.files || e.dataTransfer?.files;
