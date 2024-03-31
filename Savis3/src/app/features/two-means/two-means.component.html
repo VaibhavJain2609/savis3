@@ -21,6 +21,7 @@
             placeholder="{{ 'tm_text_box1' | translate }}"></textarea>
         </div>
         <button (click)="loadData()"
+          id="loadData"
           class="mt-1 border bg-primary text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'tm_load' | translate }}</button>
         <button (click)="onResetChart()"
           class="mt-1 border bg-primary text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'tm_reset' | translate }}</button>
@@ -62,6 +63,8 @@
       </div>
     </div>
   </div>
+  <div class="green-line"></div>
+
   <div class="flex justify-between">
     <h2 class="text-xl font-bold">{{ 'tm_run_sim_title' | translate }}</h2>
     <input type="checkbox" checked (change)="toggleSection($event,'sectionTwo')">
@@ -101,6 +104,8 @@
       <div class="chart-wrap"><canvas id="data-chart-4" height="200"></canvas></div>
     </div>
   </div>
+  <div class="green-line"></div>
+
   <div class="flex justify-between">
 
     <h2 class="text-xl font-bold">{{ 'tm_sampling_distribution' | translate }}
