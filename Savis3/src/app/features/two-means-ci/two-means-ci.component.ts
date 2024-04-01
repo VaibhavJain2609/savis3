@@ -18,7 +18,7 @@ export class TwoMeansCIComponent implements OnInit {
   dataSize2: number = 0
   datamean2: number = 0
   datamean1: number = 0
-  multiplier: number = 1
+  multiplier: number = 10
   mean_diff: number = 0
   numofSem: number = 1
   confidenceLevel:number = 95
@@ -33,6 +33,7 @@ export class TwoMeansCIComponent implements OnInit {
   minmax: any
   stDev1: number = 0
   stDev2: number = 0
+  incrementPerformed: boolean = false;
   meansOfMeans: any = []
   csvraw: any
   csv: any
@@ -130,6 +131,7 @@ export class TwoMeansCIComponent implements OnInit {
   }
 
   incrementYValues(chartIdentifier: string): void {
+    this.incrementPerformed = true;
     let chartToIncrement: any;
   
     if (chartIdentifier === 'chart1') { 
@@ -207,6 +209,7 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
     this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
     this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
+    console.log(this.datasets[3])
     this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
     this.chart5 = new chatClass("diff-chart", this.datasets[0]);
    
@@ -273,6 +276,7 @@ export class TwoMeansCIComponent implements OnInit {
   runSimulations(): void {
     // You should implement your simulation logic here
     // For simplicity, I'm just logging the number of simulations
+    
     console.log('Running', this.numberOfSimulations, 'simulations');
   }
 
@@ -311,24 +315,41 @@ export class TwoMeansCIComponent implements OnInit {
     return Object.values(faceted);
   }
 
-  runSim() {
+  runSim() {{
+    if (!this.incrementPerformed) {
+      alert('Please increment values before running the simulation.');
+      return;
+    }
+    // Proceed with simulation...
+  }
+    
     let numSims = this.numofSem * 1;
     let results = [];
     for (let simIdx = 0; simIdx < numSims; simIdx++) {
       let allData = [];
+      // Add items with datasetId to distinguish between groups
       for (let item of this.csv[0]) {
-        allData.push({ datasetId: 0, value: item });
+        allData.push({ datasetId: 0, value: item }); // Group 1
       }
       for (let item of this.csv[1]) {
-        allData.push({ datasetId: 1, value: item });
+        allData.push({ datasetId: 1, value: item }); // Group 2
       }
       if (allData.length === 0) {
         return;
       }
+      // Perform the random subset selection
       let { chosen, unchosen } = this.smp.randomSubset(allData, this.csv[0].length);
-      this.chart3.setDataFromRaw(this.addSimulationSample(chosen));
-      this.chart4.setDataFromRaw(this.addSimulationSample(unchosen));
+  
+      // Filter chosen for Group 1 and unchosen for Group 2
+      let chosenGroup1 = chosen.filter(item => item.datasetId === 0);
+      let unchosenGroup2 = unchosen.filter(item => item.datasetId === 1);
+  
+      // Set the data for chart3 and chart4
+      this.chart3.setDataFromRaw(this.addSimulationSample(chosenGroup1));
+      this.chart4.setDataFromRaw(this.addSimulationSample(unchosenGroup2));
       this.chart3.chart.update();
+      this.chart4.chart.update();
+  
       this.chart4.chart.update();
 
       // TODO(matthewmerrill): This is very unclear.
@@ -438,7 +459,64 @@ this.chart5.chart.update();
     }
 
   }
-
+  buildci() {
+    console.log('buildci function is called');
+    if (!this.meansOfMeans || this.meansOfMeans.length === 0) {
+      alert('No simulation data available to build confidence intervals.');
+      return;
+    }
+  
+    const standardError = this.stDev1 / Math.sqrt(this.dataSize1); // Example calculation
+    const zScore = MathService.z_score_alpha_2(this.confidenceLevel);
+    const marginOfError = zScore * standardError;
+    
+    this.lowerBound = this.mean_diff - marginOfError;
+    this.upperBound = this.mean_diff + marginOfError;
+  
+    const temp: number[] = [...this.meansOfMeans];
+    temp.sort((a, b) => a - b);
+  
+    const [chosen, unchosen] = this.splitUsing(temp, (val) => val >= this.lowerBound && val <= this.upperBound);
+  
+    // Preparing data for the chart
+    let chosenData = chosen.map(val => ({ x: val, y: 0 })); // Assuming a scatter plot
+    let unchosenData = unchosen.map(val => ({ x: val, y: 0 })); // Assuming a scatter plot
+  
+    // Update the chart data for chart5
+    this.chart5.chartData = [
+      {
+        label: 'Within Interval',
+        data: chosenData,
+        backgroundColor: 'green',
+      },
+      {
+        label: 'Outside Interval',
+        data: unchosenData,
+        backgroundColor: 'red',
+      }
+    ];
+  
+    // Update the chart if it's already rendered
+    if (this.chart5 && this.chart5.chart) {
+      this.chart5.chart.update();
+    }
+  }
+  
+  
+  splitUsing(data: number[], conditionFunc: (val: number) => boolean): [number[], number[]] {
+    let chosen: number[] = [];
+    let unchosen:number[] = [];
+  
+    data.forEach(item => {
+      if (conditionFunc(item)) {
+        chosen.push(item);
+      } else {
+        unchosen.push(item);
+      }
+    });
+  
+    return [chosen, unchosen];
+  }
   onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
