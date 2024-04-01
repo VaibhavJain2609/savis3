@@ -135,6 +135,7 @@ export class TwoMeansComponent implements OnInit {
     this.chart2.chart.update(0)
     this.chart3.chart.update(0)
     this.chart4.chart.update(0)
+    console.log("chart reset")
   }
 
   async ngOnInit() {

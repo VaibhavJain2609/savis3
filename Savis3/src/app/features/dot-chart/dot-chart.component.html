@@ -26,6 +26,7 @@
             <form>
                 <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>
                 <label for="population" class="m-1">{{ 'dotPlot_population' | translate }}</label>
+                <br>
                 <input type="radio" id="sample-data-ratio" value="sample" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('sample')">
                 <label for="sample" class="m-1">{{ 'dotPlot_sample' | translate }}</label>
             </form>
@@ -61,6 +62,7 @@
             <label for="sample-data-size">{{ 'dotPlot_sample_size' | translate }}:</label>
             <input type="number" min="1" step="1" id="sample-data-size" [(ngModel)]="sampleSize" [disabled]="disabledInput">
             <label for="no-of-sample">{{ 'dotPlot_num_sim' | translate }}</label>
+            <br>
             <input type="number" min="1" step="1" id="no-of-sample" [(ngModel)]="noOfSim" [disabled]="disabledInput">
             <br>
             <button class="btn" id="get-sample-btn" (click)="runSimulationButton()" [disabled]="disabledInput">{{ 'dotPlot_run_sim' | translate }}</button>
@@ -102,7 +104,7 @@
 
             <br>
 
-            <label for="max-tailValue">{{ 'dotPlot_include_max' | translate }}</label>
+            <label for="max-tailValue">{{ 'dotPlot_max' | translate }}</label>
             <input type="number" id="max-interValue" step="0.1" [(ngModel)]="maxInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             <label for="max-tailValue">{{ 'dotPlot_include_max' | translate }}
                 <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="sampleMeanDisabled">
