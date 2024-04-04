@@ -1,387 +1,507 @@
-import { ChartDataSets, ChartOptions, ChartPoint, ChartType, ChartXAxe } from 'chart.js';
-import { BaseChartDirective,Label } from 'ng2-charts';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StackedDotChartService } from 'src/app/Utils/stacked-dot-chart.service';
-import { MathService } from 'src/app/Utils/math.service';
-import { SamplingService } from 'src/app/Utils/sampling.service';
-import { SummaryService } from 'src/app/Utils/summaries.service';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Chart, ChartPoint } from 'chart.js';
 
 @Component({
   selector: 'app-two-proportions-ci',
   templateUrl: './two-proportions-ci.component.html',
-  styleUrls: ['./two-proportions-ci.component.scss', './../scss/base.scss']
+  styleUrls: ['./two-proportions-ci.component.scss']
 })
-export class TwoProportionsCIComponent implements OnInit {
+export class TwoProportionsCIComponent implements AfterViewInit {
+  @ViewChild('chart1') chart1Ref: ElementRef<HTMLCanvasElement>
+  @ViewChild('chart2') chart2Ref: ElementRef<HTMLCanvasElement>
+  @ViewChild('chart3') chart3Ref: ElementRef<HTMLCanvasElement>
 
-  successA: number = 0;
-  failureA: number = 0;
-  successB: number = 0;
-  failureB: number = 0;
-  numASuccess: number = 0;
-  numAFailure: number = 0;
-  numBSuccess: number = 0;
-  numBFailure: number = 0;
-  numSimulations: number = 1;
-  confidenceLevel: number = 95;
-  sampleProportionA: number | null = null;
-  sampleProportionB: number | null = null;
-  sampleProportionDiff: number | null = null;
-  sampleAFailure: number | null = null;
-  sampleASuccess: number | null = null;
-  sampleBFailure: number | null = null;
-  sampleBSuccess: number | null = null;
-  isDataLoaded: boolean = false;
-  proportionDiff: number | null = null;
-  meanSampleDiffs: number | null = null;
-  stddevSampleDiffs: number | null = null;
-  lowerBound: number | null = null;
-  upperBound: number | null = null;
-  totalSamples: number | null = null;
-  minHeads: number = 0;
-  maxHeads: number = 0;
+  chart1: Chart
+  chart2: Chart
+  chart3: Chart
 
+  numASuccesses: number = 0
+  numAFailures: number = 0
+  numBSuccesses: number = 0
+  numBFailures: number = 0
 
+  simASuccesses: number = NaN
+  simAFailures: number = NaN
+  simBSuccesses: number = NaN
+  simBFailures: number = NaN
 
-  public barChartType1: ChartType = 'bar';
-  public barChartType2: ChartType = 'scatter';
+  confidenceLevel: number = 95
 
+  simulations: any[] = []
+  numSimulations: number = 1
 
+  inputProportionsGroupA = 'NaN'
+  inputProportionsGroupB = 'NaN'
+  inputDifferenceProportions = 'NaN'
 
- public barChartData1: ChartDataSets[] = [
-  {
-    label: 'Group A',
-    backgroundColor: ['green', 'red'], // Colors for success and failure bars for Group A
-    hoverBackgroundColor: ['green', 'red'],
-    data: [this.successA, this.failureA], // Data points for success and failure for Group A
-  },
-  {
-    label: 'Group B',
-    backgroundColor: ['green', 'red'], // Colors for success and failure bars for Group B
-    hoverBackgroundColor: ['green', 'red'],
-    data: [this.successB, this.failureB], // Data points for success and failure for Group B
-  },
-];
+  simulationProportionGroupA = 'NaN'
+  simulationProportionGroupB = 'NaN'
+  simulationDifferenceProportions = 'NaN'
+  simMean = 'NaN'
+  simStdDev = 'NaN'
+  simTotal = 'NaN'
 
-public barChartLabels1: string[] = ['Group A', 'Group B']; // Labels for the data points
+  lowerBound = 'NaN'
+  upperBound = 'NaN'
 
+  constructor(
+    private translate: TranslateService
+  ){
 
-
-public barChartData2: ChartDataSets[] = [
-  {
-    label: 'Group A',
-    backgroundColor: ['green', 'red'], // Colors for success and failure bars for Group A
-    hoverBackgroundColor: ['green', 'red'],
-    data: [this.sampleASuccess, this.sampleAFailure], // Data points for success and failure for Group A
-  },
-  {
-    label: 'Group B',
-    backgroundColor: ['green', 'red'], // Colors for success and failure bars for Group B
-    hoverBackgroundColor: ['green', 'red'],
-    data: [this.sampleBSuccess, this.sampleBFailure], // Data points for success and failure for Group B
-  },
-];
-
-public barChartLabels2: string[] = ['Group A', 'Group B']; // Labels for the data points
-
-
-
-
-  public barChartData3: ChartDataSets[] =[
-    {
-      label: 'Values in Interval',
-      backgroundColor: 'green',
-      //hoverBackgroundColor: 'green',
-      data: [],
-      borderColor: 'green'
-    },
-    {
-      label: 'Values not in Interval',
-      backgroundColor: 'red',
-      //hoverBackgroundColor: 'red',
-      data: [],
-      borderColor: 'red'
-    },
-  ];
-  public barChartLabels3: any = [];
-  
-  public barChartOptions1: any={
-    responsive: true,
-    tooltips: {
-      callbacks: {
-        label: (tooltipItem: any, data: any) => {
-          const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-          const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          return `${datasetLabel}: ${value}%`; // Add your custom text
-        }
-      }
-    },
-    scales:{
-      xAxes:[
-        {
-          stacked: true,
-          ticks:{
-            beginsAtZero: true,
-          },
-          scaleLabel:{
-            display: true,
-            labelString: 'Data'
-          }
-        }
-      ],
-      yAxes:[
-        {
-          id: 'groupAAxis',
-          stacked: true,
-          ticks:{
-            min:0,
-            max:100,
-            stepSize:20,
-            beginsAtZero: true,
-          },
-          scaleLabel:{
-            display: true,
-          }
-        },
-      ],
-    },
-    maintainAspectRatio: false,
-  };
-
-  public barChartOptions2: any={
-    responsive: true,
-    tooltips: {
-      callbacks: {
-        label: (tooltipItem: any, data: any) => {
-          const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-          const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-          return `${datasetLabel}: ${value}%`; // Add your custom text
-        }
-      }
-    },
-    scales:{
-      xAxes:[
-        {
-          stacked: true,
-          ticks:{
-            beginAtZero: true,
-          },
-          scaleLabel:{
-            display: true,
-            labelString: 'Data'
-          }
-        }
-      ],
-      yAxes:[
-        {
-          id: 'groupAAxis',
-          stacked: true,
-          ticks:{
-            beginAtZero: true,
-            min:0,
-            max:100,
-            stepSize:20
-          },
-          scaleLabel:{
-            display: true,
-          }
-        },
-      ],
-    },
-    maintainAspectRatio: false,
-  };
-
-  public barChartOptions3: any={
-    responsive: true,
-    scales:{
-      xAxes:[
-        {
-          type: 'linear', // Important for scatter chart
-          position: 'bottom',
-          ticks:{
-            max:1,
-            //min:-1,
-            stepSize: 0.2, 
-            beginsAtZero: true,
-          },
-          scaleLabel: {
-            display:true,
-          }
-        },
-      ],
-      yAxes:[
-        {
-          ticks:{
-            min:1,
-            stepSize:1,
-            beginsAtZero: true,
-          },
-          scaleLabel:{
-            display:true,
-          }
-        }
-      ]
-    },
-    maintainAspectRatio: false,
-  };
-
-  
-  constructor(private cdr: ChangeDetectorRef) { }
-
-  ngOnInit(): void {
-    this.numASuccess = 0;
-    this.numAFailure = 0;
-    this.numBSuccess = 0;
-    this.numBFailure = 0;
-    this.updateChartData();
-
-    this.numSimulations = 2 //Number of dots on the chart3
   }
 
-  loadData(): void {
-    this.updateChartData();
-    this.sampleProportionA = this.numASuccess / (this.numASuccess + this.numAFailure);
-    this.sampleProportionB = this.numBSuccess / (this.numBSuccess + this.numBFailure);
-    this.sampleProportionDiff = (this.sampleProportionA ?? 0) - (this.sampleProportionB ?? 0);
-    this.sampleAFailure = Math.floor(Math.random() * 10);
-    this.sampleASuccess = Math.floor(Math.random() * 10);
-    this.sampleBFailure = Math.floor(Math.random() * 10);
-    this.sampleBSuccess = Math.floor(Math.random() * 10);
-    this.isDataLoaded = true;
+  ngAfterViewInit(): void {
+    this.createChart1()
+    this.createChart2()
+    this.createChart3()
   }
 
-
-
-
-
-  runSimulations(): void {
-    this.sampleAFailure = Math.floor(Math.random() * 10);
-    this.sampleASuccess = Math.floor(Math.random() * 10);
-    this.sampleBFailure = Math.floor(Math.random() * 10);
-    this.sampleBSuccess = Math.floor(Math.random() * 10);
-
-    // Calculate the total for each group
-    const sampleTotalA = this.sampleASuccess + this.sampleAFailure;
-    const sampleTotalB = this.sampleBSuccess + this.sampleBFailure;
-
-    // Calculate the percentages
-    const samplePercentASuccess = sampleTotalA > 0 ? (this.sampleASuccess / sampleTotalA) * 100 : 0;
-    const samplePercentAFailure = sampleTotalA > 0 ? (this.sampleAFailure / sampleTotalA) * 100 : 0;
-    const samplePercentBSuccess = sampleTotalB > 0 ? (this.sampleBSuccess / sampleTotalB) * 100 : 0;
-    const samplePercentBFailure = sampleTotalB > 0 ? (this.sampleBFailure / sampleTotalB) * 100 : 0;
-
-    // Update Chart 2 Data
-    this.barChartData2 = [
-        { data: [samplePercentASuccess, samplePercentBSuccess], label: 'Sample % Success', backgroundColor: 'rgba(0, 250, 0, 0.7)' },
-        { data: [samplePercentAFailure, samplePercentBFailure], label: 'Sample % Failure', backgroundColor: 'rgba(255, 0, 0, 0.7)' }
-    ];
-
-    this.buildConfidenceInterval();
-}
-
-
-
-  
-
-
-  buildConfidenceInterval(): void {
-    if (this.numSimulations <= 1) {
-      console.error('Number of simulations is too low to calculate a meaningful confidence interval.');
-      return;
+  createChart1(){
+    const ctx = this.chart1Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart1 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Group A', 'Group B'],
+          datasets: [
+            {
+              label: '% Successes',
+              backgroundColor: 'green',
+              data: [0, 0]
+            },
+            {
+              label: '% Failures',
+              backgroundColor: 'red',
+              data: [0, 0]
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes:[
+              {
+                stacked: true,
+                ticks: {
+                  max: 100,
+                }
+              }
+            ],
+            yAxes: [
+              {
+                id: 'groupAAxis',
+                stacked: true,
+                ticks: {
+                  max: 100,
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      })
     }
-  
-    this.proportionDiff = (this.sampleProportionA ?? 0) - (this.sampleProportionB ?? 0);
-    const sampleDifferences: number[] = [];
-    for (let i = 0; i < this.numSimulations; i++) {
-      const sampleProportionASim = Math.random(); // Adjust as per your data distribution
-      const sampleProportionBSim = Math.random(); // Adjust as per your data distribution
-      const sampleProportionDiffSim = sampleProportionASim - sampleProportionBSim;
-      sampleDifferences.push(sampleProportionDiffSim);
+  }
+
+  createChart2(){
+    const ctx = this.chart2Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart2 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Group A', 'Group B'],
+          datasets: [
+            {
+              label: '% Successes',
+              backgroundColor: 'green',
+              data: [0, 0]
+            },
+            {
+              label: '% Failures',
+              backgroundColor: 'red',
+              data: [0, 0]
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes:[
+              {
+                stacked: true,
+                ticks: {
+                  max: 100,
+                }
+              }
+            ],
+            yAxes: [
+              {
+                id: 'groupAAxis',
+                stacked: true,
+                ticks: {
+                  max: 100,
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      })
     }
-  
-    const sumSampleDifferences = sampleDifferences.reduce((acc, curr) => acc + curr, 0);
-    this.meanSampleDiffs = sumSampleDifferences / this.numSimulations;
-  
-    const squaredDifferences = sampleDifferences.map(diff => Math.pow(diff - this.meanSampleDiffs, 2));
-    const sumSquaredDifferences = squaredDifferences.reduce((acc, curr) => acc + curr, 0);
-    this.stddevSampleDiffs = Math.sqrt(sumSquaredDifferences / this.numSimulations);
-  
-    console.log('Sample Differences:', sampleDifferences);
-    console.log('Mean of Sample Differences:', this.meanSampleDiffs);
-    console.log('Standard Deviation of Sample Differences:', this.stddevSampleDiffs);
-  
-    if (this.stddevSampleDiffs === 0) {
-      console.error('Standard deviation is zero, indicating no variability in sample differences.');
-      return;
+  }
+
+  createChart3(){
+    const ctx = this.chart3Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart3 = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: 'Values in Interval',
+              backgroundColor: 'green',
+              data: []
+            },
+            {
+              label: 'Values not in Interval',
+              backgroundColor: 'red',
+              data: []
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: ''
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: ''
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontStyle: '16',
+          },
+          animation: {
+            duration: 0
+          },
+          elements: {
+            point: {
+              radius: 10
+            }
+          }
+        }
+      })
     }
+  }
+
+  loadData() {
+    let numASuccess = this.numASuccesses * 1
+    let numAFailures = this.numAFailures * 1
+    let numBSuccesses = this.numBSuccesses * 1
+    let numBFailures = this.numBFailures * 1
+
+    if(numASuccess <= 0 || numAFailures <= 0 || numBSuccesses <= 0 || numBFailures <= 0){
+      alert('Group A and Group B must have at least 1 success and 1 failure')
+    } else {
+      this.resetLastChart()
+
+      this.inputProportionsGroupA = (numASuccess / (numASuccess + numAFailures)).toString()
+      this.inputProportionsGroupB = (numBSuccesses / (numBSuccesses + numBFailures)).toString()
+      this.inputDifferenceProportions = (Number(this.inputProportionsGroupA) - Number(this.inputProportionsGroupB)).toString()
+
+      this.setProportions(this.chart1, { numASuccess, numAFailures, numBSuccesses, numBFailures })
+      this.chart1.update()
+
+      this.setProportions(this.chart2, {
+        numASuccess: 0,
+        numAFailures: 0,
+        numBSuccesses: 0,
+        numBFailures: 0
+      })
+      this.chart2.update()
+    }
+  }
+
+  samplePot(total: any, success: any, sampleSize: any) {
+    const items = new Array(total)
+    items.fill(0)
+    items.fill(1, 0, success)
+    const shuffled = this.shuffle(items)
+    const {chosen} = this.randomSubset(shuffled, sampleSize)
+    const successes = this.countWhere(chosen, (data: any) => data == 1)
+    const failures = sampleSize - successes
+
+    return {
+      successes,
+      failures,
+      sampleSize,
+      prop: successes / (sampleSize + 0.0)
+    }
+  }
+
+  runSimulation() {
+    let numSimulations = this.numSimulations * 1
+    
+    for(let simIdx = 0; simIdx < numSimulations; simIdx++) {
+      let numASuccess = Math.floor(Math.random() * 21) + this.numASuccesses - 10;
+      let numAFailures = Math.floor(Math.random() * 21) + this.numAFailures - 10;
+      let numBSuccess = Math.floor(Math.random() * 21) + this.numBSuccesses - 10;
+      let numBFailures = Math.floor(Math.random() * 21) + this.numBFailures - 10;
+      let totalGroupA = numASuccess + numAFailures
+      let totalGroupB = numBSuccess + numBFailures
+      const {successes: sampleASuccess, failures: sampleAFailure, sampleSize: totalA, prop: sampleAProportion} = this.samplePot(totalGroupA, numASuccess, numAFailures + numASuccess)
+      const {successes: sampleBSuccess, failures: sampleBFailure, sampleSize: totalB, prop: sampleBProportion} = this.samplePot(totalGroupB, numBSuccess, numBFailures + numBSuccess)
+
+      this.simulations.push(sampleAProportion - sampleBProportion)
+
+      if (simIdx + 1 === numSimulations) {
+        this.setProportions(this.chart2, {
+          numASuccess: sampleASuccess,
+          numAFailures: sampleAFailure,
+          numBSuccesses: sampleBSuccess,
+          numBFailures: sampleBFailure
+        })
   
-    const zScore = this.calculateZScore();
-    const standardError = this.stddevSampleDiffs / Math.sqrt(this.numSimulations);
+        this.simAFailures = sampleAFailure
+        this.simASuccesses = sampleASuccess
+        this.simBFailures = sampleBFailure
+        this.simBSuccesses = sampleBSuccess
   
-    this.lowerBound = this.meanSampleDiffs - zScore * standardError;
-    this.upperBound = this.meanSampleDiffs + zScore * standardError;
-  
-    console.log('Lower Bound:', this.lowerBound);
-    console.log('Upper Bound:', this.upperBound);
-  
-    let valuesInInterval = [];
-    let valuesNotInInterval = [];
-  
-    for (const diff of sampleDifferences) {
-      if (diff >= this.lowerBound && diff <= this.upperBound) {
-        valuesInInterval.push({ x: diff, y: 1 });
+        this.simulationProportionGroupA = sampleAProportion.toString()
+        this.simulationProportionGroupB = sampleBProportion.toString()
+        this.simulationDifferenceProportions = (sampleAProportion - sampleBProportion).toString()
+        this.simMean = this.mean(this.simulations).toString()
+        this.simStdDev = this.stddev(this.simulations).toString()
+        this.simTotal = this.simulations.length.toString()
+
+        this.updateLastChart()
+      }
+    }
+    this.chart2.update()
+  }
+
+  updateLastChart() {
+    const confidenceLevel = this.confidenceLevel || 0
+    if(confidenceLevel == 0) {
+      return
+    }
+
+    const [lower, upper] = this.getCutOffInterval(confidenceLevel, this.simulations.length)
+    const temp = this.simulations.map(val => val)
+    temp.sort((a, b) => a - b)
+
+    const [chosen, unchosen] = this.splitUsing(temp, (val: number, index: any) => {
+      return val >= temp[lower] &&  val <= temp[upper >= temp.length ? upper - 1: upper]
+    })
+
+    this.lowerBound = temp[lower].toString()
+    this.upperBound = temp[upper >= temp.length ? upper - 1: upper].toString()
+
+    const shift = temp.length < 500 ? 0:0
+    this.setScale(this.chart3, temp[0]-shift, temp[temp.length - 1]+shift)
+    this.setDataFromRaw(this.chart3, [chosen, unchosen])
+    this.scaleToStackDots(this.chart3)
+    this.chart3.update()
+  }
+
+  resetLastChart() {
+    this.chart3.data.datasets[0].data = []
+    this.chart3.data.datasets[1].data = []
+    this.confidenceLevel = 95
+    this.simulations = []
+    this.chart3.update()
+  }
+
+  setProportions(chart: Chart, { numASuccess, numAFailures, numBSuccesses, numBFailures }: { numASuccess: any, numAFailures: any, numBSuccesses: any, numBFailures: any }){
+    let totalInA = numASuccess + numAFailures
+    let totalInB = numBSuccesses + numBFailures
+    let totalSuccess = numASuccess + numBSuccesses
+    let totalFailures = numAFailures + numBFailures
+
+    chart.data.datasets[0].data[0] = 100 * numASuccess / totalInA
+    chart.data.datasets[0].data[1] = 100 * numBSuccesses / totalInB
+    chart.data.datasets[1].data[0] = 100 * numAFailures / totalInA
+    chart.data.datasets[1].data[1] = 100 * numBFailures / totalInB
+  }
+
+  shuffle(arr: any[]) {
+    let clone = arr.concat([]);
+    function swap(i: any, j: any) {
+      let tmp = clone[i]
+      clone[i] = clone[j]
+      clone[j] = tmp
+    }
+    for (let i = 0; i < arr.length; i++) {
+      let swapWith = this.randomInt(i, arr.length);
+      swap(i, swapWith)
+    }
+    return clone;
+  }
+
+  randomInt(from: any, to: any) {
+    return Math.floor((to - from) * Math.random()) + from;
+  }
+
+  randomSubset(itr: any, n: any) {
+    let result = Array(n);
+    let unchosen = []
+    let seen = 0
+    for (let item of itr) {
+      if (seen < n) {
+        result[seen] = item
+      }
+      else if (Math.random() < n / (seen + 1)) {
+        let replaceIdx = this.randomInt(0, n)
+        unchosen.push(result[replaceIdx])
+        result[replaceIdx] = item
       } else {
-        valuesNotInInterval.push({ x: diff, y: 1 });
+        unchosen.push(item)
+      }
+      seen += 1
+    }
+    if (seen < n) {
+      throw new Error("not enought elements")
+    }
+    return { chosen: result, unchosen }
+  }
+
+  countWhere(itr: any, p: any) {
+    if (itr === undefined || p === undefined) {
+      throw new Error("Missing parameter")
+    }
+    let res = 0;
+    for (let item of itr) {
+      if (p(item)) {
+        res += 1
       }
     }
-  
-    this.barChartData3 = [
-      {
-        label: 'Values in Interval',
-        backgroundColor: 'green',
-        borderColor: 'green',
-        data: valuesInInterval
-      },
-      {
-        label: 'Values not in Interval',
-        backgroundColor: 'red',
-        borderColor: 'red',
-        data: valuesNotInInterval
-      },
-    ];
-  
-    this.cdr.detectChanges();
-  }
-  
-  applyChanges(): void {
-    const incrementValue = parseInt((document.getElementById('increment') as HTMLInputElement).value, 10);
-    this.numAFailure += incrementValue;
-    this.numASuccess += incrementValue;
-    this.numBFailure += incrementValue;
-    this.numBSuccess += incrementValue;
-    this.updateChartData();
-  }
-  
-  calculateZScore(): number {
-    return 1.96; // Z-score for 95% confidence level
+    return res
   }
 
+  mean(itr: any) {
+    let sum = 0
+    let count = 0
+    for (let item of itr) {
+      sum += item
+      count += 1
+    }
+    return sum / count
+  }
 
+  stddev(itr: any) {
+    return Math.sqrt(this.variance(itr))
+  }
 
-  updateChartData(): void {
-    // For Chart 1
-    const totalA = this.numASuccess + this.numAFailure;
-    const totalB = this.numBSuccess + this.numBFailure;
+  variance(itr: any) {
+    let sum = 0
+    let count = 0
+    let sumOfSquares = 0;
+    for (let item of itr) {
+      sum += item
+      sumOfSquares += item * item
+      count += 1;
+    }
+    let mean = sum / count
+    // variance = sum(X^2) / N - mean(X)^2
+    return sumOfSquares / count - mean * mean
+  }
+
+  getCutOffInterval(confidenceLevel: any, totalSize: any){
+    confidenceLevel = confidenceLevel / 100.0
+    const alpha2 = (1 - confidenceLevel)/ 2.0
+    let lowerBound = alpha2 * totalSize;
+    let upperBound = totalSize - (alpha2 * totalSize)
+    lowerBound = Math.floor(lowerBound)
+    upperBound = Math.floor(upperBound)
+    return [lowerBound, upperBound]
   
-    // Avoid division by zero
-    const percentASuccess = totalA > 0 ? (this.numASuccess / totalA) * 100 : 0;
-    const percentAFailure = totalA > 0 ? (this.numAFailure / totalA) * 100 : 0;
-    const percentBSuccess = totalB > 0 ? (this.numBSuccess / totalB) * 100 : 0;
-    const percentBFailure = totalB > 0 ? (this.numBFailure / totalB) * 100 : 0;
-  
-    this.barChartData1 = [
-      { data: [percentASuccess, percentBSuccess], label: '% Success', backgroundColor: 'rgba(0, 250, 0, 0.7)' },
-      { data: [percentAFailure, percentBFailure], label: '% Failure', backgroundColor: 'rgba(255, 0, 0, 0.7)' }
-    ];
-}
+  }
+
+  splitUsing(itr: any, callback: any) {
+    const chosen: any[]  = []
+    let unchosen: any[] = []
+    itr.forEach((obj: any, index: any) => {
+      if(callback(obj, index)){
+        chosen.push(obj)
+      }else{
+        unchosen.push(obj)
+      }
+    })
+    return [chosen, unchosen]
+  }
+
+  setScale(chart: Chart, start: any, end: any) {
+    chart.options.scales.xAxes[0].ticks.min = (Math.floor(start))? Math.floor(start) : 0
+    chart.options.scales.xAxes[0].ticks.max = Math.ceil(end) + 1;
+  }
+
+  setDataFromRaw(chart: Chart, rawDataArrays: any) {
+    let scatterArrays = this.rawToScatter(rawDataArrays)
+    for(let idx = 0; idx < rawDataArrays.length; idx++){
+      chart.data.datasets[idx].data = scatterArrays[idx]
+    }
+    let max = 1
+    for (let dataset of scatterArrays) {
+      for (let item of dataset) {
+        max = Math.max(max, item.y)
+      }
+    }
+  }
+
+  rawToScatter(arrs: any) {
+    let faceted = []
+    let counts: { [key: string]: number } = {}
+    for (let arr of arrs) {
+      let scatter = []
+      for (let item of arr) {
+        let y = (counts[item] = (counts[item] || 0) + 1)
+        scatter.push({ x: item, y: y })
+      }
+      faceted.push(scatter)
+    }
+    return faceted
+  }
+
+  scaleToStackDots(chart: Chart) {
+    let max = 1;
+    for (let dataset of chart.data.datasets) {
+      for (let item of dataset.data) {
+        max = Math.max(max, Number((item as ChartPoint).y))
+      }
+    }
+
+    chart.options.scales.yAxes[0].ticks.stepSize = (max>10)? Math.ceil(max * 0.2) : 1
+    if (max>1000) {
+      chart.options.scales.yAxes[0].ticks.min = 0
+    }
+  }
 
 }
