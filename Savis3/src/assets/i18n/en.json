@@ -30,6 +30,7 @@
     "total_samples": "Total # of samples",
     "sample_means": "Sample means at least as extreme as",
     "mean_of_sample": "Mean of sample means",
+    "original_dataset": "Original Dataset",
     "//one_proportion": "These are the translations for the One Proportion component",
     "op_title": "One Proportion Hypothesis Test",
     "op_probability": "Probability of Heads p: ",

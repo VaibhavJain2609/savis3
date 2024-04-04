@@ -42,10 +42,6 @@ describe('OneMeanComponent', () => {
         result: '1\n2\n3'
     };
     window.FileReader = jest.fn(() => mockFileReader) as any;
-    // component.hypoValuesArray = [1, 2, 3, 4, 5];
-    // component.sampleSize = 3;
-    // component.numSamples = 2;
-    // component.randomSample = jest.fn((array, size) => array.slice(0, size));
     fixture.detectChanges();
   });
 
