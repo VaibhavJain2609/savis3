@@ -232,6 +232,8 @@
     "tpci_Prop_of_Success_GroupA":"Proporciones de Éxito en el Grupo A",
     "tpci_Prop_of_Success_GroupB":"Proporciones de Éxito en el Grupo B",
     "tpci_Difference_of_Proportions" :"Diferencia de Proporciones",
+    "tpci_values_in_interval": "Valores en intervalo",
+    "tpci_values_not_in_interval": "Valores no en intervalo",
     "//Login": "These are the translations for the Login component",
     "Login": "inicio de sesión",
     "DontHaveAccount": "no tengo una cuenta",

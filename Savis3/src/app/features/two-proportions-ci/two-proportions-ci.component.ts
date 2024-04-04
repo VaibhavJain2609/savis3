@@ -63,15 +63,15 @@ export class TwoProportionsCIComponent implements AfterViewInit {
       this.chart1 = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Group A', 'Group B'],
+          labels: [this.translate.instant('tpci_group_A'), this.translate.instant('tpci_group_B')],
           datasets: [
             {
-              label: '% Successes',
+              label: '% ' + this.translate.instant('tpci_successes'),
               backgroundColor: 'green',
               data: [0, 0]
             },
             {
-              label: '% Failures',
+              label: '% ' + this.translate.instant('tpci_failures'),
               backgroundColor: 'red',
               data: [0, 0]
             }
@@ -110,15 +110,15 @@ export class TwoProportionsCIComponent implements AfterViewInit {
       this.chart2 = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Group A', 'Group B'],
+          labels: [ this.translate.instant('tpci_group_A'), this.translate.instant('tpci_group_B')],
           datasets: [
             {
-              label: '% Successes',
+              label: '% ' + this.translate.instant('tpci_successes'),
               backgroundColor: 'green',
               data: [0, 0]
             },
             {
-              label: '% Failures',
+              label: '% ' + this.translate.instant('tpci_failures'),
               backgroundColor: 'red',
               data: [0, 0]
             }
@@ -159,12 +159,12 @@ export class TwoProportionsCIComponent implements AfterViewInit {
         data: {
           datasets: [
             {
-              label: 'Values in Interval',
+              label: this.translate.instant("tpci_values_in_interval"),
               backgroundColor: 'green',
               data: []
             },
             {
-              label: 'Values not in Interval',
+              label: this.translate.instant("tpci_values_not_in_interval"),
               backgroundColor: 'red',
               data: []
             }
