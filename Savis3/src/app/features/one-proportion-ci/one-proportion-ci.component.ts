@@ -77,14 +77,14 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
 
   public barChartData1: ChartDataSets[] =[
     {
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green',
       data: [],
       borderColor: 'green'
     },
     {
-      label: '% Failures',
+      label: this.translate.instant('opc_barchart_f'),
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
       data: [],
@@ -95,14 +95,14 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
 
   public barChartData2: ChartDataSets[] =[
     {
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green',
       data: [],
       borderColor: 'green'
     },
     {
-      label: '% Failures',
+      label: this.translate.instant('opc_barchart_f'),
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
       data: [],
@@ -131,7 +131,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           },
           scaleLabel:{
             display: true,
-            labelString: 'Data'
+            labelString: this.translate.instant('opc_data_xaxis')
           }
         }
       ],
@@ -174,7 +174,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           },
           scaleLabel:{
             display: true,
-            labelString: 'Data'
+            labelString: this.translate.instant('opc_data_xaxis')
           }
         }
       ],
@@ -214,12 +214,12 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
         data: {
           datasets: [
             {
-              label: 'Values in Interval',
+              label: this.translate.instant('opc_values_in'),
               backgroundColor: 'green',
               data: [],
             },
             {
-              label: 'Values not in Interval',
+              label: this.translate.instant('opc_values_out'),
               backgroundColor: 'red',
               data: [],
             }
@@ -238,7 +238,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Data',
+                  labelString: this.translate.instant('opc_data_xaxis'),
                 }
               }
             ],
@@ -253,7 +253,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Frequencies',
+                  labelString: this.translate.instant('opc_frequency'),
                 }
               }
             ]
