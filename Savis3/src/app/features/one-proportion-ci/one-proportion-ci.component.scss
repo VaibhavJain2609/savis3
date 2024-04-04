@@ -69,17 +69,23 @@
   }
 
   .chart-wrap3 {
-    width: 80%;
+    width: 90%;
     height: 100%;
     margin-top: 1rem;
     margin-left: 22rem;
   }
 
-  input{
+  input:not([type="range"]){
     padding: 0.4rem;
     border-radius: 10px;
-    border: 2px black solid;
+    border: 1px black solid;
     //display: block;
+
+    &:disabled{
+      background-color: #929292;
+      cursor: not-allowed;
+      color: #929292;
+    }
   }
   
   .btn {
@@ -132,4 +138,105 @@
     background-color: green;
   }
 
+}
+
+.form-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+  label {
+    margin-left: 4px;
+    position: relative;
+    top: -7px;
+  }
+}
+
+input[type="radio"],
+label {
+  vertical-align: middle;
+  margin: 0;
+  font-size: 16px;
+}
+
+
+.data-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 38ch;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  //text-align: justify;
+  p {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    text-align: center;
+  }
+  .center-num {
+    text-align: center;
+    float: right;
+  }
+}
+
+$primary-color: #5ebe5e;
+$secondary-color: #93cb52;
+$slider-active-color: #bfbfbf;
+$slider-track-color: #bfbfbf;
+ // Slider thumb
+ input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: $primary-color;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    border: 1px solid darken($primary-color, 15%)
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: 50%;
+    height: 22px;
+    background: $slider-track-color;
+    border-radius: 5px;
+    border: 1px  solid darken($slider-active-color, $amount: 15%)
+  }
+
+  &::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: $primary-color;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    border: 1px solid darken($primary-color, 15%)
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: 22px;
+    background: $slider-track-color;
+    border-radius: 5px;
+    border: 1px  solid darken($slider-active-color, $amount: 15%)
+  }
 }
