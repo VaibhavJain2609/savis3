@@ -115,6 +115,9 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     responsive: true,
     tooltips: {
       callbacks: {
+        title: (tooltipItem: any, data: any) => {
+          return this.translate.instant('opc_data_xaxis')
+        },
         label: (tooltipItem: any, data: any) => {
           const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
           const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -158,6 +161,9 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     responsive: true,
     tooltips: {
       callbacks: {
+        title: (tooltipItem: any, data: any) => {
+          return this.translate.instant('opc_data_xaxis')
+        },
         label: (tooltipItem: any, data: any) => {
           const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
           const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -275,13 +281,13 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     this.barChartData1 = this.barChartData1 = [
       { 
         data: [], 
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green', 
         hoverBackgroundColor: 'green', 
       }, 
       { 
         data: [], 
-        label: '% Failures', 
+        label: this.translate.instant('opc_barchart_f'), 
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
       }];
@@ -447,14 +453,14 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
   private defaultChartData(): Chart.ChartDataSets[]{
     return [
       {
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green',
         hoverBackgroundColor: 'green',
         data: [],
         borderColor: 'green'
       },
       {
-        label: '% Failures',
+        label: this.translate.instant('opc_barchart_f'),
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
         data: [],
@@ -466,14 +472,14 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
   private defaultChartData2(): Chart.ChartDataSets[]{
     return[
       {
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green',
         hoverBackgroundColor: 'green',
         data: [],
         borderColor: 'green'
       },
       {
-        label: '% Failures',
+        label: this.translate.instant('opc_barchart_f'),
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
         data: [],
@@ -524,13 +530,13 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
    this.barChartData2 = this.barChartData2 = [
     { 
       data: [], 
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green', 
     }, 
     { 
       data: [], 
-      label: '% Failures', 
+      label: this.translate.instant('opc_barchart_f'), 
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
     }];

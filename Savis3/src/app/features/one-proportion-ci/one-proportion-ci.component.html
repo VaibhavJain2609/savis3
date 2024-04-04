@@ -97,11 +97,11 @@
             <p class="text-center">{{ 'opc_select' | translate }}</p>
             <form class="form-inline">
                 <div class="radio-group">
-                    <input type="radio" id="CI" value="CI" name="CI" [(ngModel)]="CiRadio" (click)="radioChange('CI')"  checked>
+                    <input type="radio" id="CI" value="CI" name="CI" [(ngModel)]="CiRadio" (click)="radioChange('CI')" [disabled]="radioDisabled" checked>
                     <label for="CI">{{ 'opc_confidence_interval' | translate }}</label>
                 </div>
                 <div class="radio-group">
-                    <input type="radio" id="MinMax" value="MinMax" name="MinMax" [(ngModel)]="CiRadio" (click)="radioChange('MinMax')">
+                    <input type="radio" id="MinMax" value="MinMax" name="MinMax" [(ngModel)]="CiRadio" (click)="radioChange('MinMax')" [disabled]="radioDisabled">
                     <label for="MinMax">{{ 'opc_min_max_inputs' | translate }}</label>
                 </div>
             </form>
