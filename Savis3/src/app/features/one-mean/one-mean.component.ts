@@ -42,6 +42,11 @@ export class OneMeanComponent {
   meanSamples: number = 1;
   extremeSample: number = 0;
   distributionSelected: string = "default";
+  minVal = 0;
+  maxVal = 0;
+  chosenVals = 0;
+  sampleChosen = 0;
+  sampleNotChosen = 0;
 
   // chart data
   public lineChartLegend = true;
@@ -175,14 +180,16 @@ export class OneMeanComponent {
     // let chart = service.initChart(this.valuesArray);
     this.lineChartData1 = [{
       data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
-      label: 'Original Dataset',
+      label: this.translate.instant('original_dataset'),
       pointBackgroundColor: 'orange',
+      backgroundColor: 'orange',
     }];
     this.lineChartLabels1 = this.valuesArray.map((index:number) => `Value ${index+1}`);
     this.lineChartData2 = [{
       data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
       label: 'Hypothetical Population',
       pointBackgroundColor: 'orange',
+      backgroundColor: 'orange',
     }];
     this.lineChartLabels2 = this.valuesArray.map((index:number) => `Value ${index+1}`);
     this.updateChartOptions();
@@ -313,7 +320,12 @@ export class OneMeanComponent {
     this.sampleMeansMean = 0;
     this.numSamples = 1;
     this.sampleMeansStd = 0;
-    this.meanSamples = 1;
+    this.meanSamples = 0;
+    this.minVal = 0;
+    this.maxVal = 0;
+    this.chosenVals = 0;
+    this.sampleChosen = 0;
+    this.sampleNotChosen = 0;
   }
 
   increaseData() {
@@ -461,6 +473,7 @@ export class OneMeanComponent {
       data: pointsArray.map((value:any) => ({x: value.x, y:value.y})),
       label: 'Hypothetical Population',
       pointBackgroundColor: 'orange',
+      backgroundColor: 'orange',
     }];
   }
 
@@ -482,8 +495,9 @@ export class OneMeanComponent {
       }
       this.lineChartData3 = [{
         data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-        label: 'Most Recent Drawn',
+        label: this.translate.instant('opc_Recent'),
         pointBackgroundColor: 'orange',
+        backgroundColor: 'orange',
       }];
       this.lineChartLabels3 = sample.map((index:number) => `Value ${index+1}`);
     }
@@ -504,6 +518,11 @@ export class OneMeanComponent {
     this.meanSamples = this.sampleMeans.length;
     this.sampleMeansMean = parseFloat(MathService.mean(this.sampleMeans).toFixed(2));
     this.sampleMeansStd = parseFloat(MathService.stddev(this.sampleMeans).toFixed(2));
+    this.minVal = Math.floor(Math.min(...this.sampleMeans));
+    this.maxVal = Math.floor(Math.max(...this.sampleMeans));
+    this.chosenVals = this.sampleMeans.length;
+    this.sampleChosen = parseFloat((this.chosenVals / this.sampleMeans.length).toFixed(2));
+    this.sampleNotChosen = this.sampleChosen - 1;
 
     let points:any = {};
     let pointsArray: any = [];
@@ -517,11 +536,20 @@ export class OneMeanComponent {
       pointsArray.push({x: value, y: points[value]});
     }
 
-    this.lineChartData4 = [{
-      data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-      label: 'Sample Means',
-      pointBackgroundColor: 'orange',
-    }];
+    this.lineChartData4 = [
+      {
+        data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
+        label: this.translate.instant('dotPlot_means_in_interval'),
+        pointBackgroundColor: 'orange',
+        backgroundColor: 'orange',
+      },
+      {
+        data: [],
+        label: this.translate.instant('dotPlot_means_not_in_interval'),
+        pointBackgroundColor: 'red',
+        backgroundColor: 'red',
+     }
+  ];
   }
 
   randomSample(arr: any, n: number) { 
@@ -544,6 +572,7 @@ export class OneMeanComponent {
 
   extremeSampleFunc() {
 
+    this.chosenVals = this.sampleMeans.length;
     let points:any = {};
     let pointsArray: any = [];
     for (let i = 0; i < this.sampleMeans.length; i++) {
@@ -555,19 +584,36 @@ export class OneMeanComponent {
       }
       pointsArray.push({x: value, y: points[value]});
     }
-    if (this.distributionSelected == "one-right") {
-    this.lineChartData4 = [{
-      data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-      label: 'Sample Means',
-      pointBackgroundColor: pointsArray.map((value:any) => value.x > this.extremeSample ? 'red' : 'orange'),
-    }];
-  } else if (this.distributionSelected == "one-left") {
-    this.lineChartData4 = [{
-      data: pointsArray.map((value:any) => ({x: value.x, y: value.y})),
-      label: 'Sample Means',
-      pointBackgroundColor: pointsArray.map((value:any) => value.x > this.extremeSample ? 'orange' : 'red'),
-    }];
-  }
+
+    let data1 = [];
+    let data2 = [];
+
+    for (let i = 0; i < pointsArray.length; i++) {
+      if (pointsArray[i].x > this.minVal && pointsArray[i].x < this.maxVal) {
+        data1.push(pointsArray[i]);
+      } else {
+        data2.push(pointsArray[i]);
+        this.chosenVals -= 1;
+      }
+    }
+
+    this.sampleChosen = parseFloat((this.chosenVals / this.sampleMeans.length).toFixed(2));
+    this.sampleNotChosen = parseFloat((1 - this.sampleChosen).toFixed(2));
+
+    this.lineChartData4 = [
+      {
+        data: data1.map((value:any) => ({x: value.x, y: value.y})),
+        label: this.translate.instant('dotPlot_means_in_interval'),
+        backgroundColor: 'orange',
+        pointBackgroundColor: 'orange',
+      },
+      {
+        data: data2.map((value:any) => ({x: value.x, y: value.y})),
+        label: this.translate.instant('dotPlot_means_not_in_interval'),
+        backgroundColor: 'red',
+        pointBackgroundColor: 'red',
+      }
+    ];
 }
   
 validateFile(fileInput: any) {
@@ -600,7 +646,7 @@ validateFile(fileInput: any) {
       // create the chart
       this.lineChartData1 = [{
         data: this.valuesArray.map((value:number) => ({x: value, y: 1})),
-        label: 'Original Dataset',
+        label: this.translate.instant('original_dataset'),
         pointBackgroundColor: 'orange',
       }];
       this.lineChartLabels1 = this.valuesArray.map((index:number) => `Value ${index+1}`);

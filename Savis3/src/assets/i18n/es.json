@@ -30,6 +30,7 @@
     "total_samples": "Número total de muestras",
     "sample_means": "La muestra significa al menos tan extrema como",
     "mean_of_sample": "Media de las medias muestrales",
+    "original_dataset": "Conjunto de datos originales",
     "//one_proportion": "These are the translations for the One Proportion component",
     "op_title": "Prueba de hipótesis de una proporción",
     "op_probability": "Probabilidad de cara p: ",
