@@ -291,6 +291,7 @@ export class BarChartComponent implements AfterViewInit{
     this.sampleDataTable.nativeElement.innerText = ''
     this.clearChart(this.inputChart)
     this.clearChart(this.sampleChart)
+    console.log("reset")
   }
 
   /**
@@ -300,6 +301,7 @@ export class BarChartComponent implements AfterViewInit{
     this.sampleDataArray = []
     this.datasets[1].data = []
     this.clearChart(this.sampleChart)
+   
   }
 
   /**
@@ -331,6 +333,7 @@ export class BarChartComponent implements AfterViewInit{
     } catch (error) {
       this.inputErrorMsg = 'ERROR: Only 16 categories are supported'
     }
+   
   }
 
   /**
@@ -426,6 +429,8 @@ export class BarChartComponent implements AfterViewInit{
     table.style.borderCollapse = 'collapse'
 
     tableElement.appendChild(table)
+
+   
   }
 
   /**
@@ -564,5 +569,6 @@ export class BarChartComponent implements AfterViewInit{
    */
   triggerFileInput(): void {
     this.fileInput.nativeElement.click()
+    console.log("upload file")
   }
 }
