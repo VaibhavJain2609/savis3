@@ -1,8 +1,8 @@
 <app-navbar></app-navbar>
 <div class="two-proportions">
-  <h1 class="text-center">Two Proportions Confidence Interval</h1>
+  <h1 class="text-center">{{ 'tpci_title' | translate }}</h1>
 
-  <h2>1. Input Data: </h2>
+  <h2>1. {{ 'tpci_enter_data' | translate }} </h2>
   <input type="checkbox" style="float:right" checked>
   <div id="input-section" class="section">
     <div class="lhs">
@@ -10,18 +10,18 @@
         <thead>
           <tr>
             <td></td>
-            <td class="desc text-center">Group A</td>
-            <td class="desc text-center">Group B</td>
+            <td class="desc text-center">{{ 'tpci_group_A' | translate }}</td>
+            <td class="desc text-center">{{ 'tpci_group_B' | translate }}</td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="desc">Successes</td>
+            <td class="desc">{{ 'tpci_successes' | translate }}</td>
             <td><input class="text-center" type="number" id="a-success" value="0" min="0" step="1" [(ngModel)]="numASuccesses"></td>
             <td><input class="text-center" type="number" id="b-success" value="0" min="0" step="1" [(ngModel)]="numBSuccesses"></td>
           </tr>
           <tr>
-            <td class="desc">Failures</td>
+            <td class="desc">{{ 'tpci_failures' | translate }}</td>
             <td><input class="text-center" type="number" id="a-failure" value="0" min="0" step="1" [(ngModel)]="numAFailures"> </td>
             <td><input class="text-center" type="number" id="b-failure" value="0" min="0" step="1" [(ngModel)]="numBFailures"> </td>
           </tr>
@@ -29,20 +29,20 @@
       </table>
 
       <br>
-      <button class="btn" (click)="loadData()">Load Data</button>
+      <button class="btn" (click)="loadData()">{{ 'tpci_load_data' | translate }}</button>
       <hr>
 
       <div class="stats">
         <div>
-          <span>Proportions of Success in Group A (p<sub>A</sub>):</span>
+          <span>{{'tpci_Prop_of_Success_GroupA' | translate}} (p<sub>A</sub>):</span>
           <span>{{ inputProportionsGroupA }}</span>
         </div>
         <div>
-          <span>Proportions of Success in Group B (p<sub>b</sub>):</span>
+          <span>{{'tpci_Prop_of_Success_GroupB' | translate}} (p<sub>b</sub>):</span>
           <span>{{ inputProportionsGroupB }}</span>
         </div>
         <div>
-          <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
+          <span>{{'tpci_Difference_of_Proportions' | translate}} (p<sub>A</sub> - p<sub>B</sub>):</span>
           <span>{{ inputDifferenceProportions }}</span>
         </div>
       </div>
@@ -51,7 +51,7 @@
     <div class="rhs">
       <table style="margin-left: 3em">
         <tr>
-          <td style="text-align: right;"><span summary="numAFailure" summaryint>{{numAFailures}}</span> Failures</td>
+          <td style="text-align: right;"><span summary="numAFailure" summaryint>{{numAFailures}}</span> {{ 'tpci_failures' | translate }}</td>
           <td rowspan="2" colspan="2">
             
             <div class="chart-wrap">
@@ -67,11 +67,11 @@
               <button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button>
             </div> -->
           </td>
-          <td><span summary="numBFailure" summaryint>{{numBFailures}}</span> Failures</td>
+          <td><span summary="numBFailure" summaryint>{{numBFailures}}</span> {{ 'tpci_failures' | translate }}</td>
         </tr>
         <tr>
-          <td style="text-align: right;"><span summary="numASuccess" summaryint>{{numASuccesses}}</span> Successes</td>
-          <td><span summary="numBSuccess" summaryint>{{numBSuccesses}}</span> Successes</td>
+          <td style="text-align: right;"><span summary="numASuccess" summaryint>{{numASuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
+          <td><span summary="numBSuccess" summaryint>{{numBSuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
         </tr>
       </table>
     </div>
@@ -80,33 +80,32 @@
 
   <div class="green-line"></div>
 
-  <h2>2. Simulations</h2>
+  <h2>2. {{ 'tpci_run_simulations' | translate }}</h2>
   <input type="checkbox" style="float:right" checked>
   <div class="section">
     <div class="lhs">
-      <label>
-        Number of Simulations:
+      <label> {{ 'tpci_number_of_simulations' | translate }}:
         <input id="num-simulations" type="number" min="1" value="1" max="1000" [(ngModel)]="numSimulations">
       </label>
-      <button class="btn" (click)="runSimulation()">Run Simulations</button>
+      <button class="btn" (click)="runSimulation()">{{ 'tpci_run_simulations' | translate }}</button>
       <div class="stats">
         <div>
-          <span>Proportion of Successes Randomized to Group A (p<sub>A</sub>):</span>
+          <span>{{ 'tpci_A_Successes' | translate }} (p<sub>A</sub>):</span>
           <span>{{ simulationProportionGroupA }}</span>
         </div>
         <div>
-          <span>Proportion of Successes Randomized to Group B (p<sub>B</sub>):</span>
+          <span>{{ 'tpci_B_Successes' | translate }} (p<sub>B</sub>):</span>
           <span>{{ simulationProportionGroupB }}</span>
         </div>
         <div>
-          <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
+          <span>{{ 'tpci_diff_1' | translate }} (p<sub>A</sub> - p<sub>B</sub>):</span>
           <span>{{ simulationDifferenceProportions }}</span>
         </div>
       </div>
     </div>
 
     <div class="rhs">
-      <h3 style="margin-left: 3em">Last Sample Drawn</h3>
+      <h3 style="margin-left: 3em">{{ 'tpci_most_recent_draw' | translate }}</h3>
       <table style="margin-left: 3em;">
         <tr>
           <td style="text-align: right;"><span summary="sampleAFailure">{{simAFailures}}</span> Failures</td>
@@ -118,8 +117,8 @@
           <td><span summary="sampleBFailure">{{simBFailures}}</span> Failures</td>
         </tr>
         <tr>
-          <td style="text-align: right;"><span summary="sampleASuccess">{{simASuccesses}}</span> Successes</td>
-          <td><span summary="sampleBSuccess">{{simBSuccesses}}</span> Successes</td>
+          <td style="text-align: right;"><span summary="sampleASuccess">{{simASuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
+          <td><span summary="sampleBSuccess">{{simBSuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
         </tr>
       </table>
     </div>
@@ -127,13 +126,13 @@
 
   <div class="green-line"></div>
 
-  <h2>3. Sampling Distribution of Difference of Proportions</h2>
+  <h2>3. {{ 'tpci_sampling_distribution_difference' | translate }}</h2>
   <input type="checkbox" style="float:right" checked>
   <div class="section flex-row">
     <div class="lhs">
       <div class="flex flex-col items-center justify-center">
         <div>
-            <label for="confidence-level">Confidence Level {{confidenceLevel}} %</label>
+            <label for="confidence-level">{{ 'tpci_confidence_level' | translate }} {{confidenceLevel}} %</label>
         </div>
         <input type="range" min="1" max="100" class="w-1/2" step="1" id="confidence-level" [(ngModel)]="confidenceLevel">
         <button type="button" class="btn w-1/2" id="buildCI" (click)="updateLastChart()">Build</button>
@@ -141,27 +140,27 @@
 
       <div class="stats">
         <div>
-          <span>Difference of Proportions in Original Data:</span>
+          <span>{{ 'tpci_original_dataset_difference' | translate }}</span>
           <span>{{ inputDifferenceProportions }}</span>
         </div>
         <div>
-          <span>Mean of Sample Differences:</span>
+          <span>{{ 'tpci_mean_sample_differences' | translate }}</span>
           <span>{{simMean}}</span>
         </div>
         <div>
-          <span>Standard Deviation of Sample Differences:</span>
+          <span>{{ 'tpci_standard_deviation' | translate }}</span>
           <span>{{simStdDev}}</span>
         </div>
         <div>
-          <span>Lower Bound:</span>
+          <span>{{ 'tpci_lower_bound' | translate }}</span>
           <span>{{ lowerBound }}</span>
         </div>
         <div>
-          <span>Upper Bound:</span>
+          <span>{{ 'tpci_upper_bound' | translate }}</span>
           <span>{{ upperBound }}</span>
         </div>
         <div>
-          <span>Total Samples:</span>
+          <span>{{ 'tpci_total_number_samples' | translate }}</span>
           <span>{{simTotal}}</span>
         </div>
       </div>
