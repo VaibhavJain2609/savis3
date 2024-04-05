@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ChartDataSets, ChartType } from 'chart.js';
+import { ChartDataSets, ChartType, Chart, ChartPoint } from 'chart.js';
+
+import { TranslateService } from '@ngx-translate/core';
+
 import { Color, Label } from 'ng2-charts';
 import { chatClass } from 'src/app/Utils/stacked-dot';
 import { Sampling } from 'src/app/Utils/sampling';
@@ -20,12 +23,14 @@ export class TwoMeansCIComponent implements OnInit {
   datamean1: number = 0
   multiplier: number = 10
   mean_diff: number = 0
+  @ViewChild('chart5') chart5Ref: ElementRef<HTMLCanvasElement>
   numofSem: number = 1
   confidenceLevel:number = 95
   increment: number = 10
   samDisActive = false
   lastSummary: any
   chart1: any
+  simulations: any = []
   chart2: any
   chart3: any
   chart4: any
@@ -37,8 +42,8 @@ export class TwoMeansCIComponent implements OnInit {
   meansOfMeans: any = []
   csvraw: any
   csv: any
-  lowerBound: number = 0
-  upperBound: number = 0
+  lowerBound='NaN'
+  upperBound= 'NaN'
   sections: any = {
     sectionOne: true,
     sectionTwo: true,
@@ -75,7 +80,7 @@ export class TwoMeansCIComponent implements OnInit {
 
   numberOfSimulations: number;
 
-  constructor(private smp: Sampling, private tail: TailchartService) {
+  constructor(private smp: Sampling, private tail: TailchartService,  private translate: TranslateService) {
 
   }
   toggleSection(e: any, sec: string) {
@@ -211,7 +216,7 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
     console.log(this.datasets[3])
     this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
-    this.chart5 = new chatClass("diff-chart", this.datasets[0]);
+    this.chart5 = this.createChart5()
    
   }
   ngAfterContentInit(){
@@ -223,10 +228,10 @@ export class TwoMeansCIComponent implements OnInit {
       "backgroundColor": "rebeccapurple"
     }
    
-    this.chart5.setDataFromRaw(rData2);
-    this.chart5.setLengend(leg,color)
+    // this.chart5.setDataFromRaw(rData2);
+    // this.chart5.setLengend(leg,color)
 
-    this.chart5.chart.update(0) 
+    // this.chart5.chart.update(0) 
   }
   loadData(): void {
     this.csv = this.parseData(this.csvraw.trim());
@@ -236,7 +241,76 @@ export class TwoMeansCIComponent implements OnInit {
     // this.updateChart(data);
     // this.updateSummaryChart(data);
   }
-
+  createChart5(){
+    const ctx = this.chart5Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart5 = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant("tpci_values_in_interval"),
+              backgroundColor: 'green',
+              data: []
+            },
+            {
+              label: this.translate.instant("tpci_values_not_in_interval"),
+              backgroundColor: 'red',
+              data: []
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: ''
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: ''
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontStyle: '16',
+          },
+          animation: {
+            duration: 0
+          },
+          elements: {
+            point: {
+              radius: 10
+            }
+          }
+        }
+      })
+    }
+  }
   updateChart(data: string): void {
     
     const rows = data.split('\n');
@@ -371,7 +445,7 @@ export class TwoMeansCIComponent implements OnInit {
       this.tail.addAllResults(results)
     }
     this.samDisActive = true
-    this.confidenceInteval()
+    this.simulations.push(results)
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
@@ -392,7 +466,7 @@ export class TwoMeansCIComponent implements OnInit {
   selectedTest(e: any) {
     this.tail.setTailDirection(e.target.value)
     let data = this.tail.updateChart2(this.chart5)
-    this.chart5.setDataFromRaw(data);
+    // this.chart5.setDataFromRaw(data);
     this.lastSummary = this.tail.getSummary()
     let leg = [`Differences < ${this.mean_diff}`, `Differences > = ${this.mean_diff}`]
     let color
@@ -406,41 +480,7 @@ export class TwoMeansCIComponent implements OnInit {
     this.chart5.chart.update(0)
 
   }
-  confidenceInteval(){
-    let sumOfMeans = this.meansOfMeans.reduce((a: any, b:any) => a + b, 0);
-    let stdev: number = parseFloat(MathService.sampleStddev(this.meansOfMeans).toFixed(2));
-    let lowerBound: number = sumOfMeans - 2 * stdev
-    let upperBound: number = sumOfMeans + 2* stdev
-    let invalidValues: number[] = [];
-    let valid: number[] = [];
-    console.log(this.meansOfMeans[0])
-this.meansOfMeans.forEach((mean: number) => {
-  if (mean < lowerBound || mean > upperBound) {
-    // Do something with the value if needed
-    console.log(`Invalid value: ${mean}`);
-    invalidValues.push(mean);
-  }
-  else valid.push(mean);
-});
-let chartData = [
-  {
-    label: 'Valid Data',
-    data: valid.map((value: number) => ({ x: value, y: 0 })), // Assuming a simple scatter plot on the X-axis
-    backgroundColor: 'green', // Valid data points in green
-    pointRadius: 5,
-  },
-  {
-    label: 'Invalid Data',
-    data: invalidValues.map(value => ({ x: value, y: 0 })), // Assuming a simple scatter plot on the X-axis
-    backgroundColor: 'red', // Invalid data points in red
-    pointRadius: 5,
-  }
-];
-
-// Assuming chart4 is already initialized and is a Chart.js instance
-this.chart5.chart.config.data.datasets = chartData;
-this.chart5.chart.update();
-  }
+  
   onFileSelected(e: any) {
     const files = e.target.files || e.dataTransfer?.files;
     if (files.length) {
@@ -459,67 +499,99 @@ this.chart5.chart.update();
     }
 
   }
-  buildci() {
-    console.log('buildci function is called');
-    if (!this.meansOfMeans || this.meansOfMeans.length === 0) {
-      alert('No simulation data available to build confidence intervals.');
-      return;
+  updateLastChart() {
+    const confidenceLevel = this.confidenceLevel || 0
+    if(confidenceLevel == 0) {
+      return
     }
-  
-    const standardError = this.stDev1 / Math.sqrt(this.dataSize1); // Example calculation
-    const zScore = MathService.z_score_alpha_2(this.confidenceLevel);
-    const marginOfError = zScore * standardError;
-    
-    this.lowerBound = this.mean_diff - marginOfError;
-    this.upperBound = this.mean_diff + marginOfError;
-  
-    const temp: number[] = [...this.meansOfMeans];
-    temp.sort((a, b) => a - b);
-  
-    const [chosen, unchosen] = this.splitUsing(temp, (val) => val >= this.lowerBound && val <= this.upperBound);
-  
-    // Preparing data for the chart
-    let chosenData = chosen.map(val => ({ x: val, y: 0 })); // Assuming a scatter plot
-    let unchosenData = unchosen.map(val => ({ x: val, y: 0 })); // Assuming a scatter plot
-  
-    // Update the chart data for chart5
-    this.chart5.chartData = [
-      {
-        label: 'Within Interval',
-        data: chosenData,
-        backgroundColor: 'green',
-      },
-      {
-        label: 'Outside Interval',
-        data: unchosenData,
-        backgroundColor: 'red',
-      }
-    ];
-  
-    // Update the chart if it's already rendered
-    if (this.chart5 && this.chart5.chart) {
-      this.chart5.chart.update();
-    }
+
+    const [lower, upper] = this.getCutOffInterval(confidenceLevel, this.simulations.length)
+    const temp = this.simulations.map((val:{value:number}) => val)
+    temp.sort((a: {value:number}, b: {value:number}) => a.value - b.value)
+
+    const [chosen, unchosen] = this.splitUsing(temp, (val: number, index: any) => {
+      return val >= temp[lower] &&  val <= temp[upper >= temp.length ? upper - 1: upper]
+    })
+
+    this.lowerBound = temp[lower].toString()
+    this.upperBound = temp[upper >= temp.length ? upper - 1: upper].toString()
+
+    const shift = temp.length < 500 ? 0:0
+    this.setScale(this.chart5, temp[0]-shift, temp[temp.length - 1]+shift)
+    this.setDataFromRaw(this.chart5, [chosen, unchosen])
+    this.scaleToStackDots(this.chart5)
+    this.chart5.update()
   }
+  getCutOffInterval(confidenceLevel: any, totalSize: any){
+    confidenceLevel = confidenceLevel / 100.0
+    const alpha2 = (1 - confidenceLevel)/ 2.0
+    let lowerBound = alpha2 * totalSize;
+    let upperBound = totalSize - (alpha2 * totalSize)
+    lowerBound = Math.floor(lowerBound)
+    upperBound = Math.floor(upperBound)
+    return [lowerBound, upperBound]
   
-  
-  splitUsing(data: number[], conditionFunc: (val: number) => boolean): [number[], number[]] {
-    let chosen: number[] = [];
-    let unchosen:number[] = [];
-  
-    data.forEach(item => {
-      if (conditionFunc(item)) {
-        chosen.push(item);
-      } else {
-        unchosen.push(item);
+  }
+  splitUsing(itr: any, callback: any) {
+    const chosen: any[]  = []
+    let unchosen: any[] = []
+    itr.forEach((obj: any, index: any) => {
+      if(callback(obj, index)){
+        chosen.push(obj)
+      }else{
+        unchosen.push(obj)
       }
-    });
-  
-    return [chosen, unchosen];
+    })
+    return [chosen, unchosen]
   }
   onDrop(event: DragEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.onFileSelected(event)
+  }
+  setScale(chart: Chart, start: any, end: any) {
+    chart.options.scales.xAxes[0].ticks.min = (Math.floor(start))? Math.floor(start) : 0
+    chart.options.scales.xAxes[0].ticks.max = Math.ceil(end) + 1;
+  }
+
+  setDataFromRaw(chart: Chart, rawDataArrays: any) {
+    let scatterArrays = this.rawToScatter(rawDataArrays)
+    for(let idx = 0; idx < rawDataArrays.length; idx++){
+      chart.data.datasets[idx].data = scatterArrays[idx]
+    }
+    let max = 1
+    for (let dataset of scatterArrays) {
+      for (let item of dataset) {
+        max = Math.max(max, item.y)
+      }
+    }
+  }
+
+  rawToScatter(arrs: any) {
+    let faceted = []
+    let counts: { [key: string]: number } = {}
+    for (let arr of arrs) {
+      let scatter = []
+      for (let item of arr) {
+        let y = (counts[item] = (counts[item] || 0) + 1)
+        scatter.push({ x: item, y: y })
+      }
+      faceted.push(scatter)
+    }
+    return faceted
+  }
+
+  scaleToStackDots(chart: Chart) {
+    let max = 1;
+    for (let dataset of chart.data.datasets) {
+      for (let item of dataset.data) {
+        max = Math.max(max, Number((item as ChartPoint).y))
+      }
+    }
+
+    chart.options.scales.yAxes[0].ticks.stepSize = (max>10)? Math.ceil(max * 0.2) : 1
+    if (max>1000) {
+      chart.options.scales.yAxes[0].ticks.min = 0
+    }
   }
 }

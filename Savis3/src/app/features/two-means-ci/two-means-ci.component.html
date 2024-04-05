@@ -146,7 +146,7 @@
     </table>
     <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
     <br>
-    <button  class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full" >{{ 'opc_build' | translate }}</button>
+    <button  class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full" (click)="updateLastChart()">{{ 'opc_build' | translate }}</button>
     <br>  
       
       <hr>
@@ -165,20 +165,20 @@
         </div>
         <div class="flex justify-between">
           <span>Total # samples: </span>
-          <span summary="total" summaryint>{{lastSummary?.total}}</span>
+          <span summary="total" summaryint>{{simulations.length}}</span>
         </div>
         <div class="flex justify-between">
           <span>Lower Bound: </span>
-          <span summary="lowerBound" summaryint>{{lastSummary?.chosen }}</span>
+          <span summary="lowerBound" summaryint>{{lowerBound}}</span>
         </div>
         <div class="flex justify-between">
           <span>Upper Bound:</span>
-          <span summary="upperBound">{{lastSummary?.proportion }}</span>
+          <span summary="upperBound">{{upperBound }}</span>
         </div>
       </div>
     </div>
     <div class="rhs w-9/12">
-      <canvas id="diff-chart"></canvas>
+      <canvas #chart5 class="half-height"></canvas>
     </div>
   
 </div>
