@@ -234,6 +234,7 @@
     "tpci_Difference_of_Proportions" :"Diferencia de Proporciones",
     "tpci_values_in_interval": "Valores en intervalo",
     "tpci_values_not_in_interval": "Valores no en intervalo",
+    "tpci_alert": "El grupo A y el grupo B deben tener al menos 1 éxito y 1 fracaso.",
     "//Login": "These are the translations for the Login component",
     "Login": "inicio de sesión",
     "DontHaveAccount": "no tengo una cuenta",

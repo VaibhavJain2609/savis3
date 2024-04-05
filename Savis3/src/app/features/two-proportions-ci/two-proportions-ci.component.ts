@@ -16,6 +16,8 @@ export class TwoProportionsCIComponent implements AfterViewInit {
   chart2: Chart
   chart3: Chart
 
+  factor: number = 10
+
   numASuccesses: number = 0
   numAFailures: number = 0
   numBSuccesses: number = 0
@@ -229,7 +231,7 @@ export class TwoProportionsCIComponent implements AfterViewInit {
     let numBFailures = this.numBFailures * 1
 
     if(numASuccess <= 0 || numAFailures <= 0 || numBSuccesses <= 0 || numBFailures <= 0){
-      alert('Group A and Group B must have at least 1 success and 1 failure')
+      alert(this.translate.instant('tpci_alert'))
     } else {
       this.resetLastChart()
 
@@ -271,14 +273,14 @@ export class TwoProportionsCIComponent implements AfterViewInit {
     let numSimulations = this.numSimulations * 1
     
     for(let simIdx = 0; simIdx < numSimulations; simIdx++) {
-      let numASuccess = Math.floor(Math.random() * 21) + this.numASuccesses - 10;
-      let numAFailures = Math.floor(Math.random() * 21) + this.numAFailures - 10;
-      let numBSuccess = Math.floor(Math.random() * 21) + this.numBSuccesses - 10;
-      let numBFailures = Math.floor(Math.random() * 21) + this.numBFailures - 10;
+      let numASuccess = this.numASuccesses * this.factor
+      let numAFailures = this.numAFailures * this.factor
+      let numBSuccess = this.numBSuccesses * this.factor
+      let numBFailures = this.numBFailures * this.factor
       let totalGroupA = numASuccess + numAFailures
       let totalGroupB = numBSuccess + numBFailures
-      const {successes: sampleASuccess, failures: sampleAFailure, sampleSize: totalA, prop: sampleAProportion} = this.samplePot(totalGroupA, numASuccess, numAFailures + numASuccess)
-      const {successes: sampleBSuccess, failures: sampleBFailure, sampleSize: totalB, prop: sampleBProportion} = this.samplePot(totalGroupB, numBSuccess, numBFailures + numBSuccess)
+      const {successes: sampleASuccess, failures: sampleAFailure, sampleSize: totalA, prop: sampleAProportion} = this.samplePot(totalGroupA, numASuccess, this.numAFailures + this.numASuccesses)
+      const {successes: sampleBSuccess, failures: sampleBFailure, sampleSize: totalB, prop: sampleBProportion} = this.samplePot(totalGroupB, numBSuccess, this.numBFailures + this.numBSuccesses)
 
       this.simulations.push(sampleAProportion - sampleBProportion)
 
