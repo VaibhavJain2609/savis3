@@ -128,7 +128,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           ticks:{
             beginsAtZero: true,
           },
@@ -141,7 +141,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -150,6 +150,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
@@ -174,7 +175,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           ticks:{
             beginAtZero: true,
           },
@@ -187,7 +188,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             beginAtZero: true,
             min:0,
@@ -196,6 +197,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
@@ -269,6 +271,9 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           tooltips: {
             backgroundColor: 'rgba(0, 0, 0, 1.0)',
             bodyFontStyle: '16px',
+          },
+          animation: {
+            duration: 0
           }
         }
       })
@@ -385,7 +390,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           scaleLabel:{
             display: true,
             labelString: 'Data'
@@ -395,7 +400,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -403,6 +408,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
@@ -424,7 +430,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           scaleLabel:{
             display: true,
             labelString: 'Data'
@@ -434,7 +440,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -621,6 +627,9 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
         this.simulations,
         this.predicateForTail(this.minTailValInput, this.maxTailValInput)
       )
+
+      this.upper = this.maxTailValInput
+      this.lower = this.minTailValInput
 
       this.setDataFromRaw(this.chart3, [dataCustomChart.chosen, dataCustomChart.unchosen])
       this.scaleToStackDots(this.chart3)
