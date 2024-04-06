@@ -1,233 +1,160 @@
 <app-navbar></app-navbar>
-<body class="m-2">
-  <div id="one-mean">
-  <h1 id="title" class="text-3xl font-bold">{{'//omci_One_Mean_Confidence_Interval' | translate }}</h1>
-  <div id="form-container">
-    <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
-      <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
-      <div class="border border-gray-300 rounded-md">
-        <select (change)="sampleSelect($event)"
-          class="w-full border-t-0 border-l-0 border-r-0 border-b focus:outline-none rounded-lg p-1">
-          <option disabled selected>Select Sample Data</option>
-          <option value="sample1">Sample 1</option>
-          <option value="sample2">Sample 2</option>
-        </select>
-        <textarea  class="text-sm w-full p-1.5 placeholder:text-xs focus:outline-none  " rows="5"
-          placeholder="Enter or Drop CSV with first column as group number (1 or 2) and second column as variable. No colunm names (see sample data in drop down menu)" [ngModel]="dataInput"
-          name="dataFormInput"></textarea>
-      </div>
-
-      <div id="button-div">
-        <button type="submit" class="btn">{{'load_data' | translate}}</button>
-        <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
-        <input type="file" name="dataForm-file" accept=".csv" (change)="onFileSelected($event)">
-      </div>
-    </form>
-    <div id="data-div">
-      <div class="data-display">
-        <table id="original-data-display">
-          <thead *ngIf="valuesArray.length > 0">
-            <tr>
-              <th>ID</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let value of valuesArray; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{value}}</td>
-          </tr>
-        </tbody>
-        </table>
-      </div>
-        <div id="p-display">
-          <p id="mean-display">{{'mean' | translate}}: {{inputMean}}</p>
-          <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
-          <p id="size-display">{{'size' | translate}}: {{inputSize}}</p>
-        </div>
-      </div>
-    
-
-    <div id="chart-wrap">
-      <canvas baseChart
-        [datasets]="lineChartData1"
-        [labels]="lineChartLabels1"
-        [options]="lineChartOptions"
-        [legend]="lineChartLegend"
-        [chartType]="lineChartType"
-        height="300"
-      ></canvas>
-      <!-- <canvas id="data-chart-1" height="100"></canvas> -->
-    </div>
-  </div>
-
-  <hr class="line-break mt-2">
-
-  
-  
-  <hr class="line-break">
-  
-  <h3 id="subtitle" class="text-l font-bold mb-2 mt-2">2. {{'draw_sample' | translate}}</h3>
-  <div id="sample-container">
-    <div id="chart-input-form">
-      
-        <label>{{'sample_size' | translate}}:</label>
-        <input type="number" step="1" value="1" [(ngModel)]="sampleSize" class="border border-gray-300 rounded-md pl-2">
-        <label># {{'of_samples' | translate}}</label>
-        <input type="number" step="1" value="1" min="1" [(ngModel)]="numSamples" class="border border-gray-300 rounded-md pl-2">
-        <button type="button" (click)="runSimulation()" id="run-sim-btn">{{'run_simulation' | translate}}</button>
-      
-    </div>
-
-    <div>
-    <div class="data-display">
-      <table id="sample-table">
-        <thead *ngIf="sample.length > 0">
-          <tr>
-            <th>ID</th>
-            <th>Mean</th>
-            <th>Standard Deviation</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let value of sampleMeans; let i = index">
-          <td> {{i+1}} </td>
-          <td>{{value}}</td>
-          <td>
-            {{sampleStds[i]}}
-          </td>
-        </tr>
-      </tbody>
-      </table>
-  </div>
-    <p>{{'mean' | translate}}: {{this.sampleMean}}</p>
-    <p>{{'standard_deviation' | translate}}: {{this.sampleStd}}</p>
-  </div>
-
-  
-
-  <div id="chart-wrap">
-    <canvas baseChart
-      [datasets]="lineChartData3"
-      [labels]="lineChartLabels3"
-      [options]="lineChartOptions2"
-      [legend]="lineChartLegend"
-      [chartType]="lineChartType"
-      height="300"
-    ></canvas>
-  </div>
-  </div>
-
-  
-  <hr class="line-break">
-    
-    <hr class="line-break">
-  
-    <div>
-      <h3 id="subtitle">3.{{'omci_setMinMax' | translate }}</h3>
-      <div id="hypothetical-output">
-        <div id="chart-input-form">
-          <label>{{'omci_Enter_min' | translate }}: </label>
-          <input type="number" step="1" value="0" [(ngModel)]="setMin" (change)="setMinMax()">
-          <label>{{'omci_Enter_max' | translate }}: </label>
-          <input type="number" step="1" value="0" [(ngModel)]="setMax" (change)="setMinMax()">
-        </div>
-        <div id="display-container">
-        <div class="data-display">
-          <table id="hypothetical-data-table">
-            <thead *ngIf="hypoValuesArray.length > 0">
-              <tr>
-                <th>ID</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let value of hypoValuesArray; let i = index">
-              <td>{{i+1}}</td>
-              <td>{{value}}</td>
-            </tr>
-          </tbody>
-          </table>
-        </div>
-        <div id="p-display">
-          <p id="mean-display">{{'mean' | translate}}: {{hypoInputMean}}</p>
-          <p id="std-display">{{'standard_deviation' | translate}}: {{standardDeviation}}</p>
-        </div>
-      </div>
-        <div id="chart-wrap">
-          <canvas baseChart
-            [datasets]="lineChartData5"
-            [labels]="lineChartLabels5"
-            [options]="lineChartOptions"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            height="300"
-          ></canvas>
-        </div>
-      </div>
-    </div>
-    
-    <hr class="line-break">
-    <h3>4. {{'omci_Sample95' | translate}}</h3>
-    <div id="sampling-container">
-    <div id="section-4-div">
+<body class="flex flex-col min-h-screen">
+<div id="dot-chart-tutorial">
+    <h1 class="text-center">{{ 'omci_One_Mean_Confidence_Interval' | translate }}</h1>
+    <h3 class="subtitle">1. {{ 'dotPlot_enter_data' | translate }}
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showInputForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showInputForm">
         <div class="data-form">
+            <select id="sample-data-options" (change)="sampleSelect($event)">
+                <option disabled selected>{{ 'dotPlot_select_sample_data' | translate }}</option>
+                <option value="sample1">{{ 'dotPlot_sample1' | translate }}</option>
+                <option value="sample2">{{ 'dotPlot_sample2' | translate }}</option>
+            </select>
+            <textarea
+                [(ngModel)]="csvTextArea"
+                rows="8"
+                id="csv-input"
+                placeholder="{{ 'dotPlot_placeholder' | translate }}"
+            ></textarea>
+            <button class="btn" id="load-data-btn" (click)="loadDataButton()">{{ 'dotPlot_load_data' | translate }}</button>
+            <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'dotPlot_reset' | translate }}</button>
+            <button class="btn" id="upload-btn">{{ 'dotPlot_upload_data' | translate }}</button>
+            <input type="file" id="fileInput" style="display: none;">
             <br>
-            <p>{{'omci_TotalSamp' | translate}}
-      <span id="total-samples">{{this.meanSamples}}</span></p>
-            <p>{{'omci_LowerBound' | translate}}
-      <span id="lower"> {{this.lowerBound95}}</span></p>
-            <p>{{'omci_UpperBound' | translate}}
-       <span id="upper">{{this.upperBounds95}}</span></p>
-      
-      
-           <!-- <label for="tailValue"> Sample means at least as extreme as
-      </label>
-            <input type="number" id="tailValue"/>
-            <p>= <span id="total-selected-samples">0</span> samples
-      </p>
-            <p>Proportion:
-      <br><span id="proportion"></span></p> -->
-            </div>
+            <!-- <form>
+                <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>
+                <label for="population" class="m-1">{{ 'dotPlot_population' | translate }}</label>
+                <br>
+                <input type="radio" id="sample-data-ratio" value="sample" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('sample')">
+                <label for="sample" class="m-1">{{ 'dotPlot_sample' | translate }}</label>
+            </form> -->
+            
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                id="input-data-display"
+                readonly
+                class="readonly"
+            >{{ inputDataDisplay }}</textarea>
+            <p>{{ 'dotPlot_Mean' | translate }} <i>{{ meanSymbol }}</i> :</p>
+            <p>{{ inputDataMean }}</p>
+            <p>{{ 'dotPlot_Standard_Deviation' | translate }} {{ stdSymbol }}:</p>
+            <p>{{ inputDataStd }}</p>
+            <p>{{ 'dotPlot_Size' | translate }} <i>{{ sizeSymbol }}</i> :</p>
+            <p>{{ inputDataSize }}</p>
+        </div>
+        <div class="chart-wrap">
+            <canvas #inputChart></canvas>
+        </div>
     </div>
-    <div>
-    <div class="data-display">
-      <table id="sample-table">
-        <thead *ngIf="sampleMeans.length > 0">
-          <tr>
-            <th>#</th>
-            <th>Mean</th>
-            <th>Lower Bound</th>
-            <th>Upper Bound</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let mean of sampleMeans; let i = index">
-        <tr>
-          <td>{{i+1}}</td>
-          <td>{{mean}}</td>
-          <td>{{this.lowerBounds[i]}}</td>
-          <td>{{this.upperBounds[i]}}</td>
-        </tr>
-      </tbody>
-      </table>
-  </div>
-  <p>{{'omci_SampleMean' | translate}}: {{this.sampleMeansMean}}</p>
-  <p>{{'standard_deviation' | translate}}: {{this.sampleMeansStd}}</p>
-  </div>
-  
-  <div id="chart-wrap">
-    <canvas baseChart
-      [datasets]="lineChartData4"
-      [labels]="lineChartLabels4"
-      [options]="lineChartOptions2"
-      [legend]="lineChartLegend"
-      [chartType]="lineChartType"
-      height="300"
-    ></canvas>
-  </div>
-  </div>
-  
-  <hr class="line-break">
-  </div>
-  </body>
-  <app-footer></app-footer>
+
+    <div class="green-line"></div>
+
+    <h3>2. {{ 'dotPlot_get_sample' | translate }}
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showSampleForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showSampleForm">
+        <div class="data-form">
+            <label for="sample-data-size">{{ 'dotPlot_sample_size' | translate }}:</label>
+            <input type="number" min="1" step="1" id="sample-data-size" [(ngModel)]="sampleSize" [disabled]="disabledInput">
+            <label for="no-of-sample">{{ 'dotPlot_num_sim' | translate }}</label>
+            <br>
+            <input type="number" min="1" step="1" id="no-of-sample" [(ngModel)]="noOfSim" [disabled]="disabledInput">
+            <br>
+            <button class="btn" id="get-sample-btn" (click)="runSimulationButton()" [disabled]="disabledInput">{{ 'dotPlot_run_sim' | translate }}</button>
+            <p id="run-sim-error-msg"></p>
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                readonly
+                class="readonly"
+                id="sample-data-display"
+            >{{ sampleDataDisplay }}</textarea>
+            <p>{{ 'dotPlot_Mean' | translate }} <i>x̄</i> :</p>
+            <p>{{ sampleDataMean }}</p>
+            <p>{{ 'dotPlot_Standard_Deviation' | translate }} s:</p>
+            <p>{{ sampleDataStd }}</p>
+        </div>
+
+        <div class="chart-wrap">
+            <canvas #sampleChart></canvas>
+        </div>
+    </div>
+
+    <div class="green-line"></div>
+
+    <h3>3. {{ 'dotPlot_distribution' | translate }}
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showMeansForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showMeansForm">
+        <div class="data-form">
+            <p>{{ 'dotPlot_means_interval' | translate }}</p>
+
+            <label for="min-tailValue">{{ 'dotPlot_min' | translate }}</label>
+            <input type="number" id="min-interValue" step="1" [(ngModel)]="minInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
+            <label for="min-tailValue">{{ 'dotPlot_include_min' | translate }}
+                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" [disabled]="sampleMeanDisabled">
+            </label>
+
+            <br>
+
+            <label for="max-tailValue">{{ 'dotPlot_max' | translate }}</label>
+            <input type="number" id="max-interValue" step="1" [(ngModel)]="maxInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
+            <label for="max-tailValue">{{ 'dotPlot_include_max' | translate }}
+                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="sampleMeanDisabled">
+            </label>
+
+            <br>
+
+            <p>{{ 'dotPlot_proportions_of_samples' | translate }}:</p>
+            <p>{{ sampleMeansChosen }}</p>
+            <p>{{ 'dotPlot_proportions_of_samples_unchosen' | translate }}:</p>
+            <p>{{ sampleMeansUnchosen }}</p>
+        </div>
+
+        <div class="data-form">
+            <textarea
+                rows="10"
+                readonly
+                class="readonly"
+                id="sample-means-display"
+            >{{ sampleMeansDisplay }}</textarea>
+            <p>{{ 'dotPlot_means_of_samples' | translate }}: </p>
+            <p>{{ sampleMeansMean }}</p>
+            <p>{{ 'dotPlot_std_of_samples' | translate }}: </p>
+            <p>{{ sampleMeansStd }}</p>
+            <p>{{ 'dotPlot_total_samples' |translate }}:</p>
+            <p>{{ sampleMeansSize }}</p>
+        </div>
+
+        <div class="chart-wrap">
+            <canvas #sampleMeansChart></canvas>
+        </div>
+    </div>
+    <h3>4. {{ 'dotPlot_confidence_interval' | translate }}
+        <input type="checkbox" class="toggle-box" [(ngModel)]="showConfidenceIntervalForm" checked="checked">
+    </h3>
+    <div class="chart-input-form" *ngIf="showConfidenceIntervalForm">
+        <div class="data-form">
+            <p>Input numbers of intervals: only first hundred will be graphed</p>
+            <input type="number" id="interval-number" step="1" [(ngModel)]="noOfIntervals">
+            <button class="btn" (click)="confidenceInterval()">{{ 'dotPlot_calculate_confidence_interval' | translate }}</button>
+            <p style="text-align: left;">Number of Intervals containing the population mean</p>
+            <p style="text-align: center;">{{ confidenceIntervalCount }}</p>
+            <p style="text-align: left;">Number of Intervals not containing the population mean </p>
+            <p style="text-align: center;">{{ confidenceIntervalCountNot }}</p>
+        </div>
+ 
+        <div class="chart-wrap">
+            <canvas #confidenceIntervalChart></canvas>
+        </div>
+    </div>
+ </div>
+<app-footer class="mt-auto"></app-footer>
+</body>

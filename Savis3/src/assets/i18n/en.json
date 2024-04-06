@@ -14,7 +14,7 @@
     "load_data": "Load Data",
     "reset": "Reset",
     "mean": "Mean",
-    "standard_deviation": "Standard Deviation",
+    "standard_deviation": "Standard Deviation σ",
     "size": "Size",
     "hypothetical_pop": "Generate Hypothetical Population",
     "shift_mean": "Shift Mean",
@@ -93,7 +93,7 @@
     "opc_prop_select": "Proportions selected: ",
     "opc_prop_noselect": "Proportions not selected: ",
     "//Two_means_hypothesis": "These are the translations for the Two means hypothesis component",
-    "two_mean_title": "Two Means Hypothesis Testing",
+    "two_mean_title": "Two Means Significance Test",
     "tm_enter_data": "1. Enter Data",
     "tm_select_data": "Select Sample Data",
     "tm_sample1": "Sample 1",
@@ -162,6 +162,7 @@
     "tp_propdiff_originaldata": "Difference of Proportions in Original Data:",
     "tp_means_sample": "Mean of Sample Differences:",
     "tp_standard": "Standard Deviation:",
+    "tp_loadData": "Load Data",
     "tp_total": "Total # of Samples:",
     "tp_extreme": "# of Extreme Differences:",
     "tp_extreme_diff": "Proportion of Extreme Differences",
@@ -324,5 +325,7 @@
     "dotPlot_means_in_interval": "Means in interval",
     "dotPlot_means_not_in_interval": "Means not in interval",
     "dotPlot_values": "Values",
-    "dotPlot_mean": "Mean"
+    "dotPlot_mean": "Mean",
+    "dotPlot_confidence_interval": "95% Confidence Interval",
+    "dotPlot_calculate_confidence_interval": "Build Intervals"
 }
