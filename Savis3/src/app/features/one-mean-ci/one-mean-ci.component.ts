@@ -7,322 +7,637 @@ import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 import * as XLS from 'xlsx';
 import { chatClass } from 'src/app/Utils/stacked-dot';
+import { sample } from 'simple-statistics';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
   styleUrls: ['./one-mean-ci.component.scss']
 })
 export class OneMeanCIComponent {
-  // 1.Data
-  dataInput: string = "";
-  valuesArray: any = [];
-  input: [] = [];
-  inputMean: number = 0;
-  standardDeviation: number = 0;
-  inputSize: number = 0;
-  csvraw: any
-  csv: any
+  minInterValInput: number = 0
+  maxInterValInput: number = 0
 
-  // 2. Hypotheis Population
-  hypoValuesArray: any = [];
-  originalHypoValuesArray: any = [];
-  rangeValue: number = 0;
-  meanValue: number = 0;
-  prevMean: number = this.meanValue;
-  hypoInputMean: number = 0;
+  includeValMin: any
+  includeValMax: any
 
-  // 3. Data Filter
-  setMin: number = 0;
-  setMax: number = 0;
-  filteredOutOfRange: any = [];
-  filteredInRange: any = [];
-  // 3. Draw Sample
+  sampleSize: number = 10
+  noOfSim: number = 1
+  sampleStds: number[] = []
+  csvTextArea: string = ''
+  disabledInput: boolean = true
+  inputDataArray: any[] = []
+  lowerBound: any[] = []
+  upperBound: any[] = []
+  samplemean2: any[] = []
+  sampleDataArray: any[] = []
+  min:number = 0
+  max:number = 1
 
-  sampleSize: number = 1;
-  sampleSizeChange: number = 1;
-  sampleMean: number = 0;
-  numSamples: number = 1;
-  sample: any = [];
-  // 4.
-  sampleMeans: any = [];
-  sampleMeansMean: number = 0;
-  sampleMeansStd:number = 0;
-  sampleStds: any = [];
-  meanSamples: number = 0;
-  extremeSample: number = 0;
-  distributionSelected: string = "default";
-  sampleStd:  number = 0;
-  lowerBound95:number = 0;
-  upperBounds95:number =0;
-  lowerBounds: number[] = [];
-  upperBounds: number[] = [];
-  // chart data
-  public lineChartLegend = true;
-  public lineChartType: ChartType = 'scatter';
-  public lineChartData1: any = [];
-  public lineChartLabels1: any = [];
-  chart1: any;
-  public lineChartData2: any = [];
-  public lineChartLabels2: any = [];
+  sampleMeans: any[] = []
 
-  public lineChartData3: any = [];
-  public lineChartLabels3: any = [];
+  sampleMeansChartLabel:string = ''
 
-  public lineChartData4: any = [];
-  public lineChartLabels4: any = [];
-  public lineChartData5: any = [];
-  public lineChartLabels5: any = [];
-  public lineChartData6: any = [];
-  public lineChartLabels6: any = [];
-  public lineChartOptions: any = {
-    scales: {
-      xAxes: [{
-        ticks: { 
-          //beginAtZero: true,
-          fontColor: 'black',
-          fontSize: 16,
-          padding: 0,
-          min: -1,
-          max: 1
-        },
-        scaleLabel: {
-          display: true,
-          labelString: "",
-        }
-      }],
-      yAxes:[{
-        ticks: {
-          fontColor: 'black',
-          fontSize: 16,
-          padding: 0,
-          min: 1, // Rafael Diaz
-          stepSize: 1
-        },
-        scaleLabel: {
-          display: true,
-          labelString: "",
-          //fontColor: "black",
-          //fontSize: "14"
-        }
-      }]
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: 'rgba(0,0,0,1.0)',
-      bodyFontStyle:'normal',
-    },
-    elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 6
-      }
-    }
-  };
+  scaleChart: any[] = []
 
-  public lineChartOptions2: any = {
-    scales: {
-      xAxes: [{
-        ticks: { 
-          //beginAtZero: true,
-          fontColor: 'black',
-          fontSize: 16,
-          padding: 0,
-          min: -1,
-          max: 1
-        },
-        scaleLabel: {
-          display: true,
-          labelString: "",
-        }
-      }],
-      yAxes:[{
-        ticks: {
-          fontColor: 'black',
-          fontSize: 16,
-          padding: 0,
-          min: 1, // Rafael Diaz
-          stepSize: 1
-        },
-        scaleLabel: {
-          display: true,
-          labelString: "",
-          //fontColor: "black",
-          //fontSize: "14"
-        }
-      }]
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: 'rgba(0,0,0,1.0)',
-      bodyFontStyle:'normal',
-    },
-    elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 6
-      }
-    }
-  };
+  inputDataSize: any = NaN
+  sampleMeansSize: any = NaN
+
+  inputDataDisplay: any = ''
+  sampleDataDisplay: any = ''
+  sampleMeansDisplay: any = ''
+  sampleMeansCoverageDisplay: any = ''
+  inputDataMean: any = NaN
+  sampleDataMean: any = NaN
+  sampleMeansMean: any = NaN
+
+  inputDataStd: any = NaN
+  sampleDataStd: any = NaN
+  sampleMeansStd: any = NaN
+
+  sampleMeansChosen: any = NaN
+  sampleMeansUnchosen: any = NaN
+  confidenceIntervalCount = 0
+  confidenceIntervalCountNot = 0
+  meanSymbol: string = 'μ'
+  stdSymbol: string = 'σ'
+  sizeSymbol: string = 'n'
+
+  sampleMeanDisabled: boolean = true
+
+  @ViewChild('inputChart') inputDataChartRef: ElementRef<HTMLCanvasElement>
+
+  @ViewChild('sampleChart') sampleDataChartRef: ElementRef<HTMLCanvasElement>
+
+  @ViewChild('sampleMeansChart') sampleMeansChartRef: ElementRef<HTMLCanvasElement>
+
+  @ViewChild('inputForm') inputForm: NgForm
+  @ViewChild('confidenceIntervalChart') confidenceIntervalChartRef: ElementRef<HTMLCanvasElement>
+  inputDataChart: Chart
 
 
+  sampleDataChart: Chart
 
-  constructor() {}
-  // values are in dataForm-input
-  onSubmit(form: NgForm) {
-    // get the textarea input
-    this.dataInput = form.value.dataFormInput;
-    // split the input into an array
-    this.valuesArray = this.dataInput.split('\n').filter(value => value.trim() !== '');
-    // convert the array into numbers
-    this.valuesArray = this.valuesArray.map((value: string) => parseInt(value)).filter((value: number) => !isNaN(value));
-    console.log(this.valuesArray);
-    // calculate the mean
-    this.inputMean = MathService.mean(this.valuesArray);
-    this.hypoInputMean = this.inputMean;
-    // calculate the standard deviation
-    this.standardDeviation = parseFloat(MathService.stddev(this.valuesArray).toFixed(2));
-    this.lowerBound95 = (this.inputMean - 2* this.standardDeviation);
-    this.upperBounds95 = (this.inputMean + 2* this.standardDeviation);
-    this.inputSize = this.valuesArray.length;
-    this.hypoValuesArray = this.valuesArray;
+  sampleMeansChart: Chart
+  confidenceIntervalChart: Chart
+  noOfIntervals: number = 1
+  sampleRadio: string = 'population'
 
-    // create the chart
-    // let service = new StackedDotChartService();
-    // let chart = service.initChart(this.valuesArray);
-    this.lineChartData1 = [{
-      data: this.stackData(this.valuesArray),
-      label: 'Original Dataset',
-      pointBackgroundColor: 'orange',
-      type: 'scatter'
-    }];
-    this.chart1 = new chatClass('data-chart-1',this.valuesArray.map((value:number) => ({x: value, y: 1})));
-    this.lineChartLabels1 = this.valuesArray.map((index:number) => `Value ${index+1}`);
-    this.lineChartData2 = [{
-      data: this.stackData(this.valuesArray),
-      label: 'Hypothetical Population',
-      pointBackgroundColor: 'orange',
-    }];
-    this.lineChartLabels2 = this.valuesArray.map((index:number) => `Value ${index+1}`);
-    this.updateChartOptions();
+  private _showInputForm = true
+  private _showSampleForm = true
+  private _showMeansForm = true
+  private _showConfidenceIntervalForm = true
+
+  constructor(
+    private translate: TranslateService
+  ) { }
+
+  ngOnInit(): void {
+    this.includeValMin = false
+    this.includeValMax = false
   }
-  stackData(values: number[]): any[] {
-    let stackPoints: any[] = [];
-    let stackCount: { [key: number]: number } = {};
+
+  ngAfterViewInit() {
+    this.createInputChart()
+    this.createSampleChart()
+    this.createSampleMeansChart()
+    this.createConfidenceIntervalChart()
+  }
+  createConfidenceIntervalChart(): void {
+    const ctx = this.confidenceIntervalChartRef.nativeElement.getContext('2d')
+    if(ctx) {
+      this.confidenceIntervalChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant('OMCI_DataMean'),
+              backgroundColor: 'black',
+              data: []
+            },
+            {
+              label: this.translate.instant('OMCI_InInterval'),
+              backgroundColor: 'green',
+              data: []
+            },
+            {
+              label: this.translate.instant('OMCI_NotInInterval'),
+              backgroundColor: 'red',
+              data: []
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('OMCI_SAMPLE_NUMBER'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('OMCI_95%_CI'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontSize: 16,
+          }
+        }
+      })
+    }
+  }
+  createInputChart(): void {
+    const ctx = this.inputDataChartRef.nativeElement.getContext('2d')
+    if(ctx) {
+      this.inputDataChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant('dotPlot_input_data'),
+              backgroundColor: 'orange',
+              data: []
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_data'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontSize: 16,
+          }
+        }
+      })
+    }
+
+  }
+
+  createSampleChart(): void {
+    const ctx = this.sampleDataChartRef.nativeElement.getContext('2d')
+    if(ctx) {
+      this.sampleDataChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant('dotPlot_last_drawn'),
+              backgroundColor: 'blue',
+              data: []
+            },
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_data'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontSize: 16,
+          }
+        }
+      })
+    }
+
+  }
+
+  createSampleMeansChart(): void {
+    const ctx = this.sampleMeansChartRef.nativeElement.getContext('2d')
+    if(ctx) {
+      this.sampleMeansChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant('dotPlot_means_in_interval'),
+              backgroundColor: 'green',
+              data: []
+            },
+            {
+              label: this.translate.instant('dotPlot_means_not_in_interval'),
+              backgroundColor: 'red',
+              data: []
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_sample_means'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  fontStyle: 'bold',
+                  fontColor: 'black'
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontSize: 16,
+          }
+        }
+      })
+    }
+
+  }
+
+  loadDataButton() {
+    this.inputDataArray = this.parseCSVtoSingleArray(this.csvTextArea)
+    
+    if(this.inputDataArray.length) {
+      this.updateData(0)
+      this.inputDataSize = this.inputDataArray.length
+    }
+
+    this.disabledInput = false
+  }
+
+  runSimulationButton() {
+    this.updateSampleData(this.sampleSize, this.noOfSim)
+    this.sampleMeanDisabled = false
+  }
+
+  sampleMeanChange() {
+    if(this.sampleMeans.length) {
+      this.updateData(2)
+    }
+  }
+
+  radioChange(str: string) {
+    this.sampleRadio = str
+    if (this.inputDataArray.length) {
+      this.updateData(0)
+    }
+
+    if (str === 'population') {
+      this.meanSymbol = 'μ'
+      this.stdSymbol = 'σ'
+      this.sizeSymbol = 'N'
+      if (this.inputDataArray.length) {
+        this.disabledInput = false
+      }
+    }
+
+    if (str === 'sample') {
+      this.meanSymbol = 'x̄'
+      this.stdSymbol = 's'
+      this.sizeSymbol = 'n'
+      this.sampleMeanDisabled = true
+      this.disabledInput = true
+    }
+  }
+
+  populationRadioChange() {
+    if(this.inputDataArray.length) {
+      this.updateData(0)
+    }
+
+  }
+
+  resetSampleMeansChart() {
+    this.sampleMeans = []
+    this.sampleMeansChartLabel = ''
+    this.updateData(2)
+  }
+
+  resetSampleChart() {
+    this.sampleDataArray = []
+    this.updateData(1)
+  }
+
+  totalReset() {
+    this.inputDataArray = []
+    this.sampleDataArray = []
+    this.sampleMeans = []
+    this.sampleMeansChartLabel = ''
+    this.minInterValInput = 0
+    this.maxInterValInput = 0
+    this.noOfSim = 1
+    this.sampleSize = 10
+    this.inputDataSize = 0
+    this.inputDataDisplay = ''
+    this.sampleDataDisplay = ''
+    this.sampleMeansDisplay = ''
+    this.inputDataMean = NaN
+    this.sampleDataMean = NaN
+    this.sampleMeansMean = NaN
+    this.inputDataStd = NaN
+    this.sampleDataStd = NaN
+    this.sampleMeansStd = NaN
+    this.sampleMeansChosen = NaN
+    this.sampleMeansUnchosen = NaN
+    this.radioChange('population')
+    this.disabledInput = true
+    this.sampleMeanDisabled = true
+    this.sampleMeansSize = NaN
+    
+    this.clearChart(this.inputDataChart)
+    this.clearChart(this.sampleDataChart)
+    this.clearChart(this.sampleMeansChart)
+    this.resetSampleMeansChart()
+    this.resetSampleChart()
+  }
+
+  updateInfoSampleMeans(totalChosen: number, totalUnchosen: number) {
+    const proportionChosen = this.roundToPlaces(totalChosen / this.sampleMeans.length, 4)
+    const proportionUnchosen = this.roundToPlaces(totalUnchosen / this.sampleMeans.length, 4)
+
+    this.sampleMeansChosen = `${totalChosen} / ${this.sampleMeans.length} = ${proportionChosen}`
+    this.sampleMeansUnchosen = `${totalUnchosen} / ${this.sampleMeans.length} = ${proportionUnchosen}`
+
+  }
+
+  updateSampleData(sz:any, num: any) {
+    try {
+      if (!this.sampleSize) throw new Error('Sample size is required')
+
+      let roundedMean
+      let newMeanSamples = []
+      let newStdDeviations = [];
+
+      for(let it = 0; it < num; it++){
+        const { chosen, unchosen } = this.randomSubset(this.inputDataArray, sz)
+        roundedMean = this.roundToPlaces(this.mean(chosen.map(x => x.value)), 4)
+        newMeanSamples.push(roundedMean)
+        const stdDeviation = this.roundToPlaces(MathService.sampleStddev(chosen.map(x => x.value)), 3);
+        newStdDeviations.push(stdDeviation);
+
+        if(it === num - 1) {
+          this.sampleDataArray = chosen
+        }
+      }
+
+      if(this.sampleSize !== sz) {
+        this.sampleSize = sz
+        this.sampleMeans = newMeanSamples
+        this.sampleStds = newStdDeviations; 
+      } else {
+        this.sampleMeans = this.sampleMeans.concat(newMeanSamples)
+        this.sampleStds = this.sampleStds.concat(newStdDeviations); 
+      }
+
+      this.updateData(1)
+
+      const minNumber = this.minInArray(this.sampleMeans)
+      const maxNumber = this.maxInArray(this.sampleMeans)
+      this.minInterValInput = (minNumber%1===0)?minNumber-1:Math.floor(minNumber)
+      this.maxInterValInput = (maxNumber%1===0)?maxNumber+1:Math.ceil(maxNumber)
+
+
+      this.updateData(2)
+    } catch (error) {
+      let errMsg = 'ERRROR\n'
+      alert(error)
+      
+    }
+  }
+
+  predicateForSets(left: any, right: any) {
+    if(this.includeValMin.checked && this.includeValMax.checked) {
+      return function(x: any) {
+        return x >= left && x <= right
+      }
+    } else if (this.includeValMin.checked && !this.includeValMax.checked) {
+      return function(x: any) {
+        return x >= left && x < right
+      }
+    } else if (!this.includeValMin.checked && this.includeValMax.checked) {
+      return function(x: any) {
+        return x > left && x <= right
+      }
+    } else {
+      return function(x: any) {
+        return x > left && x < right
+      }
+    }
+  }
+
+  updateData(num: number) {
+    let dataChart, dataArray, dataDisplay, dataMean, dataStd, valuesArr;
   
-    // Iterate through values and stack points vertically
-    for (let value of values) {
-      if (!stackCount[value]) {
-        stackCount[value] = 0;
-      }
-      stackPoints.push({ x: value, y: stackCount[value]++ });
+    if (num === 0) {
+      dataChart = this.inputDataChart;
+      dataArray = this.inputDataArray;
+      dataDisplay = this.inputDataDisplay;
+    } else if (num === 1) {
+      dataChart = this.sampleDataChart;
+      dataArray = this.sampleDataArray;
+      dataDisplay = this.sampleDataDisplay;
+    } else if (num === 2) {
+      dataChart = this.sampleMeansChart;
+      dataArray = this.sampleMeans;
+      dataDisplay = this.sampleMeansDisplay;
+    } else {
+      dataChart = this.confidenceIntervalChart;
+      dataArray = this.sampleMeans;
+      dataDisplay = this.sampleMeansCoverageDisplay;
     }
   
-    return stackPoints;
-  }
-  updateChartOptions() {
-    let minValue = Math.min(...this.valuesArray);
-    let maxValue = Math.max(...this.valuesArray);
-
-    this.lineChartOptions = {
-      scales: {
-        xAxes: [{
-          ticks: { 
-            //beginAtZero: true,
-            fontColor: 'black',
-            fontSize: 16,
-            padding: 0,
-            min: minValue,
-            max: maxValue
-          },
-          scaleLabel: {
-            display: true,
-            labelString: "",
-          }
-        }],
-        yAxes:[{
-          ticks: {
-            fontColor: 'black',
-            fontSize: 16,
-            padding: 0,
-            min: 1, // Rafael Diaz
-            stepSize: 1
-          },
-          scaleLabel: {
-            display: true,
-            labelString: "",
-            //fontColor: "black",
-            //fontSize: "14"
-          }
-        }]
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      tooltips: {
-        backgroundColor: 'rgba(0,0,0,1.0)',
-        bodyFontStyle:'normal',
-      },
-      elements: {
-        point: {
-          radius: 5,
-          hoverRadius: 6,
+    if (dataArray.length) {
+      if (num !== 2) {
+        valuesArr = dataArray.map(x => x.value);
+        dataChart = this.setDataFromRaw(dataChart, [valuesArr]);
+        dataDisplay = dataArray.reduce(
+          (acc, x) => acc + `${x.id}`.padEnd(8, ' ') + `${x.value}\n`,
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_values')}\n`
+        );
+        if (num === 0) {
+          this.scaleChart = [this.minInArray(valuesArr), this.maxInArray(valuesArr)];
         }
-      },
-      legend : {
-        labels : {
-          fontColor: 'black',
-        }
+      } else {
+        valuesArr = dataArray;
+        const { chosen, unchosen } = this.splitByPredicate(
+          valuesArr,
+          this.predicateForSets(this.minInterValInput, this.maxInterValInput)
+        );
+        dataChart.options.animation.duration = 0;
+        this.updateInfoSampleMeans(chosen.length, unchosen.length);
+        dataChart = this.setDataFromRaw(dataChart, [chosen, unchosen]);
+        dataDisplay = dataArray.reduce(
+          (acc, x, idx) =>
+            acc +
+            `${idx + 1}`.padEnd(8, ' ') +
+            `${x} σ: ${this.sampleStds[idx]}`.padEnd(25, ' ') +
+            `${this.translate.instant('dotPlot_mean')} ${this.stdSymbol}\n`,
+          `ID`.padEnd(8, ' ') +
+            `${this.translate.instant('dotPlot_values')} ${this.stdSymbol}\n`
+        );
       }
+  
+      if (num < 2) {
+        dataChart = this.setScale(dataChart, this.scaleChart[0], this.scaleChart[1]);
+      } else {
+        dataChart = this.setScale(dataChart, this.minInArray(valuesArr), this.maxInArray(valuesArr));
+      }
+  
+      if (valuesArr.length < 1000) {
+        dataChart = this.changeDotAppearance(dataChart, 5);
+      } else {
+        dataChart = this.changeDotAppearance(dataChart, 3);
+      }
+  
+      dataChart = this.scaleToStackDots(dataChart);
+    } else {
+      this.clearChart(dataChart);
     }
+  
+    dataChart.update();
+    dataMean = dataArray.length ? this.roundToPlaces(this.mean(valuesArr), 2) : 'No data';
+  
+    if (this.sampleRadio === 'population' && num === 0) {
+      dataStd = dataArray.length ? this.roundToPlaces(this.stddev(dataArray.map(x => x.value)), 2) : 'No data';
+    } else if (num === 2) {
+      dataStd = dataArray.length ? this.roundToPlaces(this.sampleStddev(dataArray), 2) : 'No data';
+    } else {
+      dataStd = dataArray.length ? this.roundToPlaces(this.sampleStddev(dataArray.map(x => x.value)), 2) : 'No data';
+    }
+  
+    if (num === 0) {
+      this.inputDataDisplay = dataDisplay;
+      this.inputDataMean = dataMean;
+      this.inputDataStd = dataStd;
+    } else if (num === 1) {
+      this.sampleDataDisplay = dataDisplay;
+      this.sampleDataMean = dataMean;
+      this.sampleDataStd = dataStd;
+    } else if (num === 2) {
+      this.sampleMeansDisplay = dataDisplay;
+      this.sampleMeansMean = dataMean;
+      this.sampleMeansSize = valuesArr.length;
+      this.sampleMeansStd = dataStd;
+    } else {
+      this.sampleMeansCoverageDisplay = dataDisplay;
 
-    this.lineChartOptions2 = {
-      scales: {
-        xAxes: [{
-          ticks: { 
-            //beginAtZero: true,
-            fontColor: 'black',
-            fontSize: 16,
-            padding: 0,
-            min: minValue,
-            max: maxValue
-          },
-          scaleLabel: {
-            display: true,
-            labelString: "",
-          }
-        }],
-        yAxes:[{
-          ticks: {
-            fontColor: 'black',
-            fontSize: 16,
-            padding: 0,
-            min: 1, // Rafael Diaz
-            stepSize: 0.5
-          },
-          scaleLabel: {
-            display: true,
-            labelString: "",
-            //fontColor: "black",
-            //fontSize: "14"
-          }
-        }]
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      tooltips: {
-        backgroundColor: 'rgba(0,0,0,1.0)',
-        bodyFontStyle:'normal',
-      },
-      elements: {
-        point: {
-          radius: 5,
-          hoverRadius: 6
-        }
-      }
-    };
-
+    }
   }
+
+  
 
   sampleSelect(e: any) {
     this.csv = null
@@ -640,78 +955,127 @@ export class OneMeanCIComponent {
     this.sample = sampleCopy;
     return this.sample;
   }
-
-  extremeSampleFunc() {
-
-    let points:any = {};
-    let pointsArray: any = [];
-    let upperBound: number = this.meanValue + 2 * this.standardDeviation;
-    let lowerBound: number = this.meanValue - 2 * this.standardDeviation;
-    let lowerBounds1: number[] = [];
-    let upperBounds1: number[] = [];
-    let zScore: number = 1.96;
-    let n: number = this.sampleMeans.length;
-    for(let i = 0; i < n; i++) {
-      this.lowerBounds.push(parseFloat((this.sampleMeans[i] - 2 * this.sampleStds[i]).toFixed(2)));
-      this.upperBounds.push(parseFloat((this.sampleMeans[i] + 2 * this.sampleStds[i]).toFixed(2)));
-    }
-
-    for (let i = 0; i < this.sampleMeans.length; i++) {
-      let value = this.sampleMeans[i];
-      if (points[value] === undefined) {
-        points[value] = 1;
-      } else {
-        points[value] += 1;
-      }
-      pointsArray.push({x: value, y: points[value]});
-    }
-    console.log(this.lowerBounds);
-    console.log(this.upperBounds);
-    this.lineChartData4 = [{
-      data: pointsArray.map((value: any) => ({ x: value.x, y: value.y })),
-      label: 'Sample Means',
-      pointBackgroundColor: pointsArray.map((value: any) => value.x > upperBound || value.x < lowerBound ? 'red' : 'orange'),
-  }];
   
-}
-
-setMinMax() {
-  if (this.setMin > this.setMax) {
-    alert("Minimum value cannot be greater than maximum value");
-  } else {
-    // Filter the sampleMeans array into two datasets: in range and out of range
-    const inRangeData = this.sampleMeans.filter((value: number) => value >= this.setMin && value <= this.setMax);
-    const outOfRangeData = this.sampleMeans.filter((value: number) => value < this.setMin || value > this.setMax);
-
-    // Prepare data for chart display
-    const inRangePoints = this.prepareChartData(inRangeData, 'Green');
-    const outOfRangePoints = this.prepareChartData(outOfRangeData, 'Red');
-
-    // Update chart data
-    this.lineChartData5 = [
-      ...inRangePoints,
-      ...outOfRangePoints
-    ];
-  }
-}
-prepareChartData(data: number[], color: string) {
-  let points: any = {};
-  let pointsArray: any[] = [];
-
-  for (let i = 0; i < data.length; i++) {
-    let value = data[i];
-    if (points[value] === undefined) {
-      points[value] = 1;
-    } else {
-      points[value] += 1;
+  set showSampleForm(value: boolean) {
+    this._showSampleForm = value;
+    if (value) {
+      setTimeout(() => this.initializeSampleChart(), 0)
     }
-    pointsArray.push({ x: value, y: points[value] });
   }
+  
+  get showMeansForm(): boolean {
+    return this._showMeansForm;
+  }
+  
+  set showMeansForm(value: boolean) {
+    this._showMeansForm = value;
+    if (value) {
+      setTimeout(() => this.initializeMeansChart(), 0)
+    }
+  }
+  
+  initializeInputChart() {
+    if (this.inputDataChart) {
+      this.inputDataChart.destroy();
+    }
+    this.createInputChart();
+  }
+  initializeConfidenceIntervalChart() {
+    if (this.confidenceIntervalChart) {
+      this.confidenceIntervalChart.destroy();
+    }
+    this.createConfidenceIntervalChart();
+  }
+  
+  initializeSampleChart() {
+    if (this.sampleDataChart) {
+      this.sampleDataChart.destroy();
+    }
+    this.createSampleChart();
+  }
+  
+  initializeMeansChart() {
+    if (this.sampleMeansChart) {
+      this.sampleMeansChart.destroy();
+    }
+    this.createSampleMeansChart();
+  }
+  confidenceInterval() {
+    let chosenMeans: number[] = [];
+    let processedStd: number[] = [];
+    let idxArr: number[] = []; // This array is not used in the provided code
+    this.samplemean2 = [];
+    this.upperBound = [];
+    this.lowerBound = [];
+    const noOfCoverage: number = Number(this.noOfIntervals);
+    if(noOfCoverage < 1 || noOfCoverage > this.sampleMeans.length) {
+      alert('Number of coverage intervals must be between 1 and the number of sample means')
+      return
+    }
+    for (let it = 0; it < noOfCoverage; it++) {
+      chosenMeans.push(this.sampleMeans[it]);
+      processedStd.push(2 * this.sampleStds[it]/ Math.sqrt(this.sampleSize));
+    }
+    console.log(processedStd)
+  let it: number;
+let sampleMean: number;
+let procStd: number;
+let lower: number;
+let upper: number;
+let minNum: number;
+let maxNum: number;
+let assignedDataset: any[];
+let tmp: number;
 
-  return [{
-    data: pointsArray.map((value: any) => ({ x: value.x, y: value.y })),
-    label: color === 'Green' ? 'In Range' : 'Out of Range',
-    pointBackgroundColor: color,
-  }];
+let inInterval: number[] = [];
+let notInInterval: number[] = [];
+let lowers: number[] = [];
+let uppers: number[] = [];
+
+let wMean: number = 0;
+  const centMean = Number(this.inputDataMean);
+  console.log(centMean + "CENTMEAN")
+  for (it = 0; it < chosenMeans.length; it++) {
+    sampleMean = chosenMeans[it];
+    procStd = processedStd[it];
+    lower = sampleMean - procStd;
+    upper = sampleMean + procStd;
+    if (lower < minNum || !minNum) minNum = lower;
+    if (upper > maxNum || !maxNum) maxNum = upper;
+
+    if (lower <= centMean && centMean <= upper) wMean += 1; // wMean should increment if the centMean is within the the upper and lower bound of the sample
+    console.log(wMean + "WMEAN");
+    if ((it < noOfCoverage) && (it < 100)){
+      assignedDataset = (lower <= centMean && centMean <= upper) ? inInterval : notInInterval
+
+      assignedDataset.push(
+        { x: it + 1, y: MathService.roundToPlaces(lower, 2) },
+        { x: it + 1, y: sampleMean },
+        { x: it + 1, y: MathService.roundToPlaces(upper, 2) },
+        { x: undefined, y: undefined }
+      )
+    }
+    
+    lowers.push(MathService.roundToPlaces(lower, 2))
+    uppers.push(MathService.roundToPlaces(upper, 2))
 }
- }
+it++
+    tmp = inInterval.pop()
+    tmp = notInInterval.pop()
+    this.confidenceIntervalChart.options.scales.xAxes[0].ticks.max = (it < 100) ? it : 100
+    this.confidenceIntervalChart.options.scales.yAxes[0].ticks.max = Math.ceil(maxNum)
+    this.confidenceIntervalChart.options.scales.yAxes[0].ticks.min = Math.floor(maxNum)
+    this.confidenceIntervalChart.data.datasets[0].data = inInterval
+    this.confidenceIntervalChart.data.datasets[1].data = notInInterval
+    this.confidenceIntervalChart.data.datasets[2].data = [{x: 0, y: centMean}, {x: (it < 100) ? it : 100, y: centMean}]
+    this.confidenceIntervalChart.data.datasets[2].label = '${this.meanSymbol} = ${centMean}'
+    this.confidenceIntervalChart.update()
+    this.confidenceIntervalCount = wMean
+    this.confidenceIntervalCountNot = noOfCoverage - wMean
+    this.samplemean2 = chosenMeans
+    this.upperBound = uppers
+    this.lowerBound = lowers
+
+
+}
+}
