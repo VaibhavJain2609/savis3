@@ -140,13 +140,13 @@
     <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
   </div>
   
-    <div class="w-3/12">
+    <div class=" w-3/12">
       <table>
         
     </table>
     <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
     <br>
-    <button  class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full" (click)="updateLastChart()">{{ 'opc_build' | translate }}</button>
+    <button  class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full"  (click)="updateLastChart()">Build</button>
     <br>  
       
       <hr>
@@ -178,7 +178,7 @@
       </div>
     </div>
     <div class="rhs w-9/12">
-      <canvas #chart5 class="half-height"></canvas>
+      <canvas #chart5 style="height: 200;"></canvas>
     </div>
   
 </div>

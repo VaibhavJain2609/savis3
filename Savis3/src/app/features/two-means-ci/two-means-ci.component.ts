@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ChartDataSets, ChartType, Chart, ChartPoint } from 'chart.js';
 
@@ -177,70 +177,6 @@ export class TwoMeansCIComponent implements OnInit {
       chartToIncrement.chart.update(); // Assuming this is the correct method to update your chart
     }
   }
-  
-  calculateMean(data: number[]) {
-    if (data.length === 0) {
-      return 0;
-    }
-    const sum = data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    const mean = sum / data.length;
-    return mean;
-  }
-  onResetChart() {
-    this.chart1.clear()
-    this.chart2.clear()
-    this.chart3.clear()
-    this.chart4.clear()
-    this.chart1.chart.update(0)
-    this.chart2.chart.update(0)
-    this.chart3.chart.update(0)
-    this.chart4.chart.update(0)
-    this.chart1.options.scales.yAxes[0].ticks.min = 0
-
-    this.chart1.options.scales.yAxes[0].ticks.max = 10
-  }
-  resetAxis(chartInstance: any) {
-    if (chartInstance.chart.options.scales.yAxes) {
-        // Reset for Chart.js 2.x
-        chartInstance.chart.options.scales.yAxes[0].ticks.min = 'auto';
-        chartInstance.chart.options.scales.yAxes[0].ticks.max = 'auto';
-    } else if (chartInstance.chart.options.scales.y) {
-        // Reset for Chart.js 3.x
-        chartInstance.chart.options.scales.y.min = 'auto';
-        chartInstance.chart.options.scales.y.max = 'auto';
-    }
-}
-  async ngOnInit() {
-    this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
-    this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
-    this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
-    console.log(this.datasets[3])
-    this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
-    this.chart5 = this.createChart5()
-   
-  }
-  ngAfterContentInit(){
-    let leg = [`Differences `, `NaN`]
-    let color = [`orange `, `red`]
-    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
-      "minmax": [0 ,1],
-      "data": [[],[]],
-      "backgroundColor": "rebeccapurple"
-    }
-   
-    // this.chart5.setDataFromRaw(rData2);
-    // this.chart5.setLengend(leg,color)
-
-    // this.chart5.chart.update(0) 
-  }
-  loadData(): void {
-    this.csv = this.parseData(this.csvraw.trim());
-    console.log(this.csv);
-    this.updateData(this.csv)
-
-    // this.updateChart(data);
-    // this.updateSummaryChart(data);
-  }
   createChart5(){
     const ctx = this.chart5Ref.nativeElement.getContext('2d')
     if (ctx) {
@@ -311,6 +247,71 @@ export class TwoMeansCIComponent implements OnInit {
       })
     }
   }
+
+  calculateMean(data: number[]) {
+    if (data.length === 0) {
+      return 0;
+    }
+    const sum = data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const mean = sum / data.length;
+    return mean;
+  }
+  onResetChart() {
+    this.chart1.clear()
+    this.chart2.clear()
+    this.chart3.clear()
+    this.chart4.clear()
+    this.chart1.chart.update(0)
+    this.chart2.chart.update(0)
+    this.chart3.chart.update(0)
+    this.chart4.chart.update(0)
+    this.chart1.options.scales.yAxes[0].ticks.min = 0
+
+    this.chart1.options.scales.yAxes[0].ticks.max = 10
+  }
+  resetAxis(chartInstance: any) {
+    if (chartInstance.chart.options.scales.yAxes) {
+        // Reset for Chart.js 2.x
+        chartInstance.chart.options.scales.yAxes[0].ticks.min = 'auto';
+        chartInstance.chart.options.scales.yAxes[0].ticks.max = 'auto';
+    } else if (chartInstance.chart.options.scales.y) {
+        // Reset for Chart.js 3.x
+        chartInstance.chart.options.scales.y.min = 'auto';
+        chartInstance.chart.options.scales.y.max = 'auto';
+    }
+}
+  async ngOnInit() {
+    this.chart1 = new chatClass("data-chart-1", this.datasets[0]);
+    this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
+    this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
+    console.log(this.datasets[3])
+    this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
+    this.chart5 = this.createChart5()
+   
+  }
+  ngAfterContentInit(){
+    let leg = [`Differences `, `NaN`]
+    let color = [`orange `, `red`]
+    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
+      "minmax": [0 ,1],
+      "data": [[],[]],
+      "backgroundColor": "rebeccapurple"
+    }
+   
+    // this.chart5.setDataFromRaw(rData2);
+    // this.chart5.setLengend(leg,color)
+
+    // this.chart5.chart.update(0) 
+  }
+  loadData(): void {
+    this.csv = this.parseData(this.csvraw.trim());
+    console.log(this.csv);
+    this.updateData(this.csv)
+
+    // this.updateChart(data);
+    // this.updateSummaryChart(data);
+  }
+ 
   updateChart(data: string): void {
     
     const rows = data.split('\n');
@@ -347,12 +348,6 @@ export class TwoMeansCIComponent implements OnInit {
     ];
   }
 
-  runSimulations(): void {
-    // You should implement your simulation logic here
-    // For simplicity, I'm just logging the number of simulations
-    
-    console.log('Running', this.numberOfSimulations, 'simulations');
-  }
 
   sampleSelect(e: any) {
     this.csv = null
@@ -399,6 +394,7 @@ export class TwoMeansCIComponent implements OnInit {
     
     let numSims = this.numofSem * 1;
     let results = [];
+    console.log("x")
     for (let simIdx = 0; simIdx < numSims; simIdx++) {
       let allData = [];
       // Add items with datasetId to distinguish between groups
@@ -443,6 +439,7 @@ export class TwoMeansCIComponent implements OnInit {
         stdev2sim: Number(stdevSim2.toFixed(3)),
       };
       this.tail.addAllResults(results)
+      // this.updateLastChart()
     }
     this.samDisActive = true
     this.simulations.push(results)
@@ -463,23 +460,7 @@ export class TwoMeansCIComponent implements OnInit {
     }
     return rData2
   }
-  selectedTest(e: any) {
-    this.tail.setTailDirection(e.target.value)
-    let data = this.tail.updateChart2(this.chart5)
-    // this.chart5.setDataFromRaw(data);
-    this.lastSummary = this.tail.getSummary()
-    let leg = [`Differences < ${this.mean_diff}`, `Differences > = ${this.mean_diff}`]
-    let color
-    if (e.target.value == "oneTailRight") {
-      color = [`green`, `red`]
-    }
-    else{
-       color = [`red`, `green`]
-     }
-    this.chart5.setLengend(leg,color)
-    this.chart5.chart.update(0)
-
-  }
+ 
   
   onFileSelected(e: any) {
     const files = e.target.files || e.dataTransfer?.files;
@@ -499,29 +480,39 @@ export class TwoMeansCIComponent implements OnInit {
     }
 
   }
+  ngAfterViewInit() {
+    this.createChart5();
+  }
+  
+  
   updateLastChart() {
-    const confidenceLevel = this.confidenceLevel || 0
-    if(confidenceLevel == 0) {
-      return
+    const confidenceLevel = this.confidenceLevel || 0;
+    if (confidenceLevel == 0 || !this.simulations.length) {
+      return;
     }
-
-    const [lower, upper] = this.getCutOffInterval(confidenceLevel, this.simulations.length)
-    const temp = this.simulations.map((val:{value:number}) => val)
-    temp.sort((a: {value:number}, b: {value:number}) => a.value - b.value)
-
+  
+    const [lower, upper] = this.getCutOffInterval(confidenceLevel, this.simulations.length);
+    // Adjust the sort function if your data structure is different
+    const temp = this.simulations.map((val: number) => val)
+    temp.sort((a: number, b: number) => a - b)
+  
+    // Adjust the lambda function to match the structure of your data
     const [chosen, unchosen] = this.splitUsing(temp, (val: number, index: any) => {
       return val >= temp[lower] &&  val <= temp[upper >= temp.length ? upper - 1: upper]
     })
-
+  
+    // Ensure these lines are compatible with how you're storing and displaying bounds
     this.lowerBound = temp[lower].toString()
     this.upperBound = temp[upper >= temp.length ? upper - 1: upper].toString()
-
     const shift = temp.length < 500 ? 0:0
     this.setScale(this.chart5, temp[0]-shift, temp[temp.length - 1]+shift)
     this.setDataFromRaw(this.chart5, [chosen, unchosen])
     this.scaleToStackDots(this.chart5)
-    this.chart5.update()
+    // Assuming createChart5 initializes this.chart5 correctly
+  
+    this.chart5.update();
   }
+  
   getCutOffInterval(confidenceLevel: any, totalSize: any){
     confidenceLevel = confidenceLevel / 100.0
     const alpha2 = (1 - confidenceLevel)/ 2.0
