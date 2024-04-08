@@ -39,7 +39,7 @@ export class TwoMeansCIComponent implements OnInit {
   stDev1: number = 0
   stDev2: number = 0
   incrementPerformed: boolean = false;
-  meansOfMeans: any = []
+  meansOfMeans: any = []// TODO: REMOVE
   csvraw: any
   csv: any
   lowerBound='NaN'
@@ -393,7 +393,7 @@ export class TwoMeansCIComponent implements OnInit {
   }
     
     let numSims = this.numofSem * 1;
-    let results = [];
+    let results = []; // TODO: REMOVE
     console.log("x")
     for (let simIdx = 0; simIdx < numSims; simIdx++) {
       let allData = [];
@@ -429,8 +429,9 @@ export class TwoMeansCIComponent implements OnInit {
       let stdevSim1 = this.calculateStandardDeviation(sampleValues[0]);
       let stdevSim2 = this.calculateStandardDeviation(sampleValues[1]);
       let sampleDiffOfMeans = mean1 - mean0;
-      results.push(sampleDiffOfMeans);
-      this.meansOfMeans.push(sampleDiffOfMeans)
+      results.push(sampleDiffOfMeans); // TODO: REMOVE
+      this.simulations.push(sampleDiffOfMeans)
+      this.meansOfMeans.push(sampleDiffOfMeans)// TODO: REMOVE
       this.simsummary = {
         sampleMean1: Number(mean0.toFixed(3)),
         sampleMean2: Number(mean1.toFixed(3)),
@@ -438,11 +439,11 @@ export class TwoMeansCIComponent implements OnInit {
         stdev1sim: Number(stdevSim1.toFixed(3)),
         stdev2sim: Number(stdevSim2.toFixed(3)),
       };
-      this.tail.addAllResults(results)
+      this.updateLastChart();
+      this.tail.addAllResults(results) // TODO: REMOVE
       // this.updateLastChart()
     }
     this.samDisActive = true
-    this.simulations.push(results)
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
