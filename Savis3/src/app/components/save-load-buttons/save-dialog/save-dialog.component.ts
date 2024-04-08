@@ -14,13 +14,14 @@ export class SaveDialogComponent implements OnInit{
   isFileNameUnique:boolean = true
   fileName = new FormControl('')
   wasClosedByButton: boolean = false
+  feature: string = ''
 
   constructor(
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private af: AngularFireAuth,
     private firestore: AngularFirestore,
-    ) { }
+    ) { this.feature = data.feature}
 
   ngOnInit(): void {
       this.fileName.valueChanges.subscribe(value => {
@@ -32,7 +33,7 @@ export class SaveDialogComponent implements OnInit{
     this.af.authState.pipe(take(1)).subscribe(user => {
       if (user) {
         const userId = user.uid
-        this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', fileName))
+        this.firestore.collection(`users/${userId}/${this.feature}`, ref => ref.where('fileName', '==', fileName))
           .get()
           .toPromise()
           .then(querySnapshot => {

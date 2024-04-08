@@ -6,12 +6,18 @@
     <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
       <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
       <div>
-        <textarea class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [ngModel]="dataInput" name="dataFormInput"></textarea>
+        <textarea class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [(ngModel)]="dataInput" name="dataFormInput"></textarea>
       </div>
       <div id="button-div">
         <button type="submit" class="btn">{{'load_data' | translate}}</button>
         <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
         <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)">
+      </div>
+      <div class="flex justify-center items-center">
+        <app-save-load-buttons
+          [data]="dataInput"
+          [feature]="'oneMean'"
+        ></app-save-load-buttons>
       </div>
     </form>
     <div id="data-div">

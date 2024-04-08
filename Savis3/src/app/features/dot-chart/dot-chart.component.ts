@@ -1,13 +1,14 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart } from 'chart.js';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-dot-chart',
   templateUrl: './dot-chart.component.html',
   styleUrls: ['./dot-chart.component.scss']
 })
-export class DotChartComponent implements AfterViewInit, OnInit {
+export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
   minInterValInput: number = 0
   maxInterValInput: number = 0
 
@@ -74,12 +75,15 @@ export class DotChartComponent implements AfterViewInit, OnInit {
   private _showMeansForm = true
 
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.includeValMin = false
     this.includeValMax = false
+
+    this.sharedService.currentData.subscribe(data => this.csvTextArea = data)
   }
 
   ngAfterViewInit() {
@@ -816,6 +820,10 @@ export class DotChartComponent implements AfterViewInit, OnInit {
       this.sampleMeansChart.destroy();
     }
     this.createSampleMeansChart();
+  }
+
+  ngOnDestroy(): void {
+    this.sharedService.changeData('')
   }
 
 }

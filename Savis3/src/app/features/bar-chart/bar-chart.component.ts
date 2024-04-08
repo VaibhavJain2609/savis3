@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 import { Chart } from 'chart.js'
+import { SharedService } from '../../services/shared.service'
 
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss']
 })
-export class BarChartComponent implements AfterViewInit{
+export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
   /**
    * Input Chart Element Reference
    */
@@ -101,8 +102,16 @@ export class BarChartComponent implements AfterViewInit{
   sampleChart: Chart
 
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sharedService: SharedService
   ) { }
+
+  /**
+   * On init subscribe to the shared service data
+   */
+  ngOnInit(): void {
+    this.sharedService.currentData.subscribe(data => this.csvTextArea = data)
+  }
 
   /**
    * After View Init Lifecycle Hook
@@ -570,5 +579,12 @@ export class BarChartComponent implements AfterViewInit{
   triggerFileInput(): void {
     this.fileInput.nativeElement.click()
     console.log("upload file")
+  }
+
+  /**
+   * When feature is closed, clear the data in shared service
+   */
+  ngOnDestroy(): void {
+    this.sharedService.changeData('')
   }
 }

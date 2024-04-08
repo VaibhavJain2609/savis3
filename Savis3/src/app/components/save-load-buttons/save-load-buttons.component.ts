@@ -37,7 +37,7 @@ export class SaveLoadButtonsComponent {
     let dialogRef = this.dialog.open(SaveDialogComponent, {
       width: '400px',
       height: '600px',
-      data: this.data,
+      data: {data: this.data, feature: this.feature},
       disableClose: true
     })
 
@@ -46,13 +46,16 @@ export class SaveLoadButtonsComponent {
         this.af.authState.pipe(take(1)).subscribe(user => {
           if (user) {
             const userId = user.uid
-            const { save, ...dataToSave } = result
-            this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', dataToSave.fileName))
+            const { save, data, fileName, ...dataToSave } = result
+            const { feature, ...dataWithoutFeature } = data
+            dataToSave.data = dataWithoutFeature.data
+            dataToSave.fileName = fileName
+            this.firestore.collection(`users/${userId}/${this.feature}`, ref => ref.where('fileName', '==', dataToSave.fileName))
               .get()
               .toPromise()
               .then(querySnapshot => {
                 if (querySnapshot.empty) {
-                  this.firestore.collection(`users/${userId}/savedData`).add(dataToSave)
+                  this.firestore.collection(`users/${userId}/${this.feature}`).add(dataToSave)
                 }
               })
               .catch(error => {
@@ -68,11 +71,11 @@ export class SaveLoadButtonsComponent {
     this.af.authState.pipe(take(1)).subscribe(user => {
       if (user) {
         const userId = user.uid
-        const subscription = this.firestore.collection(`users/${userId}/savedData`).valueChanges().subscribe(data => {
+        const subscription = this.firestore.collection(`users/${userId}/${this.feature}`).valueChanges().subscribe(data => {
           let dialogRef = this.dialog.open(LoadDialogComponent, {
             width: '600px',
             height: '600px',
-            data: { files: data },
+            data: { files: data, feature: this.feature},
             disableClose: true
           })
 
