@@ -14,6 +14,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 export class LoadDialogComponent {
   files: any[] = []
   selectedFile: any
+  feature: string = ''
   
   constructor(
     public dialog: MatDialog,
@@ -24,6 +25,7 @@ export class LoadDialogComponent {
     ) { 
       this.files = data.files
       this.selectedFile = JSON.stringify(data.files, null, 2)
+      this.feature = data.feature
   }
 
   onNoClick(): void {
@@ -47,7 +49,7 @@ export class LoadDialogComponent {
         this.af.authState.pipe(take(1)).subscribe(user => {
         if (user) {
           const userId = user.uid
-          this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
+          this.firestore.collection(`users/${userId}/${this.feature}`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
             .get()
             .toPromise()
             .then(querySnapshot => {
@@ -76,7 +78,7 @@ export class LoadDialogComponent {
         this.af.authState.pipe(take(1)).subscribe(user => {
           if (user) {
             const userId = user.uid
-            this.firestore.collection(`users/${userId}/savedData`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
+            this.firestore.collection(`users/${userId}/${this.feature}`, ref => ref.where('fileName', '==', this.selectedFile.fileName))
               .get()
               .toPromise()
               .then(querySnapshot => {

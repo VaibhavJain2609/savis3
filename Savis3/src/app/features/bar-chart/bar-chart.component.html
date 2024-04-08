@@ -29,6 +29,12 @@
                     <p class="text-display" id="input-data-size-text">{{ 'barChart_size' | translate }} <i>N</i> : {{ inputDataSizeNum }}</p>
                     <span class="text-error" #input_data_size_number *ngIf="inputErrorMsg">{{ inputErrorMsg }}</span>
                 </div>
+                <div class="mx-8">
+                    <app-save-load-buttons
+                        [data]="csvTextArea"
+                        [feature]="'barChart'"
+                    ></app-save-load-buttons>
+                </div>
             </form>
         </div>
 

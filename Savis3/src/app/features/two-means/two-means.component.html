@@ -30,6 +30,12 @@
           for="fileInput"> {{ 'tm_upload' | translate }} </label>
         <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
       </div>
+      <div class="flex justify-center items-center">
+        <app-save-load-buttons
+          [data]="csvraw"
+          [feature]="'twoMeans'"
+        ></app-save-load-buttons>
+      </div>
       <div class="text-sm font-medium mb-1">
         <div class="flex justify-between">
           <span>{{ 'tm_size1' | translate }}</span>

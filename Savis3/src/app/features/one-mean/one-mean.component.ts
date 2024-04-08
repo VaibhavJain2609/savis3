@@ -1,9 +1,10 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { MathService } from 'src/app/Utils/math.service';
 import { SamplingService } from 'src/app/Utils/sampling.service';
 import { NgForm } from '@angular/forms';
 import {ChartType} from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
+import { SharedService } from '../../services/shared.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './one-mean.component.html',
   styleUrls: ['./one-mean.component.scss']
 })
-export class OneMeanComponent {
+export class OneMeanComponent implements OnInit, OnDestroy{
   // 1.Data
   dataInput: string = "";
   valuesArray: any = [];
@@ -157,7 +158,12 @@ export class OneMeanComponent {
 
 
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService, private sharedService: SharedService) {}
+  
+  ngOnInit(): void {
+    this.sharedService.currentData.subscribe(data => this.dataInput = data)
+  }
+
   // values are in dataForm-input
   onSubmit(form: NgForm) {
     // get the textarea input
@@ -660,6 +666,10 @@ validateFile(fileInput: any) {
     }
     reader.readAsText(file);
   }
+}
+
+ngOnDestroy(): void {
+  this.sharedService.changeData('')
 }
 
 }

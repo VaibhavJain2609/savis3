@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { chatClass } from 'src/app/Utils/stacked-dot';
@@ -7,13 +7,14 @@ import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
 
 import { TranslateService } from '@ngx-translate/core'; 
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-two-means',
   templateUrl: './two-means.component.html',
   styleUrls: ['./two-means.component.scss']
 })
-export class TwoMeansComponent implements OnInit {
+export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
   activateSim: boolean = false
   dataSize1: number = 0
   dataSize2: number = 0
@@ -65,7 +66,12 @@ export class TwoMeansComponent implements OnInit {
 
   numberOfSimulations: number;
 
-  constructor(private smp: Sampling, private tail: TailchartService, private translate: TranslateService) {
+  constructor(
+    private smp: Sampling, 
+    private tail: TailchartService, 
+    private translate: TranslateService,
+    private sharedService: SharedService
+  ) {
 
   }
   toggleSection(e: any, sec: string) {
@@ -145,6 +151,7 @@ export class TwoMeansComponent implements OnInit {
     this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
     this.chart5 = new chatClass("diff-chart", this.datasets[0]);
    
+    this.sharedService.currentData.subscribe(data => this.csvraw = data)
   }
   ngAfterContentInit(){
     let leg = [`Differences `, `NaN`]
@@ -343,5 +350,9 @@ export class TwoMeansComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.onFileSelected(event)
+  }
+
+  ngOnDestroy(): void {
+    this.sharedService.changeData('')
   }
 }
