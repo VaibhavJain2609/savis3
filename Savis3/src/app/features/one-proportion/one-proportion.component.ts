@@ -264,6 +264,7 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
       this.chart.destroy()
     }
     this.createChart()
+    console.log("chart reset")
   }
   
   /**
