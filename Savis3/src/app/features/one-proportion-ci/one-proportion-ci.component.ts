@@ -1,13 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-//import { OnePropChart } from './chart/onepropchart';
-import Chart, { ChartPoint, ChartType } from 'chart.js';
-import { ChartDataSets, ChartOptions } from 'chart.js';
-import { BaseChartDirective, Label } from 'ng2-charts';
-import { StackedDotChartService } from 'src/app/Utils/stacked-dot-chart.service';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { ChartType, Chart } from 'chart.js';
+import { ChartDataSets } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import { MathService } from 'src/app/Utils/math.service';
 import { SamplingService } from 'src/app/Utils/sampling.service';
 import { SummaryService } from 'src/app/Utils/summaries.service';
-//import { max } from 'simple-statistics';
 
 @Component({
   selector: 'app-one-proportion-ci',
@@ -15,16 +13,16 @@ import { SummaryService } from 'src/app/Utils/summaries.service';
   styleUrls: ['./one-proportion-ci.component.scss']
 })
 
-export class OneProportionCIComponent implements OnInit {
-  constructor( private cdRef: ChangeDetectorRef) {
-  }
-  
-  ngOnInit(): void {
-  }
+export class OneProportionCIComponent implements OnInit, AfterViewInit {
+  constructor( 
+    private cdRef: ChangeDetectorRef,
+    private translate: TranslateService
+    ) { }
 
   @ViewChild('successInput', { static: true }) successInput!: ElementRef<HTMLInputElement>;
   @ViewChild('failureInput', { static: true }) failureInput!: ElementRef<HTMLInputElement>;
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+  @ViewChild('chart3') chart3Ref: ElementRef<HTMLCanvasElement>
 
   failure: number
   success: number
@@ -53,19 +51,40 @@ export class OneProportionCIComponent implements OnInit {
   data: {numsuccess: number, numfailure: number};
   Data: {success: number, failure: number};
 
+  CiRadio: string = 'CI'
+
+  chart3: Chart
+
+  CiDisabled: boolean = true
+  MinMaxDisabled: boolean = true
+  radioDisabled: boolean = true
+
+  minTailValInput: number
+  maxTailValInput: number
+
+  includeValMin: any
+  includeValMax: any
+
+  simSampleSizeDisabled: boolean = true
+  numSampleSizeDisabled: boolean = true
+  runSimulationsDisabled: boolean = true
+
+  sampleMeansChosen: string = ''
+  sampleMeansUnchosen: string = ''
+
   public barChartType1: ChartType = 'bar';
   public barChartType2: ChartType = 'scatter';
 
   public barChartData1: ChartDataSets[] =[
     {
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green',
       data: [],
       borderColor: 'green'
     },
     {
-      label: '% Failures',
+      label: this.translate.instant('opc_barchart_f'),
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
       data: [],
@@ -76,14 +95,14 @@ export class OneProportionCIComponent implements OnInit {
 
   public barChartData2: ChartDataSets[] =[
     {
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green',
       data: [],
       borderColor: 'green'
     },
     {
-      label: '% Failures',
+      label: this.translate.instant('opc_barchart_f'),
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
       data: [],
@@ -92,28 +111,13 @@ export class OneProportionCIComponent implements OnInit {
   ];
   public barChartLabels2: any = [];
 
-  public barChartData3: ChartDataSets[] =[
-    {
-      label: 'Values in Interval',
-      backgroundColor: 'green',
-      //hoverBackgroundColor: 'green',
-      data: [],
-      borderColor: 'green'
-    },
-    {
-      label: 'Values not in Interval',
-      backgroundColor: 'red',
-      //hoverBackgroundColor: 'red',
-      data: [],
-      borderColor: 'red'
-    },
-  ];
-  public barChartLabels3: any = [];
-  
   public barChartOptions1: any={
     responsive: true,
     tooltips: {
       callbacks: {
+        title: (tooltipItem: any, data: any) => {
+          return this.translate.instant('opc_data_xaxis')
+        },
         label: (tooltipItem: any, data: any) => {
           const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
           const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -124,20 +128,20 @@ export class OneProportionCIComponent implements OnInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           ticks:{
             beginsAtZero: true,
           },
           scaleLabel:{
             display: true,
-            labelString: 'Data'
+            labelString: this.translate.instant('opc_data_xaxis')
           }
         }
       ],
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -146,6 +150,7 @@ export class OneProportionCIComponent implements OnInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
@@ -157,6 +162,9 @@ export class OneProportionCIComponent implements OnInit {
     responsive: true,
     tooltips: {
       callbacks: {
+        title: (tooltipItem: any, data: any) => {
+          return this.translate.instant('opc_data_xaxis')
+        },
         label: (tooltipItem: any, data: any) => {
           const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
           const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -167,20 +175,20 @@ export class OneProportionCIComponent implements OnInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           ticks:{
             beginAtZero: true,
           },
           scaleLabel:{
             display: true,
-            labelString: 'Data'
+            labelString: this.translate.instant('opc_data_xaxis')
           }
         }
       ],
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             beginAtZero: true,
             min:0,
@@ -189,58 +197,102 @@ export class OneProportionCIComponent implements OnInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
-    },
-    maintainAspectRatio: false,
-  };
-  
-  public barChartOptions3: any={
-    responsive: true,
-    scales:{
-      xAxes:[
-        {
-          ticks:{
-            max:1,
-            //min:-1,
-            stepSize: 0.2, 
-            beginsAtZero: true,
-          },
-          scaleLabel: {
-            display:true,
-          }
-        },
-      ],
-      yAxes:[
-        {
-          ticks:{
-            min:1,
-            stepSize:1,
-            beginsAtZero: true,
-          },
-          scaleLabel:{
-            display:true,
-          }
-        }
-      ]
     },
     maintainAspectRatio: false,
   };
 
+  ngOnInit(): void {
+    this.minTailValInput = 0
+    this.maxTailValInput = 1
+  }
+
+  ngAfterViewInit() {
+    this.createChart3()
+  }
+
+  createChart3() {
+    const ctx = this.chart3Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart3 = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: this.translate.instant('opc_values_in'),
+              backgroundColor: 'green',
+              data: [],
+            },
+            {
+              label: this.translate.instant('opc_values_out'),
+              backgroundColor: 'red',
+              data: [],
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('opc_data_xaxis'),
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('opc_frequency'),
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontStyle: '16px',
+          },
+          animation: {
+            duration: 0
+          }
+        }
+      })
+    }
+  }
+  
   loadData() {
     let numsuccess = this.getInputValue(this.successInput);
     let numfailure = this.getInputValue(this.failureInput);
     this.barChartData1 = this.barChartData1 = [
       { 
         data: [], 
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green', 
         hoverBackgroundColor: 'green', 
       }, 
       { 
         data: [], 
-        label: '% Failures', 
+        label: this.translate.instant('opc_barchart_f'), 
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
       }];
@@ -270,6 +322,12 @@ export class OneProportionCIComponent implements OnInit {
       this.barChartData1[0].data[0] = MathService.roundToPlaces(successPercentage, 2);
       this.barChartData1[1].data[0] = MathService.roundToPlaces(failurePercentage, 2);
     }
+
+    this.simSampleSizeDisabled = false
+    this.numSampleSizeDisabled = false
+    this.runSimulationsDisabled = false
+    this.CiDisabled = false
+    this.radioDisabled = false
   }
 
   resetData(){
@@ -288,9 +346,22 @@ export class OneProportionCIComponent implements OnInit {
     this.stddev = NaN;
     this.lower = NaN;
     this.upper = NaN;
-    this.total = 0;
+    this.total = NaN;
     this.simulations = [];
-    
+    this.simSampleSizeDisabled = true;
+    this.numSampleSizeDisabled = true;
+    this.runSimulationsDisabled = true;
+    this.minTailValInput = 0;
+    this.maxTailValInput = 1;
+    this.confidenceLevel = 95;
+    this.CiRadio = 'CI';
+    this.CiDisabled = true;
+    this.MinMaxDisabled = true;
+    this.radioDisabled = true;
+    this.includeValMin = false;
+    this.includeValMax = false;
+    this.sampleMeansChosen = '';
+    this.sampleMeansUnchosen = '';
 
     this.barChartData1 = this.defaultChartData();
     this.barChartLabels1 = [];
@@ -300,11 +371,9 @@ export class OneProportionCIComponent implements OnInit {
     this.barChartLabels2 = [];
     this.barChartOptions2 = this.defaultChartOptions2;
 
-    // this.barChartData3.forEach
-    // (this.defaultChartData3 = this.defaultChartData3);
-    this.barChartData3 = this.defaultChartData3();
-    this.barChartLabels3 = [];
-    this.barChartOptions3 = this.defaultChartOptions3;
+    this.chart3.data.datasets[0].data = [];
+    this.chart3.data.datasets[1].data = [];
+    this.chart3.update();
   }
 
   private defaultChartOptions: any={
@@ -321,7 +390,7 @@ export class OneProportionCIComponent implements OnInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           scaleLabel:{
             display: true,
             labelString: 'Data'
@@ -331,7 +400,7 @@ export class OneProportionCIComponent implements OnInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -339,6 +408,7 @@ export class OneProportionCIComponent implements OnInit {
           },
           scaleLabel:{
             display: true,
+            labelString: this.translate.instant('opc_percentage')
           }
         },
       ],
@@ -360,7 +430,7 @@ export class OneProportionCIComponent implements OnInit {
     scales:{
       xAxes:[
         {
-          stacked: true,
+          stacked: false,
           scaleLabel:{
             display: true,
             labelString: 'Data'
@@ -370,7 +440,7 @@ export class OneProportionCIComponent implements OnInit {
       yAxes:[
         {
           id: 'groupAAxis',
-          stacked: true,
+          stacked: false,
           ticks:{
             min:0,
             max:100,
@@ -385,49 +455,18 @@ export class OneProportionCIComponent implements OnInit {
     maintainAspectRatio: false,
   }
 
-  private defaultChartOptions3: any={
-    responsive: true,
-    scales:{
-      xAxes:[
-        {
-          ticks:{
-            max:1,
-            //min:-1,
-            stepSize: 0.2, 
-            beginsAtZero: true,
-          },
-          scaleLabel: {
-            display:true,
-          }
-        },
-      ],
-      yAxes:[
-        {
-          ticks:{
-            min:1,
-            stepSize:1,
-            beginsAtZero: true,
-          },
-          scaleLabel:{
-            display:true,
-          }
-        }
-      ]
-    },
-    maintainAspectRatio: false,
-  }
   
   private defaultChartData(): Chart.ChartDataSets[]{
     return [
       {
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green',
         hoverBackgroundColor: 'green',
         data: [],
         borderColor: 'green'
       },
       {
-        label: '% Failures',
+        label: this.translate.instant('opc_barchart_f'),
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
         data: [],
@@ -439,35 +478,16 @@ export class OneProportionCIComponent implements OnInit {
   private defaultChartData2(): Chart.ChartDataSets[]{
     return[
       {
-        label: '% Successes',
+        label: this.translate.instant('opc_barchart_s'),
         backgroundColor: 'green',
         hoverBackgroundColor: 'green',
         data: [],
         borderColor: 'green'
       },
       {
-        label: '% Failures',
+        label: this.translate.instant('opc_barchart_f'),
         backgroundColor: 'red',
         hoverBackgroundColor: 'red',
-        data: [],
-        borderColor: 'red'
-      },
-    ]
-  }
-
-  private defaultChartData3(): Chart.ChartDataSets[]{
-    return[
-      {
-        label: 'Values in Interval',
-        backgroundColor: 'green',
-        //hoverBackgroundColor: 'green',
-        data: [],
-        borderColor: 'green'
-      },
-      {
-        label: 'Values not in Interval',
-        backgroundColor: 'red',
-        //hoverBackgroundColor: 'red',
         data: [],
         borderColor: 'red'
       },
@@ -516,131 +536,106 @@ export class OneProportionCIComponent implements OnInit {
    this.barChartData2 = this.barChartData2 = [
     { 
       data: [], 
-      label: '% Successes',
+      label: this.translate.instant('opc_barchart_s'),
       backgroundColor: 'green',
       hoverBackgroundColor: 'green', 
     }, 
     { 
       data: [], 
-      label: '% Failures', 
+      label: this.translate.instant('opc_barchart_f'), 
       backgroundColor: 'red',
       hoverBackgroundColor: 'red',
     }];
 
-    if (this.increment<=0) {
-      alert('Please increment the data for group');
-    }
+    for (let simIdx = 0; simIdx < numSimulationsValue; simIdx++) {
+      let allItems = new Array(totalGroup);
+      allItems.fill(0);
+      allItems.fill(1, 0, totalSuccess);
+      const shuffled = SamplingService.shuffle(allItems);
+      const { chosen } = SamplingService.randomSubset(shuffled, totalElements);
+      const samplesuccess = MathService.countWhere(chosen, (data: number) => data == 1);
+      const samplefailure = totalElements - samplesuccess;
+      let sampleProportion: number = MathService.roundToPlaces(samplesuccess / totalElements, 4);
+      this.sampleProportion = sampleProportion;
 
-    else{
-      for (let simIdx = 0; simIdx < numSimulationsValue; simIdx++) {
-        let allItems = new Array(totalGroup);
-        allItems.fill(0);
-        allItems.fill(1, 0, totalSuccess);
-        const shuffled = SamplingService.shuffle(allItems);
-        const { chosen } = SamplingService.randomSubset(shuffled, totalElements);
-        const samplesuccess = MathService.countWhere(chosen, (data: number) => data == 1);
-        const samplefailure = totalElements - samplesuccess;
-        let sampleProportion: number = MathService.roundToPlaces(samplesuccess / totalElements, 4);
-        this.sampleProportion = sampleProportion;
+      const successPercentagee = (samplesuccess / totalElements) * 100;
+      const failurePercentagee = (samplefailure / totalElements) * 100;
   
-        const successPercentagee = (samplesuccess / totalElements) * 100;
-        const failurePercentagee = (samplefailure / totalElements) * 100;
+      this.barChartData2[0].data = this.barChartData2[0].data || [];
+      this.barChartData2[1].data = this.barChartData2[1].data || [];
     
-        this.barChartData2[0].data = this.barChartData2[0].data || [];
-        this.barChartData2[1].data = this.barChartData2[1].data || [];
-      
-        if (this.sampleSize !== totalElements) {
-          this.sampleSize = totalElements;
-          this.sampleMeans = [];
-        }
-    
-        this.simulations.push(sampleProportion);
-    
-        let summary = {
-          samplesuccess,
-          samplefailure,
-          sampleProportion,
-        };
-      
-        this.randomizedsuccess = samplesuccess;
-        this.randomizedfailure = samplefailure;
-  
-        this.Summaries.updateSummaryElements(this.summaryElements, summary);
-    
-        this.barChartData2[0].data[simIdx] = MathService.roundToPlaces(successPercentagee, 2);
-        this.barChartData2[1].data[simIdx] = MathService.roundToPlaces(failurePercentagee, 2);
+      if (this.sampleSize !== totalElements) {
+        this.sampleSize = totalElements;
+        this.sampleMeans = [];
       }
-      this.mean = MathService.mean(this.simulations);
-      this.stddev = MathService.stddev(this.simulations);
-      this.total = this.simulations.length;
-      this.buildci();
+  
+      this.simulations.push(sampleProportion);
+  
+      let summary = {
+        samplesuccess,
+        samplefailure,
+        sampleProportion,
+      };
+    
+      this.randomizedsuccess = samplesuccess;
+      this.randomizedfailure = samplefailure;
+
+      this.Summaries.updateSummaryElements(this.summaryElements, summary);
+  
+      this.barChartData2[0].data[simIdx] = MathService.roundToPlaces(successPercentagee, 2);
+      this.barChartData2[1].data[simIdx] = MathService.roundToPlaces(failurePercentagee, 2);
     }
+    this.mean = MathService.mean(this.simulations);
+    this.stddev = MathService.stddev(this.simulations);
+    this.total = this.simulations.length;
+    this.buildci();
+    
   }
 
-  buildci()
-  {
-    const standardError = this.stddev/Math.sqrt(this.total);
-    const zScore = MathService.z_score_alpha_2(this.confidenceLevel);
+  buildci(){
+    if(this.CiRadio === 'CI'){
+      const confidenceLevel = this.confidenceLevel || 100
 
-    const marginOfError = zScore * standardError;
-    
-    this.lower = this.mean - marginOfError,
-    this.upper = this.mean + marginOfError
-
-    const temp = this.simulations.map(val => val);
-    temp.sort((a,b) => a-b);
-
-    const [chosen, unchosen] = SamplingService.splitUsing(temp, (val: number) => {
-      return val>=this.lower &&  val<=this.upper;
-    });
-
-    let chosenFreq: Record<string, number> = {};
-    let unchosenFreq: Record<string, number> = {};
-    
-    // Calculate frequencies for chosen and unchosen values
-    chosenFreq = {};
-    chosen.forEach(val => {
-      chosenFreq[val] = (chosenFreq[val] || 0) + 1;
-    });
-
-    unchosenFreq = {};
-    unchosen.forEach(val => {
-      unchosenFreq[val] = (unchosenFreq[val] || 0) + 1;
-    });
-
-    // Convert frequencies to chart data
-    let chosenData = Object.keys(chosenFreq).map(key => ({
-      x: parseFloat(key),
-      y: chosenFreq[key]
-    }));
-
-    let unchosenData = Object.keys(unchosenFreq).map(key => ({
-      x: parseFloat(key),
-      y: unchosenFreq[key]
-    }));
-
-    // Set the barChartData3 with both datasets
-    this.barChartData3 = [
-      {
-        data: chosenData,
-        label: 'Values in Interval',
-        backgroundColor: 'green',
-        pointBackgroundColor: 'green',
-        pointRadius: 7,
-        pointHoverBackgroundColor: 'green'
-      },
-      {
-        data: unchosenData,
-        label: 'Values not in Interval',
-        backgroundColor: 'red',
-        pointBackgroundColor: 'red',
-        pointRadius: 7,
-        pointHoverBackgroundColor: 'red'
+      if(confidenceLevel == 0) {
+        return
       }
-    ];
-    // If you need to update the chart, do it here
-    if (this.chart && this.chart.chart) {
-        this.chart.chart.update();
+
+      const [lower, upper] = MathService.getCutOffInterval(confidenceLevel, this.simulations.length)
+      const temp = this.simulations.map(val => val)
+
+      temp.sort((a, b) => a - b)
+
+      const [chosen, unchosen] = SamplingService.splitUsing(temp, (val: any, index: any) => {
+        return val >= temp[lower] &&  val <= temp[upper >= temp.length ? upper - 1: upper]
+      })
+
+      this.lower = temp[lower]
+      this.upper = temp[upper >= temp.length ? upper - 1: upper]
+
+      this.setDataFromRaw(this.chart3, [chosen, unchosen])
+      this.scaleToStackDots(this.chart3)
+
+      this.chart3.update()
+
+      this.updateInfoSampleMeans(chosen.length, unchosen.length)
+    }
+
+    if (this.CiRadio === 'MinMax') {
+      const tmpChecked = {min: this.includeValMin, max: this.includeValMax}
+
+      const dataCustomChart = this.splitByPredicate(
+        this.simulations,
+        this.predicateForTail(this.minTailValInput, this.maxTailValInput)
+      )
+
+      this.upper = this.maxTailValInput
+      this.lower = this.minTailValInput
+
+      this.setDataFromRaw(this.chart3, [dataCustomChart.chosen, dataCustomChart.unchosen])
+      this.scaleToStackDots(this.chart3)
+      this.chart3.update()
+
+      this.updateInfoSampleMeans(dataCustomChart.chosen.length, dataCustomChart.unchosen.length)
     }
 
   }
@@ -658,5 +653,113 @@ export class OneProportionCIComponent implements OnInit {
 
   update() {
     this.chart.update();
+  }
+
+  setProportions(chart: Chart, { numsuccess, numfailure}: { numsuccess: any, numfailure: any}) {
+    let totalInA = numsuccess + numfailure
+    chart.data.datasets[0].data[0] = MathService.roundToPlaces(100 * numsuccess / totalInA, 2)
+    chart.data.datasets[1].data[0] = MathService.roundToPlaces(100 * numfailure / totalInA, 2)
+  }
+
+  setDataFromRaw(chart: Chart, rawDataArrays: any) {
+    let scatterArrays = this.rawToScatter(rawDataArrays)
+    for(let idx = 0; idx < rawDataArrays.length; idx++) {
+      chart.data.datasets[idx].data = scatterArrays[idx]
+    }
+    let max = 1
+    for (let dataset of scatterArrays) {
+      for (let item of dataset) {
+        max = Math.max(max, item.y)
+      }
+    }
+  }
+
+  rawToScatter(arrs: any[]) {
+    let faceted = [];
+    let counts: { [key: string]: number } = {}; // Add type annotation
+    for (let arr of arrs) {
+      let scatter = [];
+      for (let item of arr) {
+        let y = (counts[item] = (counts[item] || 0) + 1);
+        scatter.push({ x: item, y: y });
+      }
+      faceted.push(scatter);
+    }
+    return faceted;
+  }
+
+  scaleToStackDots(chart: any) {
+    let max = 1
+    for (let dataset of chart.data.datasets) {
+      for (let item of dataset.data) {
+        max = Math.max(max, item.y)
+      }
+    }
+
+    chart.options.scales.yAxes[0].ticks.stepSize = (max > 10) ? Math.ceil(max * 0.2) : 1
+
+
+    if(max > 1000) {
+      chart.options.scales.yAxes[0].ticks.min = 0
+    }
+
+    return chart
+  }
+
+  radioChange(str: string) {
+    this.CiRadio = str
+
+    if (str === 'CI'){
+      this.CiDisabled = false
+      this.MinMaxDisabled = true
+    }
+
+    if (str === 'MinMax') {
+      this.CiDisabled = true
+      this.MinMaxDisabled = false
+    }
+  }
+
+  splitByPredicate(itr:any, fn:any) {
+    const chosen: any[] = []
+    let unchosen = []
+
+    if (fn === null) unchosen = itr
+    else {
+      itr.forEach((x: any) => {
+        if (fn(x)) chosen.push(x)
+        else unchosen.push(x)
+      })
+    }
+    return { chosen, unchosen }
+  }
+
+  predicateForTail(left: any, right: any) {
+    const limits = {min: this.includeValMin, max: this.includeValMax}
+    if (limits.min && limits.max) {
+      return function (x: any) {
+        return x >= left && x <= right
+      }
+    } else if (limits.min && !limits.max) {
+      return function (x: any) {
+        return x >= left && x < right
+      }
+    } else if (!limits.min && limits.max) {
+      return function (x: any) {
+        return x > left && x <= right
+      }
+    } else if (!limits.min && !limits.max) {
+      return function (x: any) {
+        return x > left && x < right
+      }
+    } else return null
+  }
+
+  updateInfoSampleMeans(totalChosen: number, totalUnchosen: number) {
+    const proportionChosen = MathService.roundToPlaces(totalChosen / this.total, 4)
+    const proportionUnchosen = MathService.roundToPlaces(totalUnchosen / this.total, 4)
+
+    this.sampleMeansChosen = `${totalChosen} / ${this.total} = ${proportionChosen}`
+    this.sampleMeansUnchosen = `${totalUnchosen} / ${this.total} = ${proportionUnchosen}`
   }
 }

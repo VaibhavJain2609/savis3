@@ -1,426 +1,177 @@
-<!-- <p>two-proportions-ci works! updated</p> -->
-<!--
-<nav id="navbar">
-  <h1 class="logo"><a href="./../../" class="text-primary">SAVIS</a></h1>
-  <ul>
-    <li><a href="./../two-proportions-ci.component.html">Home</a></li>
-    <li><a href="./../about/two-proportions-ci.component.html">About</a></li>
-    <li><a href="https://www.csus.edu/faculty/d/rdiaz/">Download</a></li>
-    <li><a href="https://www.csus.edu/faculty/d/rdiaz/">User Manual</a></li>
-  </ul>
-</nav>
-
-<div id="main-content">
-  <div id="two-proportions">
-    <h1>Two Proportions Confidence Interval</h1>
-    <h2>1. Enter Data:</h2>
-    <input type="checkbox" style="float:right" checked/>
-    <div class="section flex-row">
-      <div class="rhs">
-        <div id="input-section" class="section">
-          <div class="lhs">
-            <table>
-              <thead>
-                <tr>
-                  <td></td>
-                  <td class="desc">Group A</td>
-                  <td class="desc">Group B</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="desc">Successes</td>
-                  <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"></td>
-                  <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"></td>
-                </tr>
-                <tr>
-                  <td class="desc">Failures</td>
-                  <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"></td>
-                  <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"></td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-            <button class="btn" (click)="loadData()">Load Data</button>
-          </div>
-        </div>
-      -->
-        <!-- Right Column -->
-<!--
-        <div class="rhs">
-          <table style="margin-left: 3em">
-            <tr>
-              <td style="text-align: right"><span summary="numAFailure" summaryint> {{ numAFailure }}</span> Failures</td>
-              <td rowspan="2" colspan="2">
-                <div class="rhs right-container">
-                  <h1>Testing</h1>
-                  <div class="chart-container">
-                    <canvas baseChart
-                            [datasets]="chartData"
-                            [labels]="chartLabels"
-                            [options]="chartOptions"
-                            [chartType]="'bar'">
-                    </canvas>
-                  </div>
-                </div>
-                <div class="chart-wrap"><canvas id="input-bars"></canvas></div>
-                <div style="width: 30%; margin: auto">
-                  <label for="multiply-group1" style="font-size: 13px"> Increas by</label>
-                  <input type="number" step="1" min="10" value="10" id="increment" style="width: 20%; text-align: center" />
-                </div>
-                <div style="width: 10%; margin: auto">
-                -->
-                <!--<button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button> -->
-              <!---
-                 <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
-                    <span class="material-icons">+</span>
-                  </button> 
-
-                </div>
-              </td>
-              <td><span summary="numBFailure" summaryint>{{ numBFailure }}</span> Failures</td>
-            </tr>
-            <tr>
-              <td style="text-align: right"><span summary="numASuccess" summaryint>{{ numASuccess }}</span> Successes</td>
-              <td><span summary="numBSuccess" summaryint>{{ numBSuccess }}</span> Successes</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
--->
-    <!-- Additional sections go here -->
-    <!--fixed the account problem-->
-
-  
-    <!-- Run Simulations Section -->
-<!---
-    <h2>2. Run Simulations</h2>
-    <input type="checkbox" style="float:right" checked/>
-    <div class="section">
-      <div class="lhs">
-        <label>Number of Simulations:
-          <input id="num-simulations" type="number" min="1" [(ngModel)]="numSimulations" max="1000"/>
-        </label>
-        <button class="btn" [disabled]="!isDataLoaded" (click)="runSimulations()">Run Simulations</button>
-        <div class="stats">
-          <div>
-            <span>Proportion of Randomized to Group A (p<sub>A</sub>):</span>
-            <span>{{ sampleProportionA }}</span>
-          </div>
-          <div>
-            <span>Proportion of Randomized to Group B (p<sub>B</sub>):</span>
-            <span>{{ sampleProportionB }}</span>
-          </div>
-          <div>
-            <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
-            <span>{{ sampleProportionDiff }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="rhs">
-        <h3 style="margin-left: 3em">Most Recent Draw</h3>
-        <table style="margin-left: 3em">
-          <tr>
-            <td style="text-align: right"><span>{{ sampleAFailure }}</span> Failures</td>
-            <td rowspan="2" colspan="2">
-
-              <div class="right-container">
-                <div class="chart-container">
-                  <canvas baseChart
-                          [datasets]="chartData"
-                          [labels]="chartLabels"
-                          [options]="chartOptions"
-                          [chartType]="'bar'">
-                  </canvas>
-                </div>
-              </div>
-
-
-              <div class="chart-wrap"><canvas id="last-sim-bars"></canvas></div>
-            </td>
-            <td><span>{{ sampleBFailure }}</span> Failures</td>
-          </tr>
-          <tr>
-            <td style="text-align: right"><span>{{ sampleASuccess }}</span> Successes</td>
-            <td><span>{{ sampleBSuccess }}</span> Successes</td>
-          </tr>
-        </table>
-      </div>
-    -->
-<!-- Sampling Distribution of Difference of Proportions Section -->
-
-<!--
-<h2>3. Sampling Distribution of Difference of Proportions</h2>
-<input type="checkbox" style="float:right" checked/>
-<div class="section flex-row">
-  <div class="lhs">
-    <div>
-      <label for="confidence-level">Confidence Level <span>{{ confidenceLevel }}</span>%</label>
-    </div>
-    <input type="range" min="1" max="100" style="width:50%" step="1" id="confidence-level" [(ngModel)]="confidenceLevel"/>
-    <button type="button" class="btn" style="width:50%" (click)="buildConfidenceInterval()" id="buildci">Build</button>
-
-    <div class="stats">
-      <div>
-        <span>Original Dataset Difference:</span>
-        <span>{{ proportionDiff }}</span>
-      </div>
-      <div>
-        <span>Mean of Sample Differences:</span>
-        <span>{{ meanSampleDiffs }}</span>
-      </div>
-      <div>
-        <span>Standard Deviation:</span>
-        <span>{{ stddevSampleDiffs }}</span>
-      </div>
-      <div>
-        <span>Lower Bound:</span>
-        <span>{{ lowerBound }}</span>
-      </div>
-      <div>
-        <span>Upper Bound:</span>
-        <span>{{ upperBound }}</span>
-      </div>
-      <div>
-        <span>Total Number of Samples:</span>
-        <span>{{ totalSamples }}</span>
-      </div>
-    </div>
-  </div>
-  <div class="rhs">
-    <div class="right-container">
-      <h1>Custom Graph</h1>
-      <div class="chart-container">
-        <canvas baseChart
-                [datasets]="customChartData"
-                [labels]="customChartLabels"
-                [options]="customChartOptions"
-                [chartType]="'bar'">
-        </canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<footer id="main-footer" class="bg-dark text-center py-1">
-  <div class="container">
-    <p>Copyright ©2019 CSUS. All Rights Reserved.</p>
-  </div>
-</footer>
-
--->
-
-
-
-
-
-
-
-
-
-
-
-
 <app-navbar></app-navbar>
+<div class="two-proportions">
+  <h1 class="text-center">{{ 'tpci_title' | translate }}</h1>
 
-<div id="main-content">
-  <div id="two-proportions">
-    <h1>Two Proportions Confidence Interval</h1>
-    <h2>1. Enter Data:</h2>
-    <input type="checkbox" style="float:right" checked/>
-    <div class="section flex-row">
-      <div class="rhs">
-        <div id="input-section" class="section">
-          <div class="lhs">
-            <table>
-              <thead>
-                <tr>
-                  <td></td>
-                  <td class="desc">Group A</td>
-                  <td class="desc">Group B</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="desc">Successes</td>
-                  <td><input type="number" id="a-success" [(ngModel)]="numASuccess" min="0" step="1"></td>
-                  <td><input type="number" id="b-success" [(ngModel)]="numBSuccess" min="0" step="1"></td>
-                </tr>
-                <tr>
-                  <td class="desc">Failures</td>
-                  <td><input type="number" id="a-failure" [(ngModel)]="numAFailure" min="0" step="1"></td>
-                  <td><input type="number" id="b-failure" [(ngModel)]="numBFailure" min="0" step="1"></td>
-                </tr>
-              </tbody>
-            </table>
-            <br>
-            <button class="btn" (click)="loadData()">Load Data</button>
-          </div>
-        </div>
-      
-        <!-- Right Column -->
-        <div class="rhs">
-          <table style="margin-left: 40em">
-            <tr>
-              <td style="text-align: right"><span summary="numAFailure" summaryint> {{ numAFailure }}</span> Failures</td>
-              <td rowspan="2" colspan="2">
-                <div class="rhs right-container">
-                  <h1>Testing</h1>
-                  <div class="chart-container">
-                    <canvas baseChart
-                            [datasets]="barChartData1"
-                            [labels]="barChartLabels1"
-                            [options]="barChartOptions1"
-                            [chartType]="barChartType1">
-                    </canvas>
-                  </div>
-                </div>
-                <div class="chart-wrap"><canvas id="input-bars"></canvas></div>
-                <div style="width: 30%; margin: auto">
-                  <label for="multiply-group1" style="font-size: 13px"> Increase by</label>
-                  <input type="number" step="1" min="10" value="10" id="increment" style="width: 20%; text-align: center" />
-                </div>
-                <div style="width: 10%; margin: auto">
-                  <!--<button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button> -->
-                  <button class="incrementButton" id="incrementButton" (click)="applyChanges()">
-                    <span class="material-icons">+</span>
-                  </button> 
-                </div>
-              </td>
-              <td><span summary="numBFailure" summaryint>{{ numBFailure }}</span> Failures</td>
-            </tr>
-            <tr>
-              <td style="text-align: right"><span summary="numASuccess" summaryint>{{ numASuccess }}</span> Successes</td>
-              <td><span summary="numBSuccess" summaryint>{{ numBSuccess }}</span> Successes</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Run Simulations Section -->
-  <h2>2. Run Simulations</h2>
-  <input type="checkbox" style="float:right" checked/>
-  <div class="section">
+  <h2>1. {{ 'tpci_enter_data' | translate }} </h2>
+  <input type="checkbox" style="float:right" checked>
+  <div id="input-section" class="section">
     <div class="lhs">
-      <label>Number of Simulations:
-        <input id="num-simulations" type="number" min="1" [(ngModel)]="numSimulations" max="1000"/>
-      </label>
-      <button class="btn" [disabled]="!isDataLoaded" (click)="runSimulations()">Run Simulations</button>
+      <table>
+        <thead>
+          <tr>
+            <td></td>
+            <td class="desc text-center">{{ 'tpci_group_A' | translate }}</td>
+            <td class="desc text-center">{{ 'tpci_group_B' | translate }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="desc">{{ 'tpci_successes' | translate }}</td>
+            <td><input class="text-center" type="number" id="a-success" value="0" min="0" step="1" [(ngModel)]="numASuccesses"></td>
+            <td><input class="text-center" type="number" id="b-success" value="0" min="0" step="1" [(ngModel)]="numBSuccesses"></td>
+          </tr>
+          <tr>
+            <td class="desc">{{ 'tpci_failures' | translate }}</td>
+            <td><input class="text-center" type="number" id="a-failure" value="0" min="0" step="1" [(ngModel)]="numAFailures"> </td>
+            <td><input class="text-center" type="number" id="b-failure" value="0" min="0" step="1" [(ngModel)]="numBFailures"> </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <br>
+      <button class="btn" (click)="loadData()">{{ 'tpci_load_data' | translate }}</button>
+      <hr>
+
       <div class="stats">
         <div>
-          <span>Proportion of Randomized to Group A (p<sub>A</sub>):</span>
-          <span>{{ sampleProportionA }}</span>
+          <span>{{'tpci_Prop_of_Success_GroupA' | translate}} (p<sub>A</sub>):</span>
+          <span>{{ inputProportionsGroupA }}</span>
         </div>
         <div>
-          <span>Proportion of Randomized to Group B (p<sub>B</sub>):</span>
-          <span>{{ sampleProportionB }}</span>
+          <span>{{'tpci_Prop_of_Success_GroupB' | translate}} (p<sub>b</sub>):</span>
+          <span>{{ inputProportionsGroupB }}</span>
         </div>
         <div>
-          <span>Difference of Proportions (p<sub>A</sub> - p<sub>B</sub>):</span>
-          <span>{{ sampleProportionDiff }}</span>
+          <span>{{'tpci_Difference_of_Proportions' | translate}} (p<sub>A</sub> - p<sub>B</sub>):</span>
+          <span>{{ inputDifferenceProportions }}</span>
         </div>
       </div>
     </div>
+
     <div class="rhs">
-      <h3 style="margin-left: 3em">Most Recent Draw</h3>
-      <table style="margin-left: 40em">
+      <table style="margin-left: 3em">
         <tr>
-          <td style="text-align: right">
-            <span>{{ sampleAFailure }}</span> Failures
-          </td>
-          <td colspan="2">
-            <div class="chart-container">
-              <canvas baseChart
-                      [datasets]="barChartData2"
-                      [labels]="barChartLabels2"
-                      [options]="barChartOptions2"
-                      [chartType]="barChartType1">
-              </canvas>
+          <td style="text-align: right;"><span summary="numAFailure" summaryint>{{numAFailures}}</span> {{ 'tpci_failures' | translate }}</td>
+          <td rowspan="2" colspan="2">
+            
+            <div class="chart-wrap mx-auto flex items-center justify-center">
+              <canvas #chart1></canvas>
             </div>
+
+            <div class="mx-auto flex items-center justify-center">
+              <label for="multiply-group1" style="font-size: 13px" [(ngModel)]="factor">{{ 'tpci_increase_by' | translate }}</label>
+              <input type="number" step="1" min="10" value="10" id="increment" style = "width: 20%; text-align: center">
+            </div>
+            
+            <!-- <div style="width: 10%; margin: auto">
+              <button class="incrementButton" id="incrementButton"><span class="material-icons">add_circle</span></button>
+            </div> -->
           </td>
-          <td>
-            <span>{{ sampleBFailure }}</span> Failures
-          </td>
+          <td><span summary="numBFailure" summaryint>{{numBFailures}}</span> {{ 'tpci_failures' | translate }}</td>
         </tr>
         <tr>
-          <td style="text-align: right">
-            <span>{{ sampleASuccess }}</span> Successes
+          <td style="text-align: right;"><span summary="numASuccess" summaryint>{{numASuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
+          <td><span summary="numBSuccess" summaryint>{{numBSuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="green-line"></div>
+
+  <h2>2. {{ 'tpci_run_simulations' | translate }}</h2>
+  <input type="checkbox" style="float:right" checked>
+  <div class="section">
+    <div class="lhs">
+      <label> {{ 'tpci_number_of_simulations' | translate }}:
+        <input id="num-simulations" type="number" min="1" value="1" max="1000" [(ngModel)]="numSimulations">
+      </label>
+      <button class="btn my-2" (click)="runSimulation()">{{ 'tpci_run_simulations' | translate }}</button>
+      <div class="stats">
+        <div>
+          <span>{{ 'tpci_A_Successes' | translate }} (p<sub>A</sub>):</span>
+          <span>{{ simulationProportionGroupA }}</span>
+        </div>
+        <div>
+          <span>{{ 'tpci_B_Successes' | translate }} (p<sub>B</sub>):</span>
+          <span>{{ simulationProportionGroupB }}</span>
+        </div>
+        <div>
+          <span>{{ 'tpci_diff_1' | translate }} (p<sub>A</sub> - p<sub>B</sub>):</span>
+          <span>{{ simulationDifferenceProportions }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rhs">
+      <h3 style="margin-left: 3em">{{ 'tpci_most_recent_draw' | translate }}</h3>
+      <table style="margin-left: 3em;">
+        <tr>
+          <td style="text-align: right;"><span summary="sampleAFailure">{{simAFailures}}</span> Failures</td>
+          <td rowspan="2" colspan="2">
+            <div class="chart-wrap mx-auto flex items-center justify-center">
+              <canvas #chart2 ></canvas>
+            </div>
           </td>
-          <td></td>
-          <td></td>
-          <td>
-            <span>{{ sampleBSuccess }}</span> Successes
-          </td>
+          <td><span summary="sampleBFailure">{{simBFailures}}</span> Failures</td>
+        </tr>
+        <tr>
+          <td style="text-align: right;"><span summary="sampleASuccess">{{simASuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
+          <td><span summary="sampleBSuccess">{{simBSuccesses}}</span> {{ 'tpci_successes' | translate }}</td>
         </tr>
       </table>
     </div>
   </div>
 
-  <!-- Sampling Distribution of Difference of Proportions Section -->
-  <h2>3. Sampling Distribution of Difference of Proportions</h2>
-  <input type="checkbox" style="float:right" checked/>
+  <div class="green-line"></div>
+
+  <h2>3. {{ 'tpci_sampling_distribution_difference' | translate }}</h2>
+  <input type="checkbox" style="float:right" checked>
   <div class="section flex-row">
     <div class="lhs">
-      <div>
-        <label for="confidence-level">Confidence Level <span>{{ confidenceLevel }}</span>%</label>
-      </div>
-      <input type="range" min="1" max="100" style="width:50%" step="1" id="confidence-level" [(ngModel)]="confidenceLevel"/>
-      <button type="button" class="btn" style="width:50%" (click)="buildConfidenceInterval()" id="buildci">Build</button>
+      <div class="flex flex-col items-center justify-center">
+        <div>
+            <label for="confidence-level">{{ 'tpci_confidence_level' | translate }} {{confidenceLevel}} %</label>
+        </div>
+        <input type="range" min="1" max="100" class="w-1/2" step="1" id="confidence-level" [(ngModel)]="confidenceLevel">
+        <button type="button" class="btn w-1/2" id="buildCI" (click)="updateLastChart()">Build</button>
+    </div>
 
       <div class="stats">
         <div>
-          <span>Original Dataset Difference:</span>
-          <span>{{ proportionDiff }}</span>
+          <span>{{ 'tpci_original_dataset_difference' | translate }}</span>
+          <span>{{ inputDifferenceProportions }}</span>
         </div>
         <div>
-          <span>Mean of Sample Differences:</span>
-          <span>{{ meanSampleDiffs }}</span>
+          <span>{{ 'tpci_mean_sample_differences' | translate }}</span>
+          <span>{{simMean}}</span>
         </div>
         <div>
-          <span>Standard Deviation:</span>
-          <span>{{ stddevSampleDiffs }}</span>
+          <span>{{ 'tpci_standard_deviation' | translate }}</span>
+          <span>{{simStdDev}}</span>
         </div>
         <div>
-          <span>Lower Bound:</span>
+          <span>{{ 'tpci_lower_bound' | translate }}</span>
           <span>{{ lowerBound }}</span>
         </div>
         <div>
-          <span>Upper Bound:</span>
+          <span>{{ 'tpci_upper_bound' | translate }}</span>
           <span>{{ upperBound }}</span>
         </div>
         <div>
-          <span>Total Number of Samples:</span>
-          <span>{{ totalSamples }}</span>
+          <span>{{ 'tpci_total_number_samples' | translate }}</span>
+          <span>{{simTotal}}</span>
         </div>
       </div>
     </div>
-    <td rowspan="2" colspan="2">
-      <div class="rhs right-container">
-        <table style="margin-left: 60em"></table>
-        <div class="chart-container">
-          <canvas baseChart
-                  [datasets]="barChartData3"
-                  [labels]="barChartLabels3"
-                  [options]="barChartOptions3"
-                  [chartType]="barChartType2">
-          </canvas>
-        </div>
-      </div>
-      <div class="chart-wrap"><canvas id="input-bars"></canvas></div>
-      <div style="width: 30%; margin: auto">
+    <div class="rhs-chart3">
+      <canvas #chart3 class="half-height"></canvas>
     </div>
   </div>
 
 
-<script src="{{base}}../lib/Chart.bundle.min.js"></script>
-<script src="./twoProportionsEntry.js" type="module"></script>
-<script src="./twoProportions.bundle.js"></script>
+</div>
 <app-footer></app-footer>
 
 

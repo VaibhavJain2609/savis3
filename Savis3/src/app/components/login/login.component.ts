@@ -3,6 +3,7 @@ import{FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -33,13 +35,18 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value; // Destructure email and password from the form value
       this.afAuth.signInWithEmailAndPassword(username, password)
-        .then(userCredential => {
-          console.log('Logged in successfully!', userCredential.user);
-          this.router.navigate(['/homepage']);
-        })
+        // .then(userCredential => {
+        //   this.router.navigate(['/homepage']);
+        // })
         .catch(error => {
-          console.error('Login failed:', error);
           alert('Login failed. Please check your credentials.');
+        });
+      
+        this.afAuth.onAuthStateChanged(user => {
+          if (user) {
+            // User is signed in
+            this.router.navigate(['/homepage']);
+          }
         });
     } else {
       this.validateAllFormFields(this.loginForm);

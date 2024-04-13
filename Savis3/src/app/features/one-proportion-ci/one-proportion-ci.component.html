@@ -39,17 +39,18 @@
                     [chartType]="barChartType1">
                 </canvas>
             </div>
-            <p>
+            <!-- <p>
                 {{ 'opc_increase' | translate }}
                 <input type = "number" step = "1" min = "1" id = "increment" [(ngModel)]="increment"/>
                 <button class = "incrementButton" (click)="incrementt(increment)">
                     <button class="custom-button">+</button>
                 </button>
-            </p>
+            </p> -->
         </div>
     </div> 
-    <br>
-    <hr>
+    
+    <div class="green-line"></div>
+
     <div class="title3"><h2>2. {{ 'opc_sims' | translate }}</h2></div>
     <!-- <input type="checkbox" style="float:right" checked/> -->
     <div id="input-section" class="section">
@@ -57,13 +58,13 @@
             <p>
                 {{ 'opc_sample' | translate }}
             </p>
-            <input id="sample-size" type="number" min="1" max="'1000" [(ngModel)]="sampleSize">
+            <input id="sample-size" type="number" min="1" max="'1000" [(ngModel)]="sampleSize" [disabled]="simSampleSizeDisabled">
             <p>
                 {{ 'opc_numsims' | translate }}
             </p>
-            <input type="number" min="1" max="1000" [(ngModel)]="numSimulations">
+            <input type="number" min="1" max="1000" [(ngModel)]="numSimulations" [disabled]="numSampleSizeDisabled">
             <br>
-            <button class="btn" (click)="runSimulations()">{{ 'opc_sims' | translate }}</button>
+            <button class="btn" (click)="runSimulations()" [disabled]="runSimulationsDisabled">{{ 'opc_sims' | translate }}</button>
             <br>
             <div class="stats">
                 <div>
@@ -86,59 +87,91 @@
             </div>
         </div>
     </div>
-    <br><br>
-    <hr>
+    <br>
+    <div class="green-line"></div>
+
     <div class="title3"><h2>3. {{ 'opc_SampleProp' | translate }}</h2></div>
     <!-- <input type="checkbox" style="float:right" checked/> -->
     <div class="section flex-row" style="display: flex; flex-wrap: wrap;">
         <div class="lhs">
-            <table>
-                <label for="confidence-level">{{ 'opc_confidence' | translate }} {{confidenceLevel}} %</label>
-            </table>
-            <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
+            <p class="text-center">{{ 'opc_select' | translate }}</p>
+            <form class="form-inline">
+                <div class="radio-group">
+                    <input type="radio" id="CI" value="CI" name="CI" [(ngModel)]="CiRadio" (click)="radioChange('CI')" [disabled]="radioDisabled" checked>
+                    <label for="CI">{{ 'opc_confidence_interval' | translate }}</label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="MinMax" value="MinMax" name="MinMax" [(ngModel)]="CiRadio" (click)="radioChange('MinMax')" [disabled]="radioDisabled">
+                    <label for="MinMax">{{ 'opc_min_max_inputs' | translate }}</label>
+                </div>
+            </form>
+            <div class="green-line"></div>  
+            <div class="flex flex-col items-center justify-center">
+                <table>
+                    <label for="confidence-level">{{ 'opc_confidence' | translate }} {{confidenceLevel}} %</label>
+                </table>
+                <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel" (ngModelChange)="buildci()" [disabled]="CiDisabled"/>
+            </div>
+            <div class="green-line"></div>
+            <div class="data-form">
+                <p>{{ 'opc_means_include' | translate }}</p>
+                <label for="min_tailValue">{{ 'opc_min' | translate }}</label>
+                <input type="number" id="min-interValue" step="0.01" min="0" max="1" [(ngModel)]="minTailValInput" (ngModelChange)="buildci()" [disabled]="MinMaxDisabled">
+                <label for="min-tailValue">{{ 'opc_include_min' | translate }}
+                    <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" [disabled]="MinMaxDisabled">
+                </label>
+
+                <br>
+
+                <label for="max-tailValue">{{ 'opc_max' | translate }}</label>
+                <input type="number" id="max-interValue" min="0" max="1" step="0.01" [(ngModel)]="maxTailValInput" (ngModelChange)="buildci()" [disabled]="MinMaxDisabled">
+                <label for="max-tailValue">{{ 'opc_include_max' | translate }}
+                    <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="MinMaxDisabled">
+                </label>
+            </div>
+            <div class="green-line"></div>
             <br>
-            <button class="btn" style="width:80%" (click)="buildci()">{{ 'opc_build' | translate }}</button>
+            <!-- <button class="btn" style="width:80%" (click)="buildci()">{{ 'opc_build' | translate }}</button> -->
             <br>  
             <br>
             <div class="stats">
-                <div>
+                <div class="my-4">
                      <span>{{ 'opc_mean' | translate }}</span>
                      <span>{{ mean | number : '1.4-4'}}</span>
                  </div>
-                 <div>
+                 <div class="my-4">
                      <span>{{ 'opc_stddev' | translate }}</span>
                      <span>{{ stddev | number : '1.4-4'}}</span>
                  </div>
-                 <div>
+                 <div class="my-4">
                      <span>{{ 'opc_lower' | translate }}</span>
                      <span>{{ lower | number : '1.4-4'}}</span>
                  </div>
-                 <div>
+                 <div class="my-4">
                      <span>{{ 'opc_upper' | translate }}</span>
                      <span>{{ upper | number : '1.4-4'}}</span>
                  </div>
-                 <div>
+                 <div class="my-4">
                      <span>{{ 'opc_total' | translate }}</span>
                      <span>{{ total }}</span>
+                 </div>
+                 <div class="my-4">
+                    <span>{{ 'opc_prop_select' | translate }} </span>
+                    <span>{{ sampleMeansChosen }}</span>
+                 </div>
+                 <div class="my-4">
+                    <span>{{ 'opc_prop_noselect' | translate }}</span>
+                    <span>{{ sampleMeansUnchosen }}</span>
                  </div>
              </div>
             <br>  
         </div>
         <div class="rhs">
             <div class="chart-wrap3">
-                <canvas baseChart
-                    [datasets]="barChartData3"
-                    [labels]="barChartLabels3"
-                    [options]="barChartOptions3"
-                    [chartType]="barChartType2">
-                </canvas>
+                <canvas #chart3></canvas>
             </div>
         </div>
     </div>
 </div>
-
-<script src="{{base}}../lib/Chart.bundle.min.js"></script>
-<script src="./oneProportionsEntry.js" type="module"></script>
-<script src="./oneProportions.bundle.js"></script>
 
 <app-footer></app-footer>

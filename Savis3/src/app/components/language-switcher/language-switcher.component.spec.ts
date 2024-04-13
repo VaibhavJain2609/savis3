@@ -1,7 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { of } from 'rxjs'
 import { LanguageSwitcherComponent } from './language-switcher.component'
-import { TranslateService } from '@ngx-translate/core'
+import { TranslateModule, TranslateService } from '@ngx-translate/core'
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({name: 'translate'})
+class MockTranslatePipe implements PipeTransform {
+  transform(value: any): any {
+    return value;
+  }
+}
 
 describe('LanguageSwitcherComponent', () => {
   let component: LanguageSwitcherComponent
@@ -11,13 +19,15 @@ describe('LanguageSwitcherComponent', () => {
   beforeEach(async () => {
     const translateServiceMock = {
       use: jest.fn(),
+      get: jest.fn((key) => of(key)),
       setDefaultLang: jest.fn(),
       onLangChange: of({ lang: 'en' }),
       currentLang: 'en'
     }
 
     await TestBed.configureTestingModule({
-      declarations: [ LanguageSwitcherComponent ],
+      declarations: [ LanguageSwitcherComponent, MockTranslatePipe ],
+      imports: [ TranslateModule.forRoot() ],
       providers: [
         { provide: TranslateService, useValue: translateServiceMock }
       ]

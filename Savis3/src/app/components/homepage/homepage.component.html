@@ -1,29 +1,55 @@
 <app-navbar></app-navbar>
 
 <div class="box-container">
-    <div class="column">
-        <div class="tool1">Hypothesis Testing</div>
-        <div class="box" routerLink="/oneproportion"> One Proportion Hypothesis Testing</div>
-        <div class="box" routerLink="/twoproportions">Two Proportion Hypothesis Testing</div>
-        <div class="box" routerLink="/onemean">One Mean Hypothesis Testing</div>
-        <div class="box" routerLink="/twomeans">Two Mean Hypothesis Testing</div>
+  <div class="column">
+    <div class="tool1">{{ "homepage_Hypothesis_Testing" | translate }}</div>
+    <div class="box" routerLink="/oneproportion">
+      {{ "homepage_One_Proportion_Hypothesis_Testing" | translate }}
     </div>
-        
-    <div class="column">
-        <div class="tool2">Visualization</div>
-        <div class="box2" routerLink="/LR">Linear Regression Visualization</div>
-        <div class="box2" routerLink="/correlation">Correlation Visualization</div>
+    <div class="box" routerLink="/twoproportions">
+      {{ "homepage_Two_Proportion_Hypothesis_Testing" | translate }}
     </div>
+    <div class="box" routerLink="/onemean">
+      {{ "homepage_One_Mean_Hypothesis_Testing" | translate }}
+    </div>
+    <div class="box" routerLink="/twomeans">
+      {{ "homepage_Two_Mean_Hypothesis_Testing" | translate }}
+    </div>
+  </div>
 
-    <div class="column">
-        <div class="tool3">Confidence Interval</div>
-        <div class="box3" routerLink="/oneproportionCI">One Proportions Confidence Interval</div>
-        <div class="box3" routerLink="/twoproportionsCI">Two Proportions Confidence Interval</div>
-        <div class="box3" routerLink="/onemeanCI">One Mean Confidence Interval</div>
-        <div class="box3" routerLink="/twomeansCI">Two Mean Confidence Interval</div>
+  <div class="column">
+    <div class="tool2">{{ 'homepage_Graphs' | translate }}</div>
+    <div class="box2" routerLink="/barchart">{{ 'homepage_barChart' | translate }}</div>
+    <div class="box2" routerLink="/dotplot">{{ 'homepage_dotPlot' | translate }}</div>
+</div>
+
+  <div class="column">
+    <div class="tool2">{{ "homepage_Visualization" | translate }}</div>
+    <div class="box2" routerLink="/LR">
+      {{ "homepage_Linear_Regression_Visualization" | translate }}
     </div>
+    <div class="box2" routerLink="/correlation">
+      {{ "homepage_Correlation_Visualization" | translate }}
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="tool3">{{ "homepage_Confidence_Interval" | translate }}</div>
+    <div class="box3" routerLink="/oneproportionCI">
+      {{ "homepage_One_Proportions_Confidence_Interval" | translate }}
+    </div>
+    <div class="box3" routerLink="/twoproportionsCI">
+      {{ "homepage_Two_Proportions_Confidence_Interval" | translate }}
+    </div>
+    <div class="box3" routerLink="/onemeanCI">
+      {{ "homepage_One_Mean_Confidence_Interval" | translate }}
+    </div>
+    <div class="box3" routerLink="/twomeansCI">
+      {{ "homepage_Two_Mean_Confidence_Interval" | translate }}
+    </div>
+  </div>
 </div>
 
 <footer>
-    Copyright ©2024 CSUS. All Rights Reserved.
+  {{ "nav_copyright" | translate }}
 </footer>

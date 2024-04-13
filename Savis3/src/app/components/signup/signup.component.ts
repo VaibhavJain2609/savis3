@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-signup',
@@ -25,7 +26,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   /**
@@ -47,6 +49,8 @@ export class SignupComponent implements OnInit {
    * Create the new user if all the fields are valid
    */
   onSignUp() {
+    this.errorMessage = ''
+    
     if (this.signUpForm.valid) {
       this.afAuth.createUserWithEmailAndPassword(this.signUpForm.value.email, this.signUpForm.value.password).then((userCredential) => {
 

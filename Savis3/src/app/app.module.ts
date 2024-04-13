@@ -31,6 +31,18 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { LanguageSwitcherComponent } from './components/language-switcher/language-switcher.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SaveLoadButtonsComponent } from './components/save-load-buttons/save-load-buttons.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button'
+import { SaveDialogComponent } from './components/save-load-buttons/save-dialog/save-dialog.component';
+import { LoadDialogComponent } from './components/save-load-buttons/load-dialog/load-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { ConfirmationDialogComponent } from './components/save-load-buttons/confirmation-dialog/confirmation-dialog.component';
+import { BarChartComponent } from './features/bar-chart/bar-chart.component';
+import { DotChartComponent } from './features/dot-chart/dot-chart.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -72,6 +84,12 @@ export function setupTranslateFactory(service : TranslateService): Function {
     NavbarComponent,
     FooterComponent,
     LanguageSwitcherComponent,
+    SaveLoadButtonsComponent,
+    SaveDialogComponent,
+    LoadDialogComponent,
+    ConfirmationDialogComponent,
+    BarChartComponent,
+    DotChartComponent
 
   ],
   imports: [
@@ -88,8 +106,14 @@ export function setupTranslateFactory(service : TranslateService): Function {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
-  ],
+    }),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule
+    ],
   providers: [
     MathService,
     TranslateService,

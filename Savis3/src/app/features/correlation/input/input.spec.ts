@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './input.component';
 import { sampleCorrelation } from 'simple-statistics';
+import { LanguageSwitcherComponent } from '../../../components/language-switcher/language-switcher.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -9,8 +11,8 @@ describe('InputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InputComponent],
-      imports: [ReactiveFormsModule],
+      declarations: [InputComponent, LanguageSwitcherComponent],
+      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -223,7 +225,7 @@ describe('InputComponent', () => {
       // Verify emitArrayValues was called with the correct parameters
       expect(component.emitArrayValues).toHaveBeenCalledWith([1, 3], [2, 4]);
 
-      expect(component.correlationValue).toBe('1.00');
+      expect(component.correlationValue1).toBe('1.00');
     });
   });
 
