@@ -28,7 +28,7 @@
                 <label for="population" class="m-1">{{ 'dotPlot_population' | translate }}</label>
                 <br>
                 <input type="radio" id="sample-data-ratio" value="sample" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('sample')">
-                <label for="sample" class="m-1">{{ 'dotPlot_sample' | translate }}</label>
+                <label id="sampleButton" for="sample" class="m-1">{{ 'dotPlot_sample' | translate }}</label>
             </form>
             <div>
                 <app-save-load-buttons
