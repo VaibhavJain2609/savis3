@@ -139,7 +139,7 @@
     </h2>
     <input type="checkbox" checked (change)="toggleSection($event,'sectionThree')">
   </div>
-  <div class="flex gap-3" [ngClass]="sections.sectionTwo ? '' : 'hidden'">
+   <div class="flex gap-3" [ngClass]="sections.sectionTwo ? '' : 'hidden'">
     <div class=" w-3/12">
       <table>
         
@@ -161,11 +161,11 @@
         </div>
         <div class="flex justify-between">
           <span>Standard Deviation:</span>
-          <span summary="stddev">{{std}}</span>
+          <span summary="stddev">{{stdevFinal}}</span>
         </div>
         <div class="flex justify-between">
           <span>Total # samples: </span>
-          <span summary="total" summaryint>{{stdevFinal}}</span>
+          <span summary="total" summaryint>{{simulations.length}}</span>
         </div>
         <div class="flex justify-between">
           <span>Lower Bound: </span>
