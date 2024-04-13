@@ -43,6 +43,7 @@ export class TwoMeansCIComponent implements OnInit {
   csvraw: any
   csv: any
   lowerBound='NaN'
+  stdevFinal: number = 0
   upperBound= 'NaN'
   sections: any = {
     sectionOne: true,
@@ -444,6 +445,7 @@ export class TwoMeansCIComponent implements OnInit {
       // this.updateLastChart()
     }
     this.samDisActive = true
+    this.stdevFinal = this.calculateStandardDeviation(this.simulations)
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
@@ -503,8 +505,8 @@ export class TwoMeansCIComponent implements OnInit {
     })
   
     // Ensure these lines are compatible with how you're storing and displaying bounds
-    this.lowerBound = temp[lower].toString()
-    this.upperBound = temp[upper >= temp.length ? upper - 1: upper].toString()
+    this.lowerBound = Number(temp[lower]).toFixed(3)
+    this.upperBound = Number(temp[upper >= temp.length ? upper - 1: upper]).toFixed(3)
     const shift = temp.length < 500 ? 0:0
     this.setScale(this.chart5, temp[0]-shift, temp[temp.length - 1]+shift)
     this.setDataFromRaw(this.chart5, [chosen, unchosen])
