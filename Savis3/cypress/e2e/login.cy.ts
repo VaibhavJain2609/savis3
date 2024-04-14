@@ -40,6 +40,7 @@ describe('template spec', () => {
         //     cy.stub(win.console, 'log').as('consoleLog')
         // })
         // cy.get('@consoleLog').should('have.been.calledWith', 'form invalid')
+        cy.contains('button', 'Login').click()
     })
     
     it('should click the forgot password', () => {
@@ -56,5 +57,9 @@ describe('template spec', () => {
         cy.wait(1000)
         cy.contains('button', 'Guest').click()
     })
-    
+ 
+    it('should navigate to signup page when signup link is clicked', () => {
+        cy.get('a[routerLink="/signup"]').click()
+        cy.url().should('include', '/signup') // Assuming signup page URL is '/signup'
+    })
 })

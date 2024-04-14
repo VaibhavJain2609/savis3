@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'csv-file-upload',
+  selector: 'app-csv-file-upload',
   templateUrl: './csv-file-upload.component.html',
   styleUrls: ['./csv-file-upload.component.scss']
 })

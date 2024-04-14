@@ -4,17 +4,18 @@ import { MathService } from 'src/app/Utils/math.service';
 import { SamplingService } from 'src/app/Utils/sampling.service';
 import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
-import {ChartType} from 'chart.js';
+import {ChartDataSets, ChartType} from 'chart.js';
 import * as XLS from 'xlsx';
 import {Chart} from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { chatClass } from 'src/app/Utils/stacked-dot';
+import { CoverageChartService } from './services/coverage-chart.service';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
   styleUrls: ['./one-mean-ci.component.scss']
 })
-export class OneMeanCIComponent {
+export class OneMeanCIComponent implements OnInit, AfterViewInit {
   minInterValInput: number = 0
   maxInterValInput: number = 0
 
@@ -79,7 +80,7 @@ export class OneMeanCIComponent {
   sampleDataChart: Chart
 
   sampleMeansChart: Chart
-  confidenceIntervalChart: Chart
+  confidenceIntervalChart: CoverageChartService
 
   sampleRadio: string = 'population'
 
@@ -108,74 +109,100 @@ export class OneMeanCIComponent {
   }
   createConfidenceIntervalChart(): void {
     const ctx = this.confidenceIntervalChartRef.nativeElement.getContext('2d')
-    if(ctx) {
-      this.confidenceIntervalChart = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-          datasets: [
-            {
-              label: this.translate.instant('dotPlot_confidence_interval'),
-              backgroundColor: 'blue',
-              data: []
-            },
-            {
-              label: this.translate.instant('dotPlot_lower_bound'),
-              backgroundColor: 'green',
-              data: []
-            },
-            {
-              label: this.translate.instant('dotPlot_upper_bound'),
-              backgroundColor: 'red',
-              data: []
-            }
-          ]
-        },
-        options: {
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  fontColor: 'black',
-                  fontSize: 16,
-                  padding: 0,
-                  min: 0,
-                  max: 1,
-                },
-                scaleLabel: {
-                  display: true,
-                  labelString: this.translate.instant('dotPlot_sample_means'),
-                  fontStyle: 'bold',
-                  fontColor: 'black'
-                }
-              }
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  fontColor: 'black',
-                  fontSize: 16,
-                  padding: 0,
-                  min: 0,
-                  stepSize: 1
-                },
-                scaleLabel: {
-                  display: true,
-                  labelString: this.translate.instant('dotPlot_frequencies'),
-                  fontStyle: 'bold',
-                  fontColor: 'black'
-                }
-              }
-            ]
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          tooltips: {
-            backgroundColor: 'rgba(0, 0, 0, 1.0)',
-            bodyFontSize: 16,
-          }
-        }
-      })
-    }
+    // if(ctx) {
+    //   this.confidenceIntervalChart = new Chart(ctx, {
+    //     type: 'scatter',
+    //     data: {
+    //       datasets: [
+    //         {
+    //           label: this.translate.instant('dotPlot_confidence_interval'),
+    //           backgroundColor: 'blue',
+    //           data: []
+    //         },
+    //         {
+    //           label: this.translate.instant('dotPlot_lower_bound'),
+    //           backgroundColor: 'green',
+    //           data: []
+    //         },
+    //         {
+    //           label: this.translate.instant('dotPlot_upper_bound'),
+    //           backgroundColor: 'red',
+    //           data: []
+    //         }
+    //       ]
+    //     },
+    //     options: {
+    //       scales: {
+    //         xAxes: [
+    //           {
+    //             ticks: {
+    //               fontColor: 'black',
+    //               fontSize: 16,
+    //               padding: 0,
+    //               min: 0,
+    //               max: 1,
+    //             },
+    //             scaleLabel: {
+    //               display: true,
+    //               labelString: this.translate.instant('dotPlot_sample_means'),
+    //               fontStyle: 'bold',
+    //               fontColor: 'black'
+    //             }
+    //           }
+    //         ],
+    //         yAxes: [
+    //           {
+    //             ticks: {
+    //               fontColor: 'black',
+    //               fontSize: 16,
+    //               padding: 0,
+    //               min: 0,
+    //               stepSize: 1
+    //             },
+    //             scaleLabel: {
+    //               display: true,
+    //               labelString: this.translate.instant('dotPlot_frequencies'),
+    //               fontStyle: 'bold',
+    //               fontColor: 'black'
+    //             }
+    //           }
+    //         ]
+    //       },
+    //       responsive: true,
+    //       maintainAspectRatio: false,
+    //       tooltips: {
+    //         backgroundColor: 'rgba(0, 0, 0, 1.0)',
+    //         bodyFontSize: 16,
+    //       }
+    //     }
+    //   })
+    // }
+
+    let dataset: ChartDataSets[] = [
+      {
+        label: this.translate.instant('omci_InInterval'),
+        backgroundColor: 'rgba(31, 255, 31, 1)',
+        borderColor: 'rgba(31, 255, 31, 1)',
+        data: [],
+        showLine: true
+      },
+      {
+        label: this.translate.instant('omci_NotInInterval'),
+        backgroundColor: 'red',
+        borderColor: 'red',
+        data: [],
+        showLine: true
+      },
+      {
+        label: this.meanSymbol,
+        backgroundColor: 'black',
+        borderColor: 'black',
+        data: [],
+        showLine: true
+      }
+    ]
+
+    this.confidenceIntervalChart = new CoverageChartService(ctx, dataset, 'horizontal')
   }
   createInputChart(): void {
     const ctx = this.inputDataChartRef.nativeElement.getContext('2d')
@@ -185,7 +212,7 @@ export class OneMeanCIComponent {
         data: {
           datasets: [
             {
-              label: this.translate.instant('dotPlot_input_data'),
+              label: this.translate.instant('omci_input_data'),
               backgroundColor: 'orange',
               data: []
             }
@@ -204,7 +231,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_data'),
+                  labelString: this.translate.instant('omci_data'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -221,7 +248,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  labelString: this.translate.instant('omci_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -248,7 +275,7 @@ export class OneMeanCIComponent {
         data: {
           datasets: [
             {
-              label: this.translate.instant('dotPlot_last_drawn'),
+              label: this.translate.instant('omci_last_drawn'),
               backgroundColor: 'blue',
               data: []
             },
@@ -267,7 +294,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_data'),
+                  labelString: this.translate.instant('omci_data'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -284,7 +311,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  labelString: this.translate.instant('omci_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -311,12 +338,12 @@ export class OneMeanCIComponent {
         data: {
           datasets: [
             {
-              label: this.translate.instant('dotPlot_means_in_interval'),
+              label: this.translate.instant('omci_means_in_interval'),
               backgroundColor: 'green',
               data: []
             },
             {
-              label: this.translate.instant('dotPlot_means_not_in_interval'),
+              label: this.translate.instant('omci_means_not_in_interval'),
               backgroundColor: 'red',
               data: []
             }
@@ -335,7 +362,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_sample_means'),
+                  labelString: this.translate.instant('omci_sample_means'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -352,7 +379,7 @@ export class OneMeanCIComponent {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('dotPlot_frequencies'),
+                  labelString: this.translate.instant('omci_frequencies'),
                   fontStyle: 'bold',
                   fontColor: 'black'
                 }
@@ -591,7 +618,7 @@ export class OneMeanCIComponent {
         
         dataDisplay = dataArray.reduce(
           (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x} σ: ${this.sampleStds[idx]}`.padEnd(25, ' ') + `${this.translate.instant('dotPlot_mean')} ${this.stdSymbol}\n`,
-          `ID`.padEnd(8, ' ') + `${this.translate.instant('dotPlot_values')} ${this.stdSymbol}\n`
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('omci_values')} ${this.stdSymbol}\n`
         );
       }
 
@@ -824,6 +851,9 @@ export class OneMeanCIComponent {
 
     const sampleMean = this.mean(itr)
     const devSquare = itr.reduce((acc: number, x: number) => {
+      console.log('acc', acc)
+      console.log('x', x)
+      console.log('mean', sampleMean)
       return (x - sampleMean) * (x - sampleMean) + acc
     }, 0)
 
@@ -909,7 +939,7 @@ export class OneMeanCIComponent {
   }
   initializeConfidenceIntervalChart() {
     if (this.confidenceIntervalChart) {
-      this.confidenceIntervalChart.destroy();
+      this.confidenceIntervalChart.chart.destroy()
     }
     this.createConfidenceIntervalChart();
   }
@@ -927,82 +957,147 @@ export class OneMeanCIComponent {
     }
     this.createSampleMeansChart();
   }
-  confidenceInterval() {
-    let chosenMeans: number[] = [];
-    let processedStd: number[] = [];
-    let idxArr: number[] = []; // This array is not used in the provided code
-    this.samplemean2 = [];
-    this.upperBound = [];
-    this.lowerBound = [];
-    const noOfCoverage: number = Number(this.noOfIntervals);
-    if(noOfCoverage < 1 || noOfCoverage > this.sampleMeans.length) {
-      alert('Number of coverage intervals must be between 1 and the number of sample means')
-      return
-    }
-    for (let it = 0; it < noOfCoverage; it++) {
-      chosenMeans.push(this.sampleMeans[it]);
-      processedStd.push(2 * this.sampleStds[it]/ Math.sqrt(this.sampleSize));
-    }
-    console.log(processedStd)
-  let it: number;
-let sampleMean: number;
-let procStd: number;
-let lower: number;
-let upper: number;
-let minNum: number;
-let maxNum: number;
-let assignedDataset: any[];
-let tmp: number;
+//   confidenceInterval() {
+//     let chosenMeans: number[] = [];
+//     let processedStd: number[] = [];
+//     let idxArr: number[] = []; // This array is not used in the provided code
+//     this.samplemean2 = [];
+//     this.upperBound = [];
+//     this.lowerBound = [];
+//     const noOfCoverage: number = Number(this.noOfIntervals);
+//     if(noOfCoverage < 1 || noOfCoverage > this.sampleMeans.length) {
+//       alert('Number of coverage intervals must be between 1 and the number of sample means')
+//       return
+//     }
+//     for (let it = 0; it < noOfCoverage; it++) {
+//       chosenMeans.push(this.sampleMeans[it]);
+//       processedStd.push(2 * this.sampleStds[it]/ Math.sqrt(this.sampleSize));
+//     }
+//     console.log(processedStd)
+//   let it: number;
+// let sampleMean: number;
+// let procStd: number;
+// let lower: number;
+// let upper: number;
+// let minNum: number;
+// let maxNum: number;
+// let assignedDataset: any[];
+// let tmp: number;
 
-let inInterval: number[] = [];
-let notInInterval: number[] = [];
-let lowers: number[] = [];
-let uppers: number[] = [];
+// let inInterval: number[] = [];
+// let notInInterval: number[] = [];
+// let lowers: number[] = [];
+// let uppers: number[] = [];
 
-let wMean: number = 0;
-  const centMean = Number(this.inputDataMean);
-  console.log(centMean + "CENTMEAN")
-  for (it = 0; it < chosenMeans.length; it++) {
-    sampleMean = chosenMeans[it];
-    procStd = processedStd[it];
-    lower = sampleMean - procStd;
-    upper = sampleMean + procStd;
-    if (lower < minNum || !minNum) minNum = lower;
-    if (upper > maxNum || !maxNum) maxNum = upper;
+// let wMean: number = 0;
+//   const centMean = Number(this.inputDataMean);
+//   console.log(centMean + "CENTMEAN")
+//   for (it = 0; it < chosenMeans.length; it++) {
+//     sampleMean = chosenMeans[it];
+//     procStd = processedStd[it];
+//     lower = sampleMean - procStd;
+//     upper = sampleMean + procStd;
+//     if (lower < minNum || !minNum) minNum = lower;
+//     if (upper > maxNum || !maxNum) maxNum = upper;
 
-    if (lower <= centMean && centMean <= upper) wMean += 1; // wMean should increment if the centMean is within the the upper and lower bound of the sample
-    console.log(wMean + "WMEAN");
-    if ((it < noOfCoverage) && (it < 100)){
-      assignedDataset = (lower <= centMean && centMean <= upper) ? inInterval : notInInterval
+//     if (lower <= centMean && centMean <= upper) wMean += 1; // wMean should increment if the centMean is within the the upper and lower bound of the sample
+//     console.log(wMean + "WMEAN");
+//     if ((it < noOfCoverage) && (it < 100)){
+//       assignedDataset = (lower <= centMean && centMean <= upper) ? inInterval : notInInterval
 
-      assignedDataset.push(
-        { x: it + 1, y: MathService.roundToPlaces(lower, 2) },
-        { x: it + 1, y: sampleMean },
-        { x: it + 1, y: MathService.roundToPlaces(upper, 2) },
-        { x: undefined, y: undefined }
-      )
-    }
+//       assignedDataset.push(
+//         { x: it + 1, y: MathService.roundToPlaces(lower, 2) },
+//         { x: it + 1, y: sampleMean },
+//         { x: it + 1, y: MathService.roundToPlaces(upper, 2) },
+//         { x: undefined, y: undefined }
+//       )
+//     }
     
-    lowers.push(MathService.roundToPlaces(lower, 2))
-    uppers.push(MathService.roundToPlaces(upper, 2))
-}
-it++
+//     lowers.push(MathService.roundToPlaces(lower, 2))
+//     uppers.push(MathService.roundToPlaces(upper, 2))
+// }
+// it++
+//     tmp = inInterval.pop()
+//     tmp = notInInterval.pop()
+//     this.confidenceIntervalChart.options.scales.xAxes[0].ticks.max = (it < 100) ? it : 100
+//     this.confidenceIntervalChart.options.scales.yAxes[0].ticks.max = Math.ceil(maxNum)
+//     this.confidenceIntervalChart.options.scales.yAxes[0].ticks.min = Math.floor(maxNum)
+//     this.confidenceIntervalChart.data.datasets[0].data = inInterval
+//     this.confidenceIntervalChart.data.datasets[1].data = notInInterval
+//     this.confidenceIntervalChart.data.datasets[2].data = [{x: 0, y: centMean}, {x: (it < 100) ? it : 100, y: centMean}]
+//     this.confidenceIntervalChart.data.datasets[2].label = '${this.meanSymbol} = ${centMean}'
+//     this.confidenceIntervalChart.update()
+//     this.confidenceIntervalCount = wMean
+//     this.confidenceIntervalCountNot = noOfCoverage - wMean
+//     this.samplemean2 = chosenMeans
+//     this.upperBound = uppers
+//     this.lowerBound = lowers
+
+
+// }
+
+  confidenceInterval() {
+    let chosenMeans = [], processedStd = []
+    const noOfCoverage = this.noOfIntervals
+
+    for (let it = 0; it < noOfCoverage; it++) {
+      chosenMeans.push(this.sampleMeans[it])
+      processedStd.push(2 * this.sampleStds[it] / Math.sqrt(this.sampleSize))
+    }
+
+    let it, sampleMean, procStd, lower, upper, minNum, maxNum, assignedDataset, tmp
+    let inInterval: any[] = [], notInInterval: any[] = [], lowers = [], uppers = []
+    let wMean = 0
+
+    const centMean = Number(this.inputDataMean)
+
+    for (it = 0; it < chosenMeans.length; it++) {
+      sampleMean = chosenMeans[it]
+      procStd = processedStd[it]
+
+      lower = sampleMean - procStd
+      upper = sampleMean + procStd
+
+      if (lower < minNum || !minNum) minNum = lower
+      if (upper > maxNum || !maxNum) maxNum = upper
+
+      if (lower <= centMean && centMean <= upper) wMean += 1
+
+      if ((it < noOfCoverage) && (it < 100)) {
+        assignedDataset = (lower <= centMean && centMean <= upper) ? inInterval : notInInterval
+
+        assignedDataset.push(
+          { x: it+ 1, y: MathService.roundToPlaces(lower, 2) },
+          { x: it + 1, y: sampleMean },
+          { x: it + 1, y: MathService.roundToPlaces(upper, 2) },
+          { x: undefined, y: undefined }
+        )
+      }
+
+      lowers.push(MathService.roundToPlaces(lower, 2))
+      uppers.push(MathService.roundToPlaces(upper, 2))
+    }
+
+    it++
     tmp = inInterval.pop()
     tmp = notInInterval.pop()
-    this.confidenceIntervalChart.options.scales.xAxes[0].ticks.max = (it < 100) ? it : 100
-    this.confidenceIntervalChart.options.scales.yAxes[0].ticks.max = Math.ceil(maxNum)
-    this.confidenceIntervalChart.options.scales.yAxes[0].ticks.min = Math.floor(maxNum)
-    this.confidenceIntervalChart.data.datasets[0].data = inInterval
-    this.confidenceIntervalChart.data.datasets[1].data = notInInterval
-    this.confidenceIntervalChart.data.datasets[2].data = [{x: 0, y: centMean}, {x: (it < 100) ? it : 100, y: centMean}]
-    this.confidenceIntervalChart.data.datasets[2].label = '${this.meanSymbol} = ${centMean}'
-    this.confidenceIntervalChart.update()
+
+    this.confidenceIntervalChart.setScales({
+      x_term: (it < 100) ? it : 100,
+      y_init: minNum,
+      y_term: maxNum
+    })
+
+    this.confidenceIntervalChart.updateChartData([
+      inInterval,
+      notInInterval,
+      [{x: 0, y: centMean}, {x: (it < 100) ? it : 100, y: centMean}]
+    ])
+
+    this.confidenceIntervalChart.chart.data.datasets[2].label = `${this.meanSymbol} = ${centMean}`
+    this.confidenceIntervalChart.chart.update()
     this.confidenceIntervalCount = wMean
     this.confidenceIntervalCountNot = noOfCoverage - wMean
-    this.samplemean2 = chosenMeans
-    this.upperBound = uppers
-    this.lowerBound = lowers
-
-
-}
+    // TODO: SampleMeanCoverageDisplay ????
+  }
 }

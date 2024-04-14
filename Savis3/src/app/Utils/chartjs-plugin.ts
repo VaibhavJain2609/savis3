@@ -1,5 +1,3 @@
-import { Chart } from 'chart.js';
-
 export const errorBarsPlugin = {
     afterDatasetsDraw: function(chart: any) {
       const ctx = chart.ctx;

@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "projects/**/*",
+    "Savis3/cypress/**/*"
   ],
   "overrides": [
     {
@@ -35,7 +36,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-unused-vars": "error"
       }
     },
     {
@@ -45,7 +47,9 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "no-extra-semi": "error"
+      }
     }
   ]
 }

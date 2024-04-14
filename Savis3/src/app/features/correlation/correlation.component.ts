@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-correlation',
   templateUrl: './correlation.component.html',
   styleUrls: ['./correlation.component.scss'],
 })
-export class CorrelationComponent implements OnInit {
+export class CorrelationComponent {
   constructor() {}
 
   xValuesArray: number[] = [];
@@ -25,5 +25,4 @@ export class CorrelationComponent implements OnInit {
     // console.log(this.yValuesArray);
   }
 
-  ngOnInit(): void {}
 }
