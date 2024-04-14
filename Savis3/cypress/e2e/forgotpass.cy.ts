@@ -13,6 +13,14 @@ describe('template spec', () => {
     it('should display forgotpassword form', () => {
         cy.get('[formControlName = "email"]').type('test@gmail.com')
         cy.get('button[type="submit"').click()
+        cy.wait(1000)
+        cy.log('Password reset email sent, please check your email. You will be redirected to the login page in 5 seconds.')
+    })
+
+    it('should display if incorrect email entered', () => {
+        cy.get('[formControlName = "email"]').type('test')
+        cy.get('button[type="submit"]').click()
+        cy.wait(1000)
     })
 
     it('should follow link back to login page', () => {

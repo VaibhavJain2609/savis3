@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
         .catch(error => {
           alert('Login failed. Please check your credentials.');
           this.router.navigate(['/login'])
+          console.log('invalid')
         });
       
         this.afAuth.onAuthStateChanged(user => {
@@ -52,6 +53,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.validateAllFormFields(this.loginForm);
       alert('Your form is invalid');
+      console.log('form invalid')
     }
   }
 
