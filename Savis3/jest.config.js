@@ -17,5 +17,6 @@ module.exports = {
   ],
   coveragePathIgnorePatterns: [
     "/src/app/Utils/"
-  ]
+  ],
+  setupFiles: ['jest-canvas-mock'],
 };
