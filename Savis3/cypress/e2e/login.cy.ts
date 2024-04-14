@@ -13,6 +13,33 @@ describe('template spec', () => {
     it('should display the login form', () => {
         cy.get('[formControlName = "username"]').type('test@gmail.com')
         cy.get('[formControlName = "password"]').type('Test1234!')
+        cy.contains('button', 'Login').should('be.visible').click()
+        cy.url().should('be.equal', 'http://localhost:4200/homepage')
+    })
+
+    it('should pop up error message if invalid email or password', () => {
+        cy.get('[formControlName = "username"]').type('t@gmail.com')
+        cy.get('[formControlName = "password"]').type('test')
+        cy.contains('button', 'Login').click()
+        // cy.on('window:alert', (message) => {
+        //     expect(message).to.equal('Login failed. Please check your credentials.')
+        // })
+        cy.window().then((win) => {
+            cy.stub(win.console, 'log').as('consoleLog')
+        })
+        cy.get('@consoleLog').should('have.been.calledWith', 'invalid')
+    })
+
+    it('should pop up invalid form if nothing entered', () => {
+        cy.contains('button', 'Login').click()
+        //cy.wait(1000)
+        cy.on('window:alert', (message) => {
+            expect(message).to.equal('Your form is invalid')
+        })
+        // cy.window().then((win) => {
+        //     cy.stub(win.console, 'log').as('consoleLog')
+        // })
+        // cy.get('@consoleLog').should('have.been.calledWith', 'form invalid')
         cy.contains('button', 'Login').click()
     })
     
@@ -30,14 +57,9 @@ describe('template spec', () => {
         cy.wait(1000)
         cy.contains('button', 'Guest').click()
     })
-    // it('should display error message for empty fields', () => {
-    //     cy.get('button[type="submit"]').click()
-    //     cy.contains('Your form is invalid').should('be.visible')
-    // })
-    
-    // it('should navigate to signup page when signup link is clicked', () => {
-    //     cy.get('a[routerLink="/signup"]').click()
-    //     cy.url().should('include', '/signup') // Assuming signup page URL is '/signup'
-    // })
-
+ 
+    it('should navigate to signup page when signup link is clicked', () => {
+        cy.get('a[routerLink="/signup"]').click()
+        cy.url().should('include', '/signup') // Assuming signup page URL is '/signup'
+    })
 })
