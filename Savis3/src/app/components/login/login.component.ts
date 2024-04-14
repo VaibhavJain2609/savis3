@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
         // })
         .catch(error => {
           alert('Login failed. Please check your credentials.');
+          this.router.navigate(['/login'])
         });
       
         this.afAuth.onAuthStateChanged(user => {
