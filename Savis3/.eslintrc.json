@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/**/*"
+    "projects/**/*",
+    "Savis3/cypress/**/*"
   ],
   "overrides": [
     {
@@ -11,7 +12,7 @@
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": [
-          "tsconfig.json"
+          "Savis3/tsconfig.json"
         ],
         "createDefaultProgram": true
       },
