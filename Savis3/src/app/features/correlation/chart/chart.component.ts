@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   Input,
@@ -14,7 +13,7 @@ import { Chart } from 'chart.js';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements AfterViewInit {
+export class ChartComponent implements OnChanges {
   constructor() {}
 
   @ViewChild('correlationChart') chartCanvas!: ElementRef;
@@ -84,5 +83,4 @@ export class ChartComponent implements AfterViewInit {
     this.drawCorrelationChart();
   }
 
-  ngAfterViewInit(): void {}
 }

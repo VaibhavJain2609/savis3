@@ -1,5 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
 import { ChartDataSets, ChartType, Chart, ChartPoint } from 'chart.js';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -9,13 +8,12 @@ import { chatClass } from 'src/app/Utils/stacked-dot';
 import { Sampling } from 'src/app/Utils/sampling';
 import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
-import { MathService } from 'src/app/Utils/math.service';
 @Component({
   selector: 'app-two-mean-ci',
   templateUrl: './two-means-ci.component.html',
   styleUrls: ['./two-means-ci.component.scss']
 })
-export class TwoMeansCIComponent implements OnInit {
+export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewInit {
   activateSim: boolean = false
   dataSize1: number = 0
   dataSize2: number = 0

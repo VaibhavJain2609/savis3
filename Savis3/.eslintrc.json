@@ -11,7 +11,7 @@
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": [
-          "Savis3/tsconfig.json"
+          "tsconfig.json"
         ],
         "createDefaultProgram": true
       },
@@ -35,7 +35,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-unused-vars": "error"
       }
     },
     {
@@ -45,7 +46,9 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "no-extra-semi": "error"
+      }
     }
   ]
 }
