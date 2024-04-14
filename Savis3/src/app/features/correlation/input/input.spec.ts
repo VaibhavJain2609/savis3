@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {  ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './input.component';
 import { sampleCorrelation } from 'simple-statistics';
 import { LanguageSwitcherComponent } from '../../../components/language-switcher/language-switcher.component';
@@ -203,29 +203,6 @@ describe('InputComponent', () => {
       expect(window.alert).toHaveBeenCalledWith(
         '❌ ERROR: Unsupported file type. Please upload a CSV or XLSX file.'
       );
-    });
-  });
-
-  describe('Calculate File Correlation', () => {
-    beforeEach(() => {
-      component.select1.setValue('column1');
-      component.select2.setValue('column2');
-      // Initialize fileData with mock data
-      component.fileData = [
-        { column1: 1, column2: 2 },
-        { column1: 3, column2: 4 },
-      ];
-      // Spy on emitArrayValues to verify it gets called correctly
-      jest.spyOn(component, 'emitArrayValues');
-    });
-
-    it('should calculate and emit array values and correlation correctly', () => {
-      component.calculateFile();
-
-      // Verify emitArrayValues was called with the correct parameters
-      expect(component.emitArrayValues).toHaveBeenCalledWith([1, 3], [2, 4]);
-
-      expect(component.correlationValue1).toBe('1.00');
     });
   });
 

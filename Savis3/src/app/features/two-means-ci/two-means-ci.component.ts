@@ -78,7 +78,7 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
 
   numberOfSimulations: number;
 
-  constructor(private smp: Sampling, private tail: TailchartService,  private translate: TranslateService) {
+  constructor(public smp: Sampling, public tail: TailchartService,  public translate: TranslateService) {
 
   }
   toggleSection(e: any, sec: string) {
@@ -382,13 +382,13 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
     return Object.values(faceted);
   }
 
-  runSim() {{
+  runSim() {
     if (!this.incrementPerformed) {
       alert('Please increment values before running the simulation.');
       return;
     }
     // Proceed with simulation...
-  }
+  
     
     let numSims = this.numofSem * 1;
     let results = []; // TODO: REMOVE
