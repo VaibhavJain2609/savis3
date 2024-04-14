@@ -22,7 +22,6 @@ import { CsvFileUploadComponent } from './components/csv-file-upload/csv-file-up
 import { AboutComponent } from './components/about/about.component';
 import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 import { InputComponent } from './features/correlation/input/input.component';
-import { ChartComponent } from './features/correlation/chart/chart.component';
 import { AppFirebaseModule } from './app-firebase.module';
 import { MathService } from './Utils/math.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -79,7 +78,6 @@ export function setupTranslateFactory(service : TranslateService): Function {
     CsvFileUploadComponent,
     AboutComponent,
     ForgotpasswordComponent,
-    ChartComponent,
     InputComponent,
     NavbarComponent,
     FooterComponent,

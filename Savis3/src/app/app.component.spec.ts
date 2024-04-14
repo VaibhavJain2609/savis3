@@ -8,7 +8,6 @@ import { AboutComponent } from "./components/about/about.component"
 import { CsvFileUploadComponent } from "./components/csv-file-upload/csv-file-upload.component"
 import { ForgotpasswordComponent } from "./components/forgotpassword/forgotpassword.component"
 import { HomepageComponent } from "./components/homepage/homepage.component"
-import { ChartComponent } from "./features/correlation/chart/chart.component"
 import { CorrelationComponent } from "./features/correlation/correlation.component"
 import { InputComponent } from "./features/correlation/input/input.component"
 import { LinearRegressionComponent } from "./features/linear-regression/linear-regression.component"
@@ -60,7 +59,6 @@ describe('AppComponent', () => {
         CsvFileUploadComponent,
         AboutComponent,
         ForgotpasswordComponent,
-        ChartComponent,
         InputComponent,
         NavbarComponent,
         FooterComponent,
