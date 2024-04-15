@@ -22,6 +22,22 @@ describe('template spec', () => {
         cy.visit('http://localhost:4200/login')
     })
 
+    it('should throw error if incorrect email entered', () => {
+        cy.get('[formControlName = "email"]').type('test1@gmail')
+        cy.wait(1000)
+    })
+
+    it('should throw error if password requirements not met', () => {
+        cy.get('[formControlName = "password"]').type('test123')
+        cy.wait(1000)
+    })
+
+    it('should throw error if passwords do not match while re-entering password', () => {
+        cy.get('[formControlName = "password"]').type('test123')
+        cy.get('[formControlName = "confirmPassword"]').type('12test3')
+        cy.get('button[type="submit"').click()
+    })
+
     it('should go back to login page if already have an account', () => {
         cy.get('#forget').click()
     })

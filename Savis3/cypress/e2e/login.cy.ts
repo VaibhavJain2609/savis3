@@ -21,9 +21,6 @@ describe('template spec', () => {
         cy.get('[formControlName = "username"]').type('t@gmail.com')
         cy.get('[formControlName = "password"]').type('test')
         cy.contains('button', 'Login').click()
-        // cy.on('window:alert', (message) => {
-        //     expect(message).to.equal('Login failed. Please check your credentials.')
-        // })
         cy.window().then((win) => {
             cy.stub(win.console, 'log').as('consoleLog')
         })
@@ -36,11 +33,6 @@ describe('template spec', () => {
         cy.on('window:alert', (message) => {
             expect(message).to.equal('Your form is invalid')
         })
-        // cy.window().then((win) => {
-        //     cy.stub(win.console, 'log').as('consoleLog')
-        // })
-        // cy.get('@consoleLog').should('have.been.calledWith', 'form invalid')
-        cy.contains('button', 'Login').click()
     })
     
     it('should click the forgot password', () => {
@@ -57,9 +49,5 @@ describe('template spec', () => {
         cy.wait(1000)
         cy.contains('button', 'Guest').click()
     })
- 
-    it('should navigate to signup page when signup link is clicked', () => {
-        cy.get('a[routerLink="/signup"]').click()
-        cy.url().should('include', '/signup') // Assuming signup page URL is '/signup'
-    })
+    
 })

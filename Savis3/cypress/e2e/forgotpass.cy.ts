@@ -18,7 +18,7 @@ describe('template spec', () => {
     })
 
     it('should display if incorrect email entered', () => {
-        cy.get('[formControlName = "email"]').type('test')
+        cy.get('[formControlName = "email"]').type('test111')
         cy.get('button[type="submit"]').click()
         cy.wait(1000)
     })
