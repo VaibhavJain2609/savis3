@@ -36,13 +36,17 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
   totalSamples: number;
   extremediff: number;
   propextremediff: number;
+  minTailValInput:number;
+  simulations: number[] = []
+  samplePropDiff:number
 
   numofSem: number = 1;
-  activateSim: boolean = true; // Modify this based on your logic
+  activateSim: boolean = true;
   mean_diff: number;
-  sections = {
+  sections: any = {
+    sectionOne: true,
     sectionTwo: true,
-    sectionThree: true
+    sectionThree: true,
   };
   lastSummary: any
 
@@ -57,14 +61,22 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
   sampleProportionA_chart2: string = 'NaN';
   sampleProportionB_chart2: string = 'NaN';
   sampleProportionDiff_chart2: string = 'NaN';
-  sampleMeanDiff_chart3: String = '';
-  
+  stddev_chart3: string = 'NaN';
+  sampleMeanDiff_chart3: String = 'NaN';
+  totalsamples_chart3: String = 'NaN';
+  extremediff_chart3: String = 'NaN';
+  propextremediff_chart3: String = 'NaN';
+  tp_minTailValInput: Number = 0
+  tp_maxTailValInput: Number = 0
+
+  includeValMin:boolean = true;
+  includeValMax:boolean = true;
 
   numberOfSimulations: number;
 
   
   toggleSection(e: any, sec: string) {
-    
+    this.sections[sec] = e.target.checked;
   }
   dataTextArea: string = '';
   data: any
@@ -237,65 +249,72 @@ CreateChart3(): void {
   
   if (ctx) {
       this.chart3 = new Chart(ctx, {
-        type: "scatter",
+        type: 'scatter',
         data: {
-          datasets: this.barChartData3
+          datasets: [
+            {
+              label: 'Differences',
+              backgroundColor: 'green',
+              data: [],
+            },
+            {
+              label: 'Differences',
+              backgroundColor: 'red',
+              data: [],
+            }
+          ]
         },
         options: {
           scales: {
-            xAxes: [{ 
-              ticks: { 
-                fontColor: 'black',
-                fontSize: 16,
-                padding: 0,
-                min: -1,
-                max: 1 
-              },
-              scaleLabel: {
-                display: true,
-                labelString: "",
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  max: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Differences of Proportions',
+                }
               }
-            }],
+            ],
             yAxes: [
               {
                 ticks: {
                   fontColor: 'black',
                   fontSize: 16,
                   padding: 0,
-                  min: 1,
-                  max: 2,
-                  stepSize: 1
-                      },
-                      scaleLabel: {
-                          display: true,
-                          labelString: ''
-                      }
-                  }]
-              },
-              responsive: true,
-              maintainAspectRatio: false,
-              tooltips: {
-                  mode: 'index',
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)', // Corrected background color
-                  callbacks: {
-                      title: function(tooltipItem, data) {
-                          let title = tooltipItem[0].xLabel || '';
-                          return title.toString();
-                      },
-                      label: (tooltipItem, data) => {
-                          return tooltipItem.yLabel + data.datasets[tooltipItem.datasetIndex].label;
-                      }
-                  }
+                  min: 0,
+                  stepSize: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Frequencies',
+                }
               }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontStyle: '16px',
+          },
+          animation: {
+            duration: 0
           }
-      });
+        }
+      })
+    }
   }
-}
 
 loadData(): void {
   let numAS = this.numASuccess * 1;
-  let numAF = this.numAFailure * 1; // Corrected variable name
-  let numBS = this.numBSuccess * 1; // Corrected variable name
+  let numAF = this.numAFailure * 1; 
+  let numBS = this.numBSuccess * 1; 
   let numBF = this.numBFailure * 1;
   
   if (numAS <= 0 || numAF <= 0 || numBS <= 0 || numBF <= 0) {
@@ -325,50 +344,9 @@ loadData(): void {
   }
 }
 
-
-  // loadData() {
-  //   let numASuccess = this.dom.aSuccess.value * 1;
-  //   let numAFailure = this.dom.aFailure.value * 1;
-  //   let numBSuccess = this.dom.bSuccess.value * 1;
-  //   let numBFailure = this.dom.bFailure.value * 1;
-  //   if (numASuccess <= 0 || numAFailure <= 0 || numBSuccess <= 0 || numBFailure <= 0) {
-  //     alert(translation.twoProportions.alertAtLeastOne);
-  //   }
-  //   else {
-  //     let summary = {
-  //       numASuccess, numAFailure, numBSuccess, numBFailure,
-  //       proportionA: numASuccess / (numASuccess + numAFailure), // todo(matthewmerrill): fixed decimals
-  //       proportionB: numBSuccess / (numBSuccess + numBFailure),
-  //     }
-  //     summary.proportionDiff = summary.proportionA - summary.proportionB;
-  //     Summaries.updateSummaryElements(this.summaryElements, summary);
-  //     this.data = { numASuccess, numAFailure, numBSuccess, numBFailure };
-  //     this.charts.inputChart.setProportions(this.data);
-  //     this.charts.inputChart.update();
-  //     this.charts.lastSimChart.setProportions({
-  //       numASuccess: 0, numAFailure: 0, numBSuccess: 0, numBFailure: 0,
-  //     });
-  //     this.charts.lastSimChart.update();
-  //     this.charts.tailChart.reset();
-  //     this.charts.tailChart.updateChart();
-  //     /*for (let elem of this.dom.needData) {
-  //       elem.removeAttribute('disabled');
-  //     }
-  //     for (let elem of this.dom.needResults) {
-  //       elem.setAttribute('disabled', true);  
-  //     }*/
-  //     this.disabledSimulationSection(false);
-  //     //this.dom.tailInputElement.value = roundToPlaces(summary.proportionDiff, 4);
-  //     //this.dom.tailInputElement.dispatchEvent(new Event('change'));
-  //     this.charts.tailChart.updateChart();
-  //   }
-  // }
-
-
-  runSim() {
+runSim() {
     console.log('run sim started')
     let numSimulations = this.numofSem * 1;
-    // let {numASuccess, numAFailure, numBSuccess, numBFailure} = this.data;
     let totalSuccess = this.numASuccess + this.numBSuccess;
     let totalFailure = this.numAFailure + this.numBFailure;
     let totalGroupA = this.numASuccess + this.numAFailure;
@@ -387,9 +365,11 @@ loadData(): void {
       sampleBSuccess = MathService.countWhere(sampleB, (x: number) => x == 1);
       sampleAFailure = totalGroupA - sampleASuccess;
       sampleBFailure = totalGroupB - sampleBSuccess;
-      this.sampleProportionA_chart2 = (String)(sampleASuccess / totalGroupA);
-      this.sampleProportionB_chart2 = (String)(sampleBSuccess / totalGroupB);
-      this.sampleProportionDiff_chart2=  (String) ((sampleASuccess - sampleBSuccess) / (totalGroupA + totalGroupB));
+      this.sampleProportionA_chart2 = (String) (MathService.roundToPlaces((sampleASuccess / totalGroupA),2));
+      this.sampleProportionB_chart2 = (String) (MathService.roundToPlaces((sampleBSuccess / totalGroupB),2));
+      this.samplePropDiff=(this.roundToPlaces(((sampleASuccess - sampleBSuccess) / (totalGroupA + totalGroupB)),2));
+      this.simulations.push(this.samplePropDiff);
+      this.sampleProportionDiff_chart2=  (String) (this.samplePropDiff);
       if (simIdx + 1 === numSimulations) {
         this.setProportions(this.chart2, {
           numASuccess: sampleASuccess,
@@ -399,65 +379,144 @@ loadData(): void {
           
         });
         
-        console.log(this.chart2.data.datasets)
-        
       }
       allItems = [];
     }
     this.chart2.update();
+    this.sampleMeanDiff_chart3 = (String)(MathService.roundToPlaces((MathService.mean(this.simulations)),2));
+    this.stddev_chart3 = (String)(MathService.roundToPlaces((MathService.stddev(this.simulations)),2));
+    this.totalsamples_chart3 = (String)(this.simulations.length);
+    this.buildDiffOfProp();
     
+    
+  }
+
+  buildDiffOfProp(){
+    // if (this.tp_minTailValInput === 0 && this.tp_maxTailValInput === 0) {
+    //   const confidenceLevel = 95
+
+    //   const [lower, upper] = MathService.getCutOffInterval(confidenceLevel, this.simulations.length)
+    //   const temp = this.simulations.map(val => val)
+
+    //   temp.sort((a, b) => a - b)
+
+    //   this.tp_minTailValInput = temp[lower]
+    //   this.tp_maxTailValInput = temp[upper >= temp.length ? upper - 1: upper]
+    // }
+
+    const tmpChecked = {min: this.includeValMin, max: this.includeValMax}
+
+    const dataCustomChart = this.splitByPredicate(
+      this.simulations,
+      this.predicateForTail(this.tp_minTailValInput, this.tp_maxTailValInput)
+    )
+
+    this.chart3.data.datasets[0].label = `${this.tp_minTailValInput} ≤ Differences < ${this.tp_maxTailValInput}` 
+    this.chart3.data.datasets[1].label = `Differences < ${this.tp_minTailValInput} ∪ ${this.tp_maxTailValInput} ≤ Differences`
+
+    this.setDataFromRaw(this.chart3, [dataCustomChart.chosen, dataCustomChart.unchosen])
+    this.scaleToStackDots(this.chart3)
+    this.chart3.update()
+
+    this.updateInfoSampleProp(dataCustomChart.chosen.length, dataCustomChart.unchosen.length)
+
+  }
+
+  splitByPredicate(itr:any, fn:any) {
+    const chosen: any[] = []
+    let unchosen = []
+
+    if (fn === null) unchosen = itr
+    else {
+      itr.forEach((x: any) => {
+        if (fn(x)) chosen.push(x)
+        else unchosen.push(x)
+      })
     }
-  
-
-  
-  
-  
-
-
-
-  
-  calculateProportion(data: number[]) {
-    
+    return { chosen, unchosen }
   }
-  
-  ngAfterContentInit(){
-    
+
+  predicateForTail(left: any, right: any) {
+    const limits = {min: this.includeValMin, max: this.includeValMax}
+    if (limits.min && limits.max) {
+      return function (x: any) {
+        return x >= left && x <= right
+      }
+    } else if (limits.min && !limits.max) {
+      return function (x: any) {
+        return x >= left && x < right
+      }
+    } else if (!limits.min && limits.max) {
+      return function (x: any) {
+        return x > left && x <= right
+      }
+    } else if (!limits.min && !limits.max) {
+      return function (x: any) {
+        return x > left && x < right
+      }
+    } else return null
+  }
+
+  setDataFromRaw(chart: Chart, rawDataArrays: any) {
+    let scatterArrays = this.rawToScatter(rawDataArrays)
+    for(let idx = 0; idx < rawDataArrays.length; idx++) {
+      chart.data.datasets[idx].data = scatterArrays[idx]
     }
-   
-    
-  
-  
+    let max = 1
+    for (let dataset of scatterArrays) {
+      for (let item of dataset) {
+        max = Math.max(max, item.y)
+      }
+    }
+  }
 
-  updateChart(data: string): void {
-  
+  rawToScatter(arrs: any[]) {
+    let faceted = [];
+    let counts: { [key: string]: number } = {}; // Add type annotation
+    for (let arr of arrs) {
+      let scatter = [];
+      for (let item of arr) {
+        let y = (counts[item] = (counts[item] || 0) + 1);
+        scatter.push({ x: item, y: y });
+      }
+      faceted.push(scatter);
+    }
+    return faceted;
+  }
+
+  scaleToStackDots(chart: any) {
+    let max = 1
+    for (let dataset of chart.data.datasets) {
+      for (let item of dataset.data) {
+        max = Math.max(max, item.y)
+      }
     }
 
-    
-  updateSummaryChart(data: string): void {
-    
+    chart.options.scales.yAxes[0].ticks.stepSize = (max > 10) ? Math.ceil(max * 0.2) : 1
+
+
+    if(max > 1000) {
+      chart.options.scales.yAxes[0].ticks.min = 0
+    }
+
+    return chart
   }
+  updateInfoSampleProp(totalChosen: number, totalUnchosen: number) {
+    // Convert this.totalsamples_chart3 from String object to string
+    const totalSamples: number = parseFloat(this.totalsamples_chart3.toString());
 
- 
-  sampleSelect(e: any) {
-  }
+    // Calculate proportions
+    const proportionChosen = MathService.roundToPlaces(totalChosen / totalSamples, 4);
+    const proportionUnchosen = MathService.roundToPlaces(totalUnchosen / totalSamples, 4);
 
-  
+    // Update extreme difference and proportion of extreme difference
+    this.extremediff_chart3 = (String)(this.simulations.length - totalChosen)
+    this.propextremediff_chart3 = `${totalChosen} / ${this.simulations.length} = ${proportionChosen}`
 
- 
+    // this.extremediff_chart3 = `${totalChosen} / ${this.simulations.length} = ${proportionChosen}`
+    // this.propextremediff_chart3 = `${totalUnchosen} / ${this.simulations.length} = ${proportionUnchosen}`
+}
 
-  // addSimulationSample(sample: any[]) {
-  
-  // }
-  // onFileSelected(e: any) {
-    
-  // }
-
-  // onDrop(event: DragEvent): void {
-    
-  // }
-  selectedTest(event: any) {
-    
-  }
   
   setProportions(chart:Chart, { numASuccess, numAFailure, numBSuccess, numBFailure } : { numASuccess: any; numAFailure: any; numBSuccess: any; numBFailure: any }): void{
     let totalInA = numASuccess + numAFailure
