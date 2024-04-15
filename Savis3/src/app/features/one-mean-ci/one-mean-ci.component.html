@@ -20,8 +20,8 @@
             ></textarea>
             <button class="btn" id="load-data-btn" (click)="loadDataButton()">{{ 'omci_load' | translate }}</button>
             <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'omci_reset' | translate }}</button>
-            <button class="btn" id="upload-btn">{{ 'omci_upload' | translate }}</button>
-            <input type="file" id="fileInput" style="display: none;">
+            <label class="btn2" id="upload-btn" for="fileInput">{{ 'omci_upload' | translate }}</label>
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
             <br>
             <!-- <form>
                 <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>

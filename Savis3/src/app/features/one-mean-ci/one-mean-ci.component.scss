@@ -253,6 +253,28 @@
     }
 }
 
+.btn2 {
+  //background: linear-gradient(180deg, lighten($secondary-color, 5%), $secondary-color);
+  background-color: #93cb52;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+   // background: linear-gradient(180deg, $secondary-color, darken($secondary-color, 5%));
+   background-color: #93cb52;
+  }
+
+  &:disabled {
+    background: #bfbfbf;
+    cursor: not-allowed;
+  }
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
 .green-line {
   margin: 10px;
   width: 100%;

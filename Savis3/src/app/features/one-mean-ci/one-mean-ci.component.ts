@@ -18,7 +18,7 @@ import { CoverageChartService } from './services/coverage-chart.service';
 export class OneMeanCIComponent implements OnInit, AfterViewInit {
   minInterValInput: number = 0
   maxInterValInput: number = 0
-
+  csvRaw:any
   includeValMin: any
   includeValMax: any
 
@@ -547,6 +547,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
       alert(error)
     }
   }
+  
 
   predicateForSets(left: any, right: any) {
     if(this.includeValMin.checked && this.includeValMax.checked) {
@@ -566,6 +567,44 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
         return x > left && x < right
       }
     }
+  }
+  onFileSelected(e: any) {
+    const files = e.target.files || e.dataTransfer?.files;
+    if (files.length) {
+      const file = files[0]
+      const filereader = new FileReader();
+      filereader.readAsBinaryString(file)
+      filereader.onload = (event: any) => {
+        const wb = XLS.read(filereader.result, { type: 'binary' })
+        const sheets = wb.SheetNames;
+        if (sheets.length) {
+          const row = XLS.utils.sheet_to_csv(wb.Sheets[sheets[0]])
+          this.csvRaw = row
+          this.csvTextArea = this.csvRaw;
+        }
+      }
+    }
+
+  }
+  
+  
+
+  parseData(dataText: any): string {
+    let items = dataText
+      .split(/[\r\n]+/)
+      .filter((line: any) => line.length)
+      .map((line: any) => {
+        let [group, value] = line.split(',');
+        return [group, value * 1.0];
+      });
+    let faceted: any = {};
+    for (let [group, value] of items) {
+      if (!faceted[group]) {
+        faceted[group] = [];
+      }
+      faceted[group].push(value);
+    }
+    return JSON.stringify(Object.values(faceted)); // Convert the parsed data to JSON string
   }
 
   updateData(num: number) {
