@@ -1,14 +1,10 @@
 import { Component, ElementRef, AfterViewInit, ViewChild, OnInit} from '@angular/core';
-import { StackedDotChartService } from 'src/app/Utils/stacked-dot-chart.service';
 import { MathService } from 'src/app/Utils/math.service';
-import { SamplingService } from 'src/app/Utils/sampling.service';
-import { CSVService } from 'src/app/Utils/csv.service';
 import { NgForm } from '@angular/forms';
-import {ChartDataSets, ChartType} from 'chart.js';
+import {ChartDataSets} from 'chart.js';
 import * as XLS from 'xlsx';
 import {Chart} from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
-import { chatClass } from 'src/app/Utils/stacked-dot';
 import { CoverageChartService } from './services/coverage-chart.service';
 @Component({
   selector: 'app-one-mean-ci',
@@ -16,6 +12,8 @@ import { CoverageChartService } from './services/coverage-chart.service';
   styleUrls: ['./one-mean-ci.component.scss']
 })
 export class OneMeanCIComponent implements OnInit, AfterViewInit {
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef
+
   minInterValInput: number = 0
   maxInterValInput: number = 0
   csvRaw:any
@@ -471,7 +469,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
     this.maxInterValInput = 0
     this.noOfSim = 1
     this.sampleSize = 10
-    this.inputDataSize = 0
+    this.inputDataSize = NaN
     this.inputDataDisplay = ''
     this.sampleDataDisplay = ''
     this.sampleMeansDisplay = ''
@@ -483,10 +481,12 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
     this.sampleMeansStd = NaN
     this.sampleMeansChosen = NaN
     this.sampleMeansUnchosen = NaN
-    this.radioChange('population')
+    this.radioChange('sample')
     this.disabledInput = true
     this.sampleMeanDisabled = true
     this.sampleMeansSize = NaN
+    this.csvTextArea = ''
+    this.fileInput.nativeElement.value = ''
     
     this.clearChart(this.inputDataChart)
     this.clearChart(this.sampleDataChart)
@@ -513,7 +513,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
       let newStdDeviations = [];
 
       for(let it = 0; it < num; it++){
-        const { chosen, unchosen } = this.randomSubset(this.inputDataArray, sz)
+        const { chosen } = this.randomSubset(this.inputDataArray, sz)
         roundedMean = this.roundToPlaces(this.mean(chosen.map(x => x.value)), 4)
         newMeanSamples.push(roundedMean)
         const stdDeviation = this.roundToPlaces(MathService.sampleStddev(chosen.map(x => x.value)), 3);
@@ -543,7 +543,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
 
       this.updateData(2)
     } catch (error) {
-      let errMsg = 'ERRROR\n'
+      // let errMsg = 'ERRROR\n'
       alert(error)
     }
   }
@@ -574,7 +574,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
       const file = files[0]
       const filereader = new FileReader();
       filereader.readAsBinaryString(file)
-      filereader.onload = (event: any) => {
+      filereader.onload = () => {
         const wb = XLS.read(filereader.result, { type: 'binary' })
         const sheets = wb.SheetNames;
         if (sheets.length) {
@@ -1138,5 +1138,9 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
     this.confidenceIntervalCount = wMean
     this.confidenceIntervalCountNot = noOfCoverage - wMean
     // TODO: SampleMeanCoverageDisplay ????
+  }
+
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click()
   }
 }

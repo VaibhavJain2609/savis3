@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <button class="btn" id="upload-btn" (click)="triggerFileInput()">{{ 'barChart_uploadData' | translate }}</button>
                 </div>
-                <input type="file" id="fileInput" #fileInput style="display: none;">
+                <input type="file" id="fileInput" (change)="onFileSelect($event)" #fileInput style="display: none;">
                 <div class="form-group">
                     <p class="text-display" id="input-data-size-text">{{ 'barChart_size' | translate }} <i>N</i> : {{ inputDataSizeNum }}</p>
                     <span class="text-error" #input_data_size_number *ngIf="inputErrorMsg">{{ inputErrorMsg }}</span>
