@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { ChartDataSets, ChartOptions, ChartType, Chart } from 'chart.js'; // Change this line
 import { errorBarsPlugin } from '../../../Utils/chartjs-plugin';
 import { BaseChartDirective } from 'ng2-charts';
+import { TranslateService } from '@ngx-translate/core';
 
 declare module 'chart.js' {
   interface ChartDataSets {
@@ -25,7 +26,7 @@ export class ScatterPlotComponent implements OnChanges {
   private slope: number = 0
   private intercept: number = 0
 
-  constructor() {
+  constructor(private translate: TranslateService) {
     Chart.plugins.register(errorBarsPlugin)
     this.scatterChartOptions = {
       scales: {
@@ -66,12 +67,12 @@ export class ScatterPlotComponent implements OnChanges {
     this.scatterChartData = [
       {
         data: this.dataPoints,
-        label: 'Scatter Plot'
+        label: this.translate.instant('lr_scatter_plot')
       },
       // Regression line dataset
       {
         type: 'line',
-        label: 'Regression Line',
+        label: this.translate.instant('lr_regression_line'),
         data: regressionPoints,
         fill: false,
         borderColor: 'rgba(255, 0, 0, 0.7)',
@@ -80,7 +81,7 @@ export class ScatterPlotComponent implements OnChanges {
       // Upper bound of confidence interval
       {
         type: 'line',
-        label: 'Upper Bound',
+        label: this.translate.instant('lr_upper_bound'),
         data: confidenceInterval.upper,
         fill: '+1',
         borderColor: 'rgba(0, 255, 0, 0.5)',
@@ -89,7 +90,7 @@ export class ScatterPlotComponent implements OnChanges {
       // Lower bound of confidence interval
       {
         type: 'line',
-        label: 'Lower Bound',
+        label: this.translate.instant('lr_lower_bound'),
         data: confidenceInterval.lower,
         fill: '-1',
         borderColor: 'rgba(0, 0, 255, 0.5)',
@@ -175,7 +176,7 @@ export class ScatterPlotComponent implements OnChanges {
 
     return {
       type: 'line',
-      label: 'Error Bars',
+      label: this.translate.instant('lr_error_bars'),
       data: errorBarsData,
       showLine: false,
       pointRadius: 0,

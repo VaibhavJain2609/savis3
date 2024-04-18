@@ -405,5 +405,17 @@
     "//Confirmation Dialog": "These are the translations for the Confirmation Dialog component",
     "confirmation_question": "Are you sure?",
     "confirmation_yes": "Yes",
-    "confirmation_no": "No"
+    "confirmation_no": "No",
+    "//Linear_Regression": "These are the translations for the Linear Regression component",
+    "lr_title": "Regression Line and Confidence Intervals",
+    "lr_least_squares": "Least Squares Area",
+    "lr_enter_data": "Enter Data Points (x, y)",
+    "lr_update_chart": "Update Chart",
+    "lr_choose_file": "Choose File",
+    "lr_placeholder": "e.g.\n1,3\n2,5\n3,7",
+    "lr_scatter_plot": "Scatter Plot",
+    "lr_regression_line": "Regression Line",
+    "lr_upper_bound": "Upper Bound",
+    "lr_lower_bound": "Lower Bound",
+    "lr_error_bars": "Error Bars"
 }
