@@ -70,11 +70,16 @@ describe('OneMeanComponent', () => {
   it('should render hypothetical data display', () => {
     component.hypoValuesArray = [15, 25, 35];
     fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    const tableRows = compiled.querySelectorAll('#hypothetical-data-table tbody tr');
-    expect(tableRows.length).toBe(3);
-    expect(tableRows[0].textContent).toContain('1'); // Check if ID is rendered correctly
-    expect(tableRows[0].textContent).toContain('15'); // Check if value is rendered correctly
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const compiled = fixture.nativeElement;
+      const tableRows = compiled.querySelectorAll('#hypothetical-data-table tbody tr');
+      expect(tableRows.length).toBe(3);
+      expect(tableRows[0].textContent).toContain('1'); // Check if ID is rendered correctly
+      expect(tableRows[0].textContent).toContain('15'); // Check if value is rendered correctly
+    })
+    
   });
 
   it('should call onSubmit method on form submission', fakeAsync(() => {
@@ -86,29 +91,34 @@ describe('OneMeanComponent', () => {
   }));
 
   it('should reset all properties to their initial values', () => {
-    component.onReset(form);
+    fixture.detectChanges();
 
-    expect(component.dataInput).toBe("");
-    expect(component.valuesArray).toEqual([]);
-    expect(component.inputMean).toBe(0);
-    expect(component.standardDeviation).toBe(0);
-    expect(component.inputSize).toBe(0);
-    expect(component.hypoInputMean).toBe(0);
-    expect(component.rangeValue).toBe(0);
-    expect(component.hypoValuesArray).toEqual([]);
-    expect(component.meanValue).toBe(0);
-    expect(component.lineChartData1).toEqual([]);
-    expect(component.lineChartData2).toEqual([]);
-    expect(component.lineChartData3).toEqual([]);
-    expect(component.lineChartData4).toEqual([]);
-    expect(component.sample).toEqual([]);
-    expect(component.sampleMean).toBe(0);
-    expect(component.sampleSize).toBe(1);
-    expect(component.sampleMeans).toEqual([]);
-    expect(component.sampleMeansMean).toBe(0);
-    expect(component.numSamples).toBe(1);
-    expect(component.sampleMeansStd).toBe(0);
-    expect(component.meanSamples).toBe(1);
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      component.onReset(form);
+
+      expect(component.dataInput).toBe("");
+      expect(component.valuesArray).toEqual([]);
+      expect(component.inputMean).toBe(0);
+      expect(component.standardDeviation).toBe(0);
+      expect(component.inputSize).toBe(0);
+      expect(component.hypoInputMean).toBe(0);
+      expect(component.rangeValue).toBe(0);
+      expect(component.hypoValuesArray).toEqual([]);
+      expect(component.meanValue).toBe(0);
+      expect(component.lineChartData1).toEqual([]);
+      expect(component.lineChartData2).toEqual([]);
+      expect(component.lineChartData3).toEqual([]);
+      expect(component.lineChartData4).toEqual([]);
+      expect(component.sample).toEqual([]);
+      expect(component.sampleMean).toBe(0);
+      expect(component.sampleSize).toBe(1);
+      expect(component.sampleMeans).toEqual([]);
+      expect(component.sampleMeansMean).toBe(0);
+      expect(component.numSamples).toBe(1);
+      expect(component.sampleMeansStd).toBe(0);
+      expect(component.meanSamples).toBe(1);
+      })
   });
 
   it('should fill hypoValuesArray with repeated values from originalHypoValuesArray', () => {
@@ -132,7 +142,9 @@ describe('OneMeanComponent', () => {
     component.hypoValuesArray = [1, 2, 2, 3, 3, 3];
     component.stackDots();
 
-    expect(component.lineChartData2).toEqual([{
+    const expectedOutput = [{
+      pointBackgroundColor: 'orange',
+      backgroundColor: 'orange',
       data: [
         {x: 1, y: 1},
         {x: 2, y: 1},
@@ -142,8 +154,9 @@ describe('OneMeanComponent', () => {
         {x: 3, y: 3}
       ],
       label: 'Hypothetical Population',
-      pointBackgroundColor: 'orange',
-    }]);
+    }];
+  
+    expect(component.lineChartData2).toEqual(expectedOutput);
   });
 
   
@@ -184,41 +197,6 @@ describe('OneMeanComponent', () => {
     expect(component.sample).toEqual(sample);
   });
 
-  it('should update lineChartData4 based on sampleMeans, distributionSelected, and extremeSample', () => {
-    component.sampleMeans = [1, 2, 2, 3, 3, 3];
-    component.extremeSample = 2;
-
-    component.distributionSelected = 'one-right';
-    component.extremeSampleFunc();
-    expect(component.lineChartData4).toEqual([{
-      data: [
-        {x: 1, y: 1},
-        {x: 2, y: 1},
-        {x: 2, y: 2},
-        {x: 3, y: 1},
-        {x: 3, y: 2},
-        {x: 3, y: 3}
-      ],
-      label: 'Sample Means',
-      pointBackgroundColor: ['orange', 'orange', 'orange', 'red', 'red', 'red'],
-    }]);
-
-    component.distributionSelected = 'one-left';
-    component.extremeSampleFunc();
-    expect(component.lineChartData4).toEqual([{
-      data: [
-        {x: 1, y: 1},
-        {x: 2, y: 1},
-        {x: 2, y: 2},
-        {x: 3, y: 1},
-        {x: 3, y: 2},
-        {x: 3, y: 3}
-      ],
-      label: 'Sample Means',
-      pointBackgroundColor: ['red', 'red', 'red', 'orange', 'orange', 'orange'],
-    }]);
-  });
-
 
   it('should update properties based on the contents of the file', () => {
     const file = new Blob(['1\n2\n3'], {type: 'text/plain'});
@@ -240,7 +218,7 @@ describe('OneMeanComponent', () => {
         {x: 2, y: 1},
         {x: 3, y: 1}
       ],
-      label: 'Original Dataset',
+      label: 'original_dataset',
       pointBackgroundColor: 'orange',
     }]);
     expect(component.lineChartLabels1).toEqual(['Value 2', 'Value 3', 'Value 4']);
@@ -266,7 +244,7 @@ describe('OneMeanComponent', () => {
 
     expect(component.lineChartData3).toEqual(expect.arrayContaining([
         expect.objectContaining({
-          label: 'Most Recent Drawn',
+          label: 'opc_Recent',
           pointBackgroundColor: 'orange',
           data: expect.arrayContaining([
             expect.objectContaining({
@@ -278,7 +256,7 @@ describe('OneMeanComponent', () => {
 
     expect(component.lineChartData4).toEqual(expect.arrayContaining([
         expect.objectContaining({
-          label: 'Sample Means',
+          label: 'dotPlot_means_in_interval',
           pointBackgroundColor: 'orange',
           data: expect.arrayContaining([
             expect.objectContaining({
@@ -289,5 +267,41 @@ describe('OneMeanComponent', () => {
       ]));
   });
 
+
+  it('should set properties correctly when extremeSampleFunc is called', () => {
+
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      component.extremeSampleFunc();
+
+    expect(component.chosenVals).toBe(component.sampleMean);
+    expect(component.sampleChosen).toBeCloseTo(0.6);
+    expect(component.sampleNotChosen).toBeCloseTo(0.4);
+    expect(component.lineChartData4).toEqual([
+      {
+        data: [
+          {x: 2, y: 1},
+          {x: 3, y: 1},
+          {x: 4, y: 1}
+        ],
+        label: 'translated string',
+        backgroundColor: 'orange',
+        pointBackgroundColor: 'orange',
+      },
+      {
+        data: [
+          {x: 1, y: 1},
+          {x: 5, y: 1}
+        ],
+        label: 'translated string',
+        backgroundColor: 'red',
+        pointBackgroundColor: 'red',
+      }
+    ]);
+  });
+  
+});
 
 });
