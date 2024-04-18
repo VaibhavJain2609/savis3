@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MathService } from 'src/app/Utils/math.service';
 import { SamplingService } from 'src/app/Utils/sampling.service';
 import { NgForm } from '@angular/forms';
@@ -156,6 +156,8 @@ export class OneMeanComponent implements OnInit, OnDestroy{
     }
   };
 
+  // Upload Data Button Element Ref
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef
 
 
   constructor(private translate: TranslateService, private sharedService: SharedService) {}
@@ -332,6 +334,7 @@ export class OneMeanComponent implements OnInit, OnDestroy{
     this.chosenVals = 0;
     this.sampleChosen = 0;
     this.sampleNotChosen = 0;
+    this.fileInput.nativeElement.value = "";
   }
 
   increaseData() {
@@ -666,6 +669,10 @@ validateFile(fileInput: any) {
     }
     reader.readAsText(file);
   }
+}
+
+triggerFileInput() {
+  this.fileInput.nativeElement.click();
 }
 
 ngOnDestroy(): void {

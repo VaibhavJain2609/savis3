@@ -11,7 +11,8 @@
       <div id="button-div">
         <button type="submit" class="btn">{{'load_data' | translate}}</button>
         <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
-        <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)">
+        <button class="btn" id="upload-btn" (click)="triggerFileInput()">{{ 'barChart_uploadData' | translate }}</button>
+        <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)" #fileInput style="display: none;">
       </div>
       <div class="flex justify-center items-center">
         <app-save-load-buttons
