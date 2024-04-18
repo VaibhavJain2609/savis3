@@ -117,13 +117,13 @@
     <input type="number" step="0.1" [(ngModel)]="minVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
     <div class="flex mt-2 mb-6">
       <label>{{'dotPlot_include_min' | translate}}</label>
-      <input type="checkbox" class="border border-gray-300 ml-2">
+      <input type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
     </div>
     <label>{{'dotPlot_max' | translate}}</label>
     <input type="number" step="0.1" [(ngModel)]="maxVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
     <div class="flex mt-2 mb-6">
       <label>{{'dotPlot_include_max' | translate}}</label>
-      <input type="checkbox" class="border border-gray-300 ml-2">
+      <input type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
     </div>
     <div>
       <p>{{'dotPlot_proportions_of_samples' | translate}}: {{chosenVals}} / {{sampleMeans.length}} = {{sampleChosen}}</p>

@@ -99,7 +99,7 @@
             <label for="min-tailValue">{{ 'omci_min' | translate }}</label>
             <input type="number" id="min-interValue" step="1" [(ngModel)]="minInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             <label for="min-tailValue">{{ 'omci_include_min' | translate }}
-                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" [disabled]="sampleMeanDisabled">
+                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             </label>
 
             <br>
@@ -107,7 +107,7 @@
             <label for="max-tailValue">{{ 'omci_max' | translate }}</label>
             <input type="number" id="max-interValue" step="1" [(ngModel)]="maxInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             <label for="max-tailValue">{{ 'omci_include_max' | translate }}
-                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="sampleMeanDisabled">
+                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             </label>
 
             <br>

@@ -106,7 +106,7 @@
        <div style="margin-bottom: 15px;">
         <label for="min-tailValue">
             include min?
-            <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" style="vertical-align: middle;">
+            <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" (ngModelChange)="buildDiffOfProp()" style="vertical-align: middle;">
         </label>
        </div>
     
@@ -119,7 +119,7 @@
        <div style="margin-bottom: 15px;">
         <label for="man-tailValue">
             include max?
-            <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" style="vertical-align: middle;">
+            <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" (ngModelChange)="buildDiffOfProp()" style="vertical-align: middle;">
         </label>
        </div>
       <hr>

@@ -115,7 +115,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     responsive: true,
     tooltips: {
       callbacks: {
-        title: (tooltipItem: any, data: any) => {
+        title: () => {
           return this.translate.instant('opc_data_xaxis')
         },
         label: (tooltipItem: any, data: any) => {
@@ -162,7 +162,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     responsive: true,
     tooltips: {
       callbacks: {
-        title: (tooltipItem: any, data: any) => {
+        title: () => {
           return this.translate.instant('opc_data_xaxis')
         },
         label: (tooltipItem: any, data: any) => {
@@ -605,7 +605,7 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
 
       temp.sort((a, b) => a - b)
 
-      const [chosen, unchosen] = SamplingService.splitUsing(temp, (val: any, index: any) => {
+      const [chosen, unchosen] = SamplingService.splitUsing(temp, (val: any) => {
         return val >= temp[lower] &&  val <= temp[upper >= temp.length ? upper - 1: upper]
       })
 
@@ -621,7 +621,6 @@ export class OneProportionCIComponent implements OnInit, AfterViewInit {
     }
 
     if (this.CiRadio === 'MinMax') {
-      const tmpChecked = {min: this.includeValMin, max: this.includeValMax}
 
       const dataCustomChart = this.splitByPredicate(
         this.simulations,
