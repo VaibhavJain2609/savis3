@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Chart }  from 'chart.js';
 import {MathService} from 'src/app/Utils/math.service'
-import { ChartDataSets, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
-import { chatClass } from 'src/app/Utils/stacked-dot';
+import { ChartDataSets } from 'chart.js';
 import { Sampling } from 'src/app/Utils/sampling';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-two-proportions',
@@ -80,30 +79,27 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
   }
   dataTextArea: string = '';
   data: any
-  updateData(data: any) {
-    
-    }
 
   public barChartData1: ChartDataSets[] = [
     {
-      label: '% success',
+      label: `% ${this.translate.instant('tp_successes')}`,
       backgroundColor: 'green',
       data: [0, 0], // Data points for success and failure for Group A
     },
     {
-      label: '% failures',
+      label: `% ${this.translate.instant('tp_failure')}`,
       backgroundColor: 'red', // Colors for success and failure bars for Group B
       data: [0, 0], // Data points for success and failure for Group B
     },
   ];
   public barChartData2: ChartDataSets[] = [
     {
-      label: '% success',
+      label: `% ${this.translate.instant('tp_successes')}`,
       backgroundColor: 'green',
       data: [0, 0], // Data points for success and failure for Group A
     },
     {
-      label: '% failures',
+      label: `% ${this.translate.instant('tp_failure')}`,
       backgroundColor: 'red', // Colors for success and failure bars for Group B
       data: [0, 0], // Data points for success and failure for Group B
     },
@@ -115,7 +111,11 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
         { label: "N/A", backgroundColor: "red", data: [] }
   ];
   
-  constructor(private cdr: ChangeDetectorRef, private sampling: Sampling) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private sampling: Sampling,
+    private translate: TranslateService
+    ) { }
 
   shuffleArray() {
     // Create an array
@@ -151,7 +151,7 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
         this.chart1 = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Group A', 'Group B'],
+                labels: [this.translate.instant('tp_group_A'), this.translate.instant('tp_group_B')],
                 datasets: this.barChartData1,
             },
             options: {
@@ -180,7 +180,7 @@ export class TwoProportionsComponent implements OnInit, AfterViewInit {
                     mode: 'index',
                     backgroundColor: 'rgba(0, 0, 0, 0.8)', // Corrected background color
                     callbacks: {
-                        title: function(tooltipItem, data) {
+                        title: function(tooltipItem) {
                             let title = tooltipItem[0].xLabel || '';
                             return title.toString();
                         },
@@ -201,7 +201,7 @@ CreateChart2(): void {
       this.chart2 = new Chart(ctx, {
           type: 'bar',
           data: {
-              labels: ['Group A', 'Group B'],
+              labels: [this.translate.instant('tp_group_A'), this.translate.instant('tp_group_B')],
               datasets: this.barChartData2, // TODO: replace with a new dataset
           },
           options: {
@@ -230,7 +230,7 @@ CreateChart2(): void {
                   mode: 'index',
                   backgroundColor: 'rgba(0, 0, 0, 0.8)', // Corrected background color
                   callbacks: {
-                      title: function(tooltipItem, data) {
+                      title: function(tooltipItem) {
                           let title = tooltipItem[0].xLabel || '';
                           return title.toString();
                       },
@@ -253,12 +253,12 @@ CreateChart3(): void {
         data: {
           datasets: [
             {
-              label: 'Differences',
+              label: this.translate.instant('tp_differences'),
               backgroundColor: 'green',
               data: [],
             },
             {
-              label: 'Differences',
+              label: this.translate.instant('tp_differences'),
               backgroundColor: 'red',
               data: [],
             }
@@ -277,7 +277,7 @@ CreateChart3(): void {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Differences of Proportions',
+                  labelString: this.translate.instant('tp_diff_means'),
                 }
               }
             ],
@@ -292,7 +292,7 @@ CreateChart3(): void {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Frequencies',
+                  labelString: this.translate.instant('tp_freq'),
                 }
               }
             ]
@@ -411,8 +411,8 @@ runSim() {
       this.predicateForTail(this.tp_minTailValInput, this.tp_maxTailValInput)
     )
 
-    this.chart3.data.datasets[0].label = `${this.tp_minTailValInput} ≤ Differences < ${this.tp_maxTailValInput}` 
-    this.chart3.data.datasets[1].label = `Differences < ${this.tp_minTailValInput} ∪ ${this.tp_maxTailValInput} ≤ Differences`
+    this.chart3.data.datasets[0].label = `${this.tp_minTailValInput} ≤ ${this.translate.instant('tp_differences')} < ${this.tp_maxTailValInput}` 
+    this.chart3.data.datasets[1].label = `${this.translate.instant('tp_differences')} < ${this.tp_minTailValInput} ∪ ${this.tp_maxTailValInput} ≤ ${this.translate.instant('tp_differences')}`
 
     this.setDataFromRaw(this.chart3, [dataCustomChart.chosen, dataCustomChart.unchosen])
     this.scaleToStackDots(this.chart3)
