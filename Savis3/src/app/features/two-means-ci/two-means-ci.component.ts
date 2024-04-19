@@ -41,6 +41,7 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
   csvraw: any
   csv: any
   lowerBound='NaN'
+  stdevFinal: number = 0
   upperBound= 'NaN'
   sections: any = {
     sectionOne: true,
@@ -97,7 +98,7 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
     let max = Math.max.apply(undefined, dataValues);
     // Calculate standard deviations
   const stdDev1 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
-  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(2));
+  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
     this.stDev1 = stdDev1
     this.stDev2 = stdDev2
     this.minmax = {
@@ -442,6 +443,7 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
       // this.updateLastChart()
     }
     this.samDisActive = true
+    this.stdevFinal = Number(this.calculateStandardDeviation(this.simulations).toFixed(3))  
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
@@ -501,8 +503,8 @@ export class TwoMeansCIComponent implements OnInit, AfterContentInit, AfterViewI
     })
   
     // Ensure these lines are compatible with how you're storing and displaying bounds
-    this.lowerBound = temp[lower].toString()
-    this.upperBound = temp[upper >= temp.length ? upper - 1: upper].toString()
+    this.lowerBound = Number(temp[lower]).toFixed(3)
+    this.upperBound = Number(temp[upper >= temp.length ? upper - 1: upper]).toFixed(3)
     const shift = temp.length < 500 ? 0:0
     this.setScale(this.chart5, temp[0]-shift, temp[temp.length - 1]+shift)
     this.setDataFromRaw(this.chart5, [chosen, unchosen])
