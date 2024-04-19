@@ -100,7 +100,7 @@ export class TwoMeansCIComponent implements OnInit {
     let max = Math.max.apply(undefined, dataValues);
     // Calculate standard deviations
   const stdDev1 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
-  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(2));
+  const stdDev2 = Number(this.calculateStandardDeviation(this.csv[0]).toFixed(3));
     this.stDev1 = stdDev1
     this.stDev2 = stdDev2
     this.minmax = {
@@ -445,7 +445,7 @@ export class TwoMeansCIComponent implements OnInit {
       // this.updateLastChart()
     }
     this.samDisActive = true
-    this.stdevFinal = this.calculateStandardDeviation(this.simulations)
+    this.stdevFinal = Number(this.calculateStandardDeviation(this.simulations).toFixed(3))  
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
   }
