@@ -20,8 +20,8 @@
             ></textarea>
             <button class="btn" id="load-data-btn" (click)="loadDataButton()">{{ 'omci_load' | translate }}</button>
             <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'omci_reset' | translate }}</button>
-            <label class="btn2" id="upload-btn" for="fileInput">{{ 'omci_upload' | translate }}</label>
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+            <button class="btn2" id="upload-btn" (click)="triggerFileInput()">{{ 'omci_upload' | translate }}</button>
+            <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" style="display: none;">
             <br>
             <!-- <form>
                 <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>
@@ -99,7 +99,7 @@
             <label for="min-tailValue">{{ 'omci_min' | translate }}</label>
             <input type="number" id="min-interValue" step="1" [(ngModel)]="minInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             <label for="min-tailValue">{{ 'omci_include_min' | translate }}
-                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" [disabled]="sampleMeanDisabled">
+                <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             </label>
 
             <br>
@@ -107,7 +107,7 @@
             <label for="max-tailValue">{{ 'omci_max' | translate }}</label>
             <input type="number" id="max-interValue" step="1" [(ngModel)]="maxInterValInput" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             <label for="max-tailValue">{{ 'omci_include_max' | translate }}
-                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" [disabled]="sampleMeanDisabled">
+                <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" (ngModelChange)="sampleMeanChange()" [disabled]="sampleMeanDisabled">
             </label>
 
             <br>
@@ -137,6 +137,7 @@
             <canvas #sampleMeansChart></canvas>
         </div>
     </div>
+    <div class="green-line"></div>
     <h3>4. {{ 'omci_confidence_interval' | translate }}
         <input type="checkbox" class="toggle-box" [(ngModel)]="showConfidenceIntervalForm" checked="checked">
     </h3>

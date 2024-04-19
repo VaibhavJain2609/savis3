@@ -70,6 +70,8 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
 
   sampleRadio: string = 'population'
 
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef
+
   private _showInputForm = true
   private _showSampleForm = true
   private _showMeansForm = true
@@ -360,7 +362,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
     this.maxInterValInput = 0
     this.noOfSim = 1
     this.sampleSize = 10
-    this.inputDataSize = 0
+    this.inputDataSize = NaN
     this.inputDataDisplay = ''
     this.sampleDataDisplay = ''
     this.sampleMeansDisplay = ''
@@ -376,6 +378,8 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
     this.disabledInput = true
     this.sampleMeanDisabled = true
     this.sampleMeansSize = NaN
+    this.csvTextArea = ''
+    this.fileInput.nativeElement.value = ''
     
     this.clearChart(this.inputDataChart)
     this.clearChart(this.sampleDataChart)
@@ -401,7 +405,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
       let newMeanSamples = []
 
       for(let it = 0; it < num; it++){
-        const { chosen, unchosen } = this.randomSubset(this.inputDataArray, sz)
+        const { chosen } = this.randomSubset(this.inputDataArray, sz)
         roundedMean = this.roundToPlaces(this.mean(chosen.map(x => x.value)), 4)
         newMeanSamples.push(roundedMean)
 
@@ -427,7 +431,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
 
       this.updateData(2)
     } catch (error) {
-      let errMsg = 'ERRROR\n'
+      // let errMsg = 'ERRROR\n'
       alert(error)
     }
   }
@@ -820,6 +824,23 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
       this.sampleMeansChart.destroy();
     }
     this.createSampleMeansChart();
+  }
+
+  triggerFileInput(): void {
+    this.fileInput.nativeElement.click()
+  }
+
+  onFileSelect(input: Event): void {
+    const target = input.target as HTMLInputElement;
+    const file = target.files?.[0]
+
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.csvTextArea = e.target?.result as string
+      };
+      reader.readAsText(file)
+    }
   }
 
   ngOnDestroy(): void {

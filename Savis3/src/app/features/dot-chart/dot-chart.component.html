@@ -20,8 +20,8 @@
             ></textarea>
             <button class="btn" id="load-data-btn" (click)="loadDataButton()">{{ 'dotPlot_load_data' | translate }}</button>
             <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'dotPlot_reset' | translate }}</button>
-            <button class="btn" id="upload-btn">{{ 'dotPlot_upload_data' | translate }}</button>
-            <input type="file" id="fileInput" style="display: none;">
+            <button class="btn" id="upload-btn" (click)="triggerFileInput()">{{ 'dotPlot_upload_data' | translate }}</button>
+            <input type="file" id="fileInput" #fileInput style="display: none;" (change)="onFileSelect($event)">
             <br>
             <form>
                 <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>

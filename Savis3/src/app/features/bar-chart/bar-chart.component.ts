@@ -294,6 +294,7 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
     this.inputDataSizeNum = 'NaN'
     this.sampleDataSizeNum = 'NaN'
     this.csvTextArea = ''
+    this.fileInput.nativeElement.value = ''
     this.inputDataDisplay.nativeElement.innerHTML = ''
     this.sampleDataDisplay.nativeElement.innerHTML = ''
     this.inputDataTable.nativeElement.innerText = ''
@@ -320,7 +321,7 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
     this.sampleErrorMsg = ''
     try {
       if(!this.inputDataArray.length) throw new Error('No input data')
-      const { chosen, unchosen } = this.randomSubset(this.inputDataArray, this.sampleSizeInput)
+      const { chosen } = this.randomSubset(this.inputDataArray, this.sampleSizeInput)
       this.sampleDataArray = chosen
     } catch (error) {
       this.sampleErrorMsg = 'ERROR\n'
@@ -578,7 +579,23 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
    */
   triggerFileInput(): void {
     this.fileInput.nativeElement.click()
-    console.log("upload file")
+  }
+
+  /**
+   * When user inputs a file, upload the file data into the input area
+   * @param input csvFile
+   */
+  onFileSelect(input: Event): void {
+    const target = input.target as HTMLInputElement;
+    const file = target.files?.[0]
+
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.csvTextArea = e.target?.result as string
+      };
+      reader.readAsText(file)
+    }
   }
 
   /**

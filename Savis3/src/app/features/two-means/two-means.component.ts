@@ -1,5 +1,5 @@
-import { AfterContentInit, Component, OnInit, OnDestroy } from '@angular/core';
-import { ChartDataSets, ChartType } from 'chart.js';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ChartDataSets, ChartType, Chart } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { chatClass } from 'src/app/Utils/stacked-dot';
 import { Sampling } from 'src/app/Utils/sampling';
@@ -8,13 +8,14 @@ import * as XLS from 'xlsx';
 
 import { TranslateService } from '@ngx-translate/core'; 
 import { SharedService } from '../../services/shared.service';
+import { MathService } from '../../Utils/math.service';
 
 @Component({
   selector: 'app-two-means',
   templateUrl: './two-means.component.html',
   styleUrls: ['./two-means.component.scss']
 })
-export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
+export class TwoMeansComponent implements OnInit, AfterViewInit, OnDestroy {
   activateSim: boolean = false
   dataSize1: number = 0
   dataSize2: number = 0
@@ -28,7 +29,6 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
   chart2: any
   chart3: any
   chart4: any
-  chart5: any
   minmax: any
   csvraw: any
   csv: any
@@ -62,9 +62,27 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
 
   summaryData: ChartDataSets[] = [];
 
-
-
   numberOfSimulations: number;
+
+  minTailValInput: number = 0
+  maxTailValInput: number = 0
+
+  includeValMin: any
+  includeValMax: any
+
+  @ViewChild('diffChart') chart5Ref: ElementRef<HTMLCanvasElement>
+
+  chart5: Chart
+
+  simulations: any[] = []
+
+  total: string = ''
+  chosen: string = ''
+  proportion: string = ''
+  stdDev: string = ''
+
+  CIdisabled: boolean = true
+
 
   constructor(
     private smp: Sampling, 
@@ -118,7 +136,6 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
       this.csv = []; // Or set to null if appropriate
       this.dataSize1 = 0;
       this.dataSize2 = 0;
-      this.datamean1 = null;
       this.datamean2 = null;
       this.mean_diff = null;
     }
@@ -141,6 +158,30 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
     this.chart2.chart.update(0)
     this.chart3.chart.update(0)
     this.chart4.chart.update(0)
+    this.csvraw = ''
+    this.simulations = []
+    this.numofSem = 1
+    this.includeValMax = false
+    this.includeValMin = false
+    this.activateSim = false
+    this.samDisActive = false
+    this.simsummary = {
+      sampleMean1: NaN,
+      sampleMean2: NaN,
+      sampleMeanDiff: NaN,
+    }
+    this.minTailValInput = 0
+    this.maxTailValInput = 0
+    this.total = ''
+    this.chosen = ''
+    this.proportion = ''
+    this.stdDev = ''
+    this.dataSize1 = 0
+    this.dataSize2 = 0
+    this.datamean2 = 0
+    this.datamean1 = 0
+    this.mean_diff = 0
+    this.CIdisabled = true
     console.log("chart reset")
   }
 
@@ -149,31 +190,90 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
     this.chart2 = new chatClass("data-chart-2", this.datasets[1]);
     this.chart3 = new chatClass("data-chart-3", this.datasets[3]);
     this.chart4 = new chatClass("data-chart-4", this.datasets[3]);
-    this.chart5 = new chatClass("diff-chart", this.datasets[0]);
+
+    this.chart1.chart.data.datasets[0].label = this.translate.instant('tm_group1')
+    this.chart2.chart.data.datasets[0].label = this.translate.instant('tm_group2')
+
+    this.chart1.chart.update(0)
+    this.chart2.chart.update(0)
    
     this.sharedService.currentData.subscribe(data => this.csvraw = data)
   }
-  ngAfterContentInit(){
-    let leg = [`Differences `, `NaN`]
-    let color = [`orange `, `red`]
-    let rData2: { minmax: [number, number], data: any[][], backgroundColor: string } = {
-      "minmax": [0 ,1],
-      "data": [[],[]],
-      "backgroundColor": "rebeccapurple"
-    }
-   
-    this.chart5.setDataFromRaw(rData2);
-    this.chart5.setLengend(leg,color)
 
-    this.chart5.chart.update(0) 
+  ngAfterViewInit() {
+    this.createChart5()
   }
+
+  createChart5() {
+    const ctx = this.chart5Ref.nativeElement.getContext('2d')
+    if (ctx) {
+      this.chart5 = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: `0 < ${this.translate.instant('tm_differences')} < 1`,
+              backgroundColor: 'green',
+              data: [],
+            },
+            {
+              label: `${this.translate.instant('tm_differences')} ≤ 0 ∪ 1 ≤ ${this.translate.instant('tm_differences')}`,
+              backgroundColor: 'red',
+              data: [],
+            }
+          ]
+        },
+        options: {
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('tm_diff_mean'),
+                }
+              }
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  fontColor: 'black',
+                  fontSize: 16,
+                  padding: 0,
+                  min: 0,
+                  stepSize: 1,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: this.translate.instant('tm_freq'),
+                }
+              }
+            ]
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: 'rgba(0, 0, 0, 1.0)',
+            bodyFontSize: 16,
+          },
+          animation: {
+            duration: 0,
+          }
+        }
+      })
+    }
+  }
+
   loadData(): void {
     this.csv = this.parseData(this.csvraw.trim());
     console.log(this.csv);
     this.updateData(this.csv)
+    this.CIdisabled = false
 
-    // this.updateChart(data);
-    // this.updateSummaryChart(data);
   }
   
 
@@ -212,16 +312,6 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
       { data: [sizeGroup1, meanGroup1, sizeGroup2, meanGroup2, diffOfMeans], label: 'Summary Statistics' },
     ];
   }
-
-  runSimulations(): void {
-    // You should implement your simulation logic here
-    // For simplicity, I'm just logging the number of simulations
-    console.log('Running', this.numberOfSimulations, 'simulations');
-  }
-
-
-
-
 
   sampleSelect(e: any) {
     this.csv = null
@@ -283,6 +373,7 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
       let mean0 = this.calculateMean(sampleValues[0]);
       let mean1 = this.calculateMean(sampleValues[1]);
       let sampleDiffOfMeans = mean1 - mean0;
+      this.simulations.push(sampleDiffOfMeans)
       results.push(sampleDiffOfMeans);
 
       this.simsummary = {
@@ -295,6 +386,128 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
     this.samDisActive = true
     // this.charts.tailChart.addAllResults(results);
     // this.updateSimResults();
+
+    this.buildci()
+  }
+
+  buildci() {
+    const confidenceLevel = 95
+
+    const [lower, upper] = MathService.getCutOffInterval(confidenceLevel, this.simulations.length)
+    const temp = this.simulations.map(val => val)
+
+    temp.sort((a, b) => a - b)
+
+    this.minTailValInput = temp[lower]
+    this.maxTailValInput = temp[upper >= temp.length ? upper - 1: upper]
+
+    const dataCustomChart = this.splitByPredicate(
+      this.simulations,
+      this.predicateForTail(this.minTailValInput, this.maxTailValInput)
+    )
+
+    this.chart5.data.datasets[0].label = `${this.minTailValInput} < ${this.translate.instant('tm_differences')} < ${this.maxTailValInput}`
+    this.chart5.data.datasets[1].label = `${this.translate.instant('tm_differences')} ≤ ${this.minTailValInput} ∪ ${this.maxTailValInput} ≤ ${this.translate.instant('tm_differences')}`
+
+    this.setDataFromRaw(this.chart5, [dataCustomChart.chosen, dataCustomChart.unchosen])
+    this.scaleToStackDots(this.chart5)
+    this.chart5.update()
+
+    this.updateInfoSampleMeans(dataCustomChart.chosen.length, dataCustomChart.unchosen.length)
+  }
+
+  updateInfoSampleMeans(totalChosen: number, totalUnchosen: number) {
+    const proportionChosen = MathService.roundToPlaces(totalChosen / this.simulations.length, 4)
+    const proportionUnchosen = MathService.roundToPlaces(totalUnchosen / this.simulations.length, 4)
+
+    this.total = this.simulations.length.toString()
+    this.stdDev = MathService.stddev(this.simulations).toFixed(4).toString()
+    this.chosen = `${totalChosen} / ${this.simulations.length} = ${proportionChosen}`
+    this.proportion = `${totalUnchosen} / ${this.simulations.length} = ${proportionUnchosen}`
+  }
+
+  splitByPredicate(itr:any, fn:any) {
+    const chosen: any[] = []
+    let unchosen = []
+
+    if (fn === null) unchosen = itr
+    else {
+      itr.forEach((x: any) => {
+        if (fn(x)) chosen.push(x)
+        else unchosen.push(x)
+      })
+    }
+    return { chosen, unchosen }
+  }
+
+  predicateForTail(left: any, right: any) {
+    const limits = {min: this.includeValMin, max: this.includeValMax}
+    if (limits.min && limits.max) {
+      return function (x: any) {
+        return x >= left && x <= right
+      }
+    } else if (limits.min && !limits.max) {
+      return function (x: any) {
+        return x >= left && x < right
+      }
+    } else if (!limits.min && limits.max) {
+      return function (x: any) {
+        return x > left && x <= right
+      }
+    } else if (!limits.min && !limits.max) {
+      return function (x: any) {
+        return x > left && x < right
+      }
+    } else return null
+  }
+
+  setDataFromRaw(chart: Chart, rawDataArrays: any) {
+    let scatterArrays = this.rawToScatter(rawDataArrays)
+    for(let idx = 0; idx < rawDataArrays.length; idx++) {
+      chart.data.datasets[idx].data = scatterArrays[idx]
+    }
+    let max = 1
+    for (let dataset of scatterArrays) {
+      for (let item of dataset) {
+        max = Math.max(max, item.y)
+      }
+    }
+  }
+
+  rawToScatter(arrs: any[]) {
+    let faceted = [];
+    let counts: { [key: string]: number } = {}; // Add type annotation
+    for (let arr of arrs) {
+      let scatter = [];
+      for (let item of arr) {
+        let y = (counts[item] = (counts[item] || 0) + 1);
+        scatter.push({ x: item, y: y });
+      }
+      faceted.push(scatter);
+    }
+    return faceted;
+  }
+
+  scaleToStackDots(chart: any) {
+    let max = 1
+    for (let dataset of chart.data.datasets) {
+      for (let item of dataset.data) {
+        max = Math.max(max, item.y)
+      }
+    }
+
+    chart.options.scales.yAxes[0].ticks.stepSize = (max > 10) ? Math.ceil(max * 0.2) : 1
+
+
+    if(max > 1000) {
+      chart.options.scales.yAxes[0].ticks.min = 0
+    }
+
+    for (let datasets of chart.data.datasets) {
+      datasets.pointRadius = 8
+    }
+
+    return chart
   }
 
   addSimulationSample(sample: any[]) {
@@ -310,30 +523,14 @@ export class TwoMeansComponent implements OnInit, AfterContentInit, OnDestroy {
     }
     return rData2
   }
-  selectedTest(e: any) {
-    this.tail.setTailDirection(e.target.value)
-    let data = this.tail.updateChart2(this.chart5)
-    this.chart5.setDataFromRaw(data);
-    this.lastSummary = this.tail.getSummary()
-    let leg = [`Differences < ${this.mean_diff}`, `Differences > = ${this.mean_diff}`]
-    let color
-    if (e.target.value == "oneTailRight") {
-      color = [`green`, `red`]
-    }
-    else{
-       color = [`red`, `green`]
-     }
-    this.chart5.setLengend(leg,color)
-    this.chart5.chart.update(0)
 
-  }
   onFileSelected(e: any) {
     const files = e.target.files || e.dataTransfer?.files;
     if (files.length) {
       const file = files[0]
       const filereader = new FileReader();
       filereader.readAsBinaryString(file)
-      filereader.onload = (event: any) => {
+      filereader.onload = () => {
         const wb = XLS.read(filereader.result, { type: 'binary' })
         const sheets = wb.SheetNames;
         if (sheets.length) {

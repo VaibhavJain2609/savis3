@@ -1,4 +1,3 @@
-import { Inject, ElementRef, Injectable } from '@angular/core';
 import { Chart } from 'chart.js';
 import { minmax } from '../Dto/twomean';
 

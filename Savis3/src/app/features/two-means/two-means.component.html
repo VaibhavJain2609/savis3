@@ -120,21 +120,23 @@
   </div>
   <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
     <div class="w-3/12">
-      <select [disabled]="!samDisActive" (change)="selectedTest($event)" class="if-disabled w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
-        <option value="null" disabled selected>{{ 'tm_type_of_test' | translate }}
-        </option>
-        <option value="oneTailRight">One Tail Right
-        </option>
-        <option value="oneTailLeft">One Tail Left
-        </option>
-        <option value="TwoTail">Two Tails
-        </option>
+      <div class="data-form">
+        <p>{{ 'tm_select' | translate }}</p>
+        <label for="min_tailValue">{{ 'tm_min' | translate }}</label>
+        <input type="number" id="min-interValue" step="0.01" [(ngModel)]="minTailValInput" (ngModelChange)="buildci()" [disabled]="CIdisabled">
+        <label for="min-tailValue">{{ 'tm_include_min' | translate }}
+          <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" (ngModelChange)="buildci()" [disabled]="CIdisabled">
+        </label>
 
-      </select>
-      <span>{{ 'tm_select_difference' | translate }}</span>
-      <input [disabled]="!samDisActive" type="number"  id="tail-input" value="0" [(ngModel)]="mean_diff" step="any"
-        class="w-full border if-disabled border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg">
-      <hr>
+        <br>
+
+        <label for="max_tailValue">{{ 'tm_max' | translate }}</label>
+        <input type="number" id="max-interValue" step="0.01" [(ngModel)]="maxTailValInput" (ngModelChange)="buildci()" [disabled]="CIdisabled">
+        <label for="max-tailValue">{{ 'tm_include_max' | translate }}
+          <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" (ngModelChange)="buildci()" [disabled]="CIdisabled">
+        </label>
+      </div>
+      
       <div class="text-sm font-medium mb-1">
         <div class="flex justify-between">
           <span>{{ 'tm_original_dataset' | translate }}</span>
@@ -146,24 +148,24 @@
         </div>
         <div class="flex justify-between">
           <span>{{ 'tm_standard' | translate }}</span>
-          <span summary="stddev">{{lastSummary?.stddev}}</span>
+          <span summary="stddev">{{ stdDev }}</span>
         </div>
         <div class="flex justify-between">
           <span>{{ 'tm_total' | translate }} </span>
-          <span summary="total" summaryint>{{lastSummary?.total}}</span>
+          <span summary="total" summaryint>{{ total }}</span>
         </div>
         <div class="flex justify-between">
           <span>{{ 'tm_extreme' | translate }}</span>
-          <span summary="chosen" summaryint>{{lastSummary?.chosen }}</span>
+          <span summary="chosen" summaryint>{{ chosen }}</span>
         </div>
         <div class="flex justify-between">
           <span>{{ 'tm_proportion' | translate }}</span>
-          <span summary="proportion">{{lastSummary?.proportion }}</span>
+          <span summary="proportion">{{proportion }}</span>
         </div>
       </div>
     </div>
     <div class="rhs w-9/12">
-      <canvas id="diff-chart"></canvas>
+      <canvas #diffChart></canvas>
     </div>
   </div>
 </div>

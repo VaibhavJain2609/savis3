@@ -99,27 +99,27 @@
   </div>
   <div class="flex gap-3" [ngClass]="sections.sectionThree ? '' : 'hidden'">
     <div class="w-3/12">
-      <span>Min</span>
+      <span>{{ 'tp_min' | translate }}</span>
        <input [(ngModel)]="tp_minTailValInput" (ngModelChange)="buildDiffOfProp()" [disabled]="!activateSim"
        class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
        type="number" step="0.01" min="-1" max="1" />
        <div style="margin-bottom: 15px;">
         <label for="min-tailValue">
-            include min?
-            <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" style="vertical-align: middle;">
+            {{ 'tp_include_min' | translate }}
+            <input type="checkbox" id="includeMin" [(ngModel)]="includeValMin" (ngModelChange)="buildDiffOfProp()" style="vertical-align: middle;">
         </label>
        </div>
     
        <div>
-        <span style="margin-top: 15px;">Max</span>
+        <span style="margin-top: 15px;">{{ 'tp_max' | translate }}</span>
        </div>
        <input [(ngModel)]="tp_maxTailValInput" (ngModelChange)="buildDiffOfProp()" [disabled]="!activateSim"
        class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
        type="number" step="0.01" min="-1" max="1" />
        <div style="margin-bottom: 15px;">
         <label for="man-tailValue">
-            include max?
-            <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" style="vertical-align: middle;">
+            {{ 'tp_include_max' | translate }}
+            <input type="checkbox" id="includeMax" [(ngModel)]="includeValMax" (ngModelChange)="buildDiffOfProp()" style="vertical-align: middle;">
         </label>
        </div>
       <hr>
