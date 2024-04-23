@@ -263,5 +263,7 @@ export class InputComponent implements OnInit {
         this.yValues?.clearValidators();
       },
     });
+    console.log('file input')
   }
+ 
 }
