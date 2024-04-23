@@ -183,6 +183,7 @@ export class InputComponent implements OnInit {
         resolve(reader.result as string);
       };
     });
+    
   }
 
   async onFileChange(event: any) {
@@ -263,7 +264,7 @@ export class InputComponent implements OnInit {
         this.yValues?.clearValidators();
       },
     });
-    console.log('file input')
+    
   }
  
 }
