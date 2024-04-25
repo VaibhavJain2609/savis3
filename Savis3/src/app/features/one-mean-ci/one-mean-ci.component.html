@@ -145,7 +145,7 @@
         <div class="data-form">
             <p>{{'omci_inputNumbers' | translate}}</p>
             <input type="number" id="interval-number" step="1" [(ngModel)]="noOfIntervals">
-            <button class="btn" (click)="confidenceInterval()">{{ 'omci_calculate_confidence_interval' | translate }}</button>
+            <button class="btn" id="bld-interval"(click)="confidenceInterval()">{{ 'omci_calculate_confidence_interval' | translate }}</button>
             <p style="text-align: left;">{{'omci_InInterval' | translate}}</p>
             <p style="text-align: center;">{{ confidenceIntervalCount }}</p>
             <p style="text-align: left;">{{'omci_NotInInterval'| translate}}</p>
