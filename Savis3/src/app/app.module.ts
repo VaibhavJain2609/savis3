@@ -42,6 +42,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ConfirmationDialogComponent } from './components/save-load-buttons/confirmation-dialog/confirmation-dialog.component';
 import { BarChartComponent } from './features/bar-chart/bar-chart.component';
 import { DotChartComponent } from './features/dot-chart/dot-chart.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http)
@@ -110,7 +112,13 @@ export function setupTranslateFactory(service : TranslateService): Function {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
     ],
   providers: [
     MathService,

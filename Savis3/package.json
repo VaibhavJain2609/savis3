@@ -1,17 +1,40 @@
 {
   "name": "savis3",
   "version": "0.0.0",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --prod",
     "watch": "ng build --watch --configuration development",
     "lint": "eslint --fix \"src/**/*.ts\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "electron": "electron .",
+    "electron:package": "electron-packager . --platform=win32,darwin,linux --arch=x64",
+    "electron:build": "electron-builder build --win --linux"
+  },
+  "build":{
+    "appId": "com.savis3.app",
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
   },
   "private": true,
   "dependencies": {
@@ -26,10 +49,12 @@
     "@angular/platform-browser": "^12.2.0",
     "@angular/platform-browser-dynamic": "^12.2.0",
     "@angular/router": "^12.2.0",
+    "@angular/service-worker": "~12.2.0",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/chart.js": "^2.9.4",
     "dependencies": "0.0.1",
+    "express": "^4.19.2",
     "firebase": "^7.0 || ^8.0",
     "jstat": "^1.9.6",
     "ng2-charts": "^2.4.3",
@@ -60,6 +85,9 @@
     "chart.js": "^2.9.4",
     "concurrently": "^8.2.2",
     "cypress": "^13.6.6",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "electron-packager": "^17.1.2",
     "eslint": "^7.26.0",
     "firebase-tools": "10.3.0",
     "fuzzy": "^0.1.3",
