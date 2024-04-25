@@ -6,13 +6,13 @@
     <form #dataForm="ngForm" (ngSubmit)="onSubmit(dataForm)" name="dataForm">
       <h3 id="subtitle" class="text-l font-bold mb-2">1.{{'enter_data' | translate}}</h3>
       <div>
-        <textarea class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [(ngModel)]="dataInput" name="dataFormInput"></textarea>
+        <textarea id="text box" class="border border-gray-300 rounded-md p-2 h-50" rows = 8 placeholder="Please enter data in column format or upload a CSV file" [(ngModel)]="dataInput" name="dataFormInput"></textarea>
       </div>
       <div id="button-div">
         <button type="submit" class="btn">{{'load_data' | translate}}</button>
         <button type="button" class="btn" (click)="onReset(dataForm)">{{'reset' | translate }}</button>
         <button class="btn" id="upload-btn" (click)="triggerFileInput()">{{ 'barChart_uploadData' | translate }}</button>
-        <input type="file" name="dataForm-file" accept=".csv" (change)="validateFile($event)" #fileInput style="display: none;">
+        <input type="file" id="fileinput" name="dataForm-file" accept=".csv" (change)="validateFile($event)" #fileInput style="display: none;">
       </div>
       <div class="flex justify-center items-center">
         <app-save-load-buttons
@@ -65,9 +65,9 @@
     <div id="chart-input-form">
       
         <label>{{'sample_size' | translate}}:</label>
-        <input type="number" step="1" value="1" [(ngModel)]="sampleSize" class="border border-gray-300 rounded-md pl-2">
+        <input id="sampleSize" type="number" step="1" value="1" [(ngModel)]="sampleSize" class="border border-gray-300 rounded-md pl-2">
         <label># {{'of_samples' | translate}}</label>
-        <input type="number" step="1" value="1" min="1" [(ngModel)]="numSamples" class="border border-gray-300 rounded-md pl-2">
+        <input id="sampleNum" type="number" step="1" value="1" min="1" [(ngModel)]="numSamples" class="border border-gray-300 rounded-md pl-2">
         <button type="button" (click)="runSimulation()" id="run-sim-btn">{{'run_simulation' | translate}}</button>
       
     </div>
@@ -115,16 +115,16 @@
     
     <p>{{'dotPlot_means_interval' | translate}}</p>
     <label>{{'dotPlot_min' | translate}}</label>
-    <input type="number" step="0.1" [(ngModel)]="minVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
+    <input id="min"type="number" step="0.1" [(ngModel)]="minVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
     <div class="flex mt-2 mb-6">
       <label>{{'dotPlot_include_min' | translate}}</label>
-      <input type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
+      <input id="minBox" type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
     </div>
     <label>{{'dotPlot_max' | translate}}</label>
-    <input type="number" step="0.1" [(ngModel)]="maxVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
+    <input id="max" type="number" step="0.1" [(ngModel)]="maxVal" (change)="extremeSampleFunc()" class="border border-gray-300 rounded-md p-1 w-36">
     <div class="flex mt-2 mb-6">
       <label>{{'dotPlot_include_max' | translate}}</label>
-      <input type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
+      <input id="maxBox" type="checkbox" (change)="extremeSampleFunc()" class="border border-gray-300 ml-2">
     </div>
     <div>
       <p>{{'dotPlot_proportions_of_samples' | translate}}: {{chosenVals}} / {{sampleMeans.length}} = {{sampleChosen}}</p>
