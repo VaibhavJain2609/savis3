@@ -16,7 +16,8 @@
     "cypress:run": "cypress run",
     "electron": "electron .",
     "electron:package": "electron-packager . --platform=win32,darwin,linux --arch=x64",
-    "electron:build": "electron-builder build --win --linux"
+    "electron:build": "electron-builder build --win --linux",
+    "electron:build-mac": "electron-builder build --mac"
   },
   "build":{
     "appId": "com.savis3.app",
