@@ -221,6 +221,7 @@
     "Tmci_Total_Num_Samples": "Total # samples",
     "Tmci_Lower_Bound": "Lower Bound",
     "Tmci_Upper_Bound": "Upper Bound",
+    "Tmci_Confidence_level": "Confidence Level",
     "//two_proportions_hypothesis": "These are the translations for the Two Proportions hypothesis component",
     "two_prop_title": "Two Proportion Hypothesis Testing",
     "tp_enter_data": "1. Enter Data",

@@ -216,6 +216,7 @@
     "Tmci_Total_Num_Samples": "Número Total de Muestras",
     "Tmci_Lower_Bound": "Límite Inferior",
     "Tmci_Upper_Bound": "Límite Superior",
+    "Tmci_Confidence_level": "Nivel de Confianza",
     "//Two_Proportion_hypothesis": "These are the translations for the Two Proportion hypothesis component",
     "two_prop_title": "Prueba de Hipótesis de Dos Proporciones",
     "tp_enter_data": "1. Ingresas Datos",

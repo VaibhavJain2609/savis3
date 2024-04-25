@@ -95,11 +95,10 @@
         class="w-full border border-gray-300 focus:border-gray-500 focus:outline-none p-2 rounded-lg ng-untouched ng-pristine ng-valid"
         type="number" value="1" min="1" max="100" />
       <button (click)="runSim()" *ngIf="activateSim"
-        class="mt-1 border bg-primary disabled: text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'Tmci_Run_Simulations2' | translate }}
+        class="mt-1 border bg-primary disabled: text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'Tmci_Run_Simulation' | translate }}
       </button>
       <button [disabled]="true" *ngIf="!activateSim"
-        class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">Run
-        Simulation
+        class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'Tmci_Run_Simulation' | translate }}
       </button>
       <div class="text-sm font-medium mb-1">
         <div class="flex justify-between">
@@ -142,9 +141,19 @@
       <table>
         
     </table>
-    <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
+    <div class="text-center">
+      <label for="confidence-level">{{ 'Tmci_Confidence_level' | translate }} {{ confidenceLevel }}%</label>
+    </div>
+    <div class="flex justify-center">
+      <input type="range" min="1" max="100" step="1" style="width:50%" id="confidence-level" [(ngModel)]="confidenceLevel"/>
+    </div>
     <br>
-    <button  class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full"  (click)="updateLastChart()">{{ 'Tmci_Build' | translate }}</button>
+    <button (click)="updateLastChart()" *ngIf="activateSim"
+        class="mt-1 border bg-primary disabled: text-white px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'Tmci_Build' | translate }}
+    </button>
+    <button [disabled]="true" *ngIf="!activateSim"
+      class="mt-1 border bg-gray-400  text-gray-700 px-7 py-1.5 text-sm font-medium rounded-lg w-full">{{ 'Tmci_Build' | translate }}
+    </button>
     <br>  
       
       <hr>
