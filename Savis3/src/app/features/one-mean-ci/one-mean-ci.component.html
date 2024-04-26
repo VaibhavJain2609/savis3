@@ -145,13 +145,38 @@
         <div class="data-form">
             <p>{{'omci_inputNumbers' | translate}}</p>
             <input type="number" id="interval-number" step="1" [(ngModel)]="noOfIntervals">
-            <button class="btn" id="bld-interval"(click)="confidenceInterval()">{{ 'omci_calculate_confidence_interval' | translate }}</button>
+            <button class="btn" (click)="confidenceInterval()">{{ 'omci_calculate_confidence_interval' | translate }}</button>
             <p style="text-align: left;">{{'omci_InInterval' | translate}}</p>
             <p style="text-align: center;">{{ confidenceIntervalCount }}</p>
             <p style="text-align: left;">{{'omci_NotInInterval'| translate}}</p>
             <p style="text-align: center;">{{ confidenceIntervalCountNot }}</p>
         </div>
- 
+        <!-- <div class="data-display" read style="  height: 200px;
+        width: 175px;
+        border: 1px solid #ccc;
+        overflow-y: auto;"> -->
+        <div class="readonly" readonly
+        style="width: 150px; height: 300px; border: 3px;
+        border-color: black; border-radius: 10px; display: flex; overflow-x: auto;">
+            <table id="sample-table" >
+              <thead *ngIf="sampleMeans.length > 0">
+                <tr>
+                  <th>#</th>
+                  <th>{{'dotPlot_Mean' | translate}}</th>
+                    <th>{{'omci_lower' | translate}}</th>
+                    <th>{{'omci_Upper' | translate}}</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let mean of sampleMeans; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{mean}}</td>
+                <td>{{lowerBounds[i]}}</td>
+                <td>{{upperBounds[i]}}</td>
+              </tr>
+            </tbody>
+            </table>
+        </div>
         <div class="chart-wrap">
             <canvas #confidenceIntervalChart></canvas>
         </div>
@@ -159,3 +184,4 @@
  </div>
 <app-footer class="mt-auto"></app-footer>
 </body>
+

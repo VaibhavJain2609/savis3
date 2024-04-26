@@ -19,7 +19,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
   csvRaw:any
   includeValMin: any
   includeValMax: any
-
+  coverageDataDisplay: any = ''
   sampleSize: number = 10
   noOfSim: number = 1
   sampleStds: number[] = []
@@ -459,7 +459,13 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
     this.sampleDataArray = []
     this.updateData(1)
   }
+  resetConfidenceIntervalChart() {
+    this.lowerBounds = []
+    this.upperBounds = []
+    this.confidenceIntervalCount = 0
+    this.confidenceIntervalCountNot = 0
 
+  }
   totalReset() {
     this.inputDataArray = []
     this.sampleDataArray = []
@@ -488,11 +494,15 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
     this.csvTextArea = ''
     this.fileInput.nativeElement.value = ''
     
+    this.confidenceIntervalCount = 0
+    this.confidenceIntervalCountNot = 0
     this.clearChart(this.inputDataChart)
     this.clearChart(this.sampleDataChart)
     this.clearChart(this.sampleMeansChart)
+    this.clearChart(this.confidenceIntervalChart)
     this.resetSampleMeansChart()
     this.resetSampleChart()
+    this.resetConfidenceIntervalChart()
   }
 
   updateInfoSampleMeans(totalChosen: number, totalUnchosen: number) {
@@ -656,7 +666,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
         dataChart = this.setDataFromRaw(dataChart, ([chosen, unchosen]))
         
         dataDisplay = dataArray.reduce(
-          (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x} σ: ${this.sampleStds[idx]}`.padEnd(25, ' ') + `${this.translate.instant('dotPlot_mean')} ${this.stdSymbol}\n`,
+          (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x} σ: ${this.sampleStds[idx]}`.padEnd(25, ' ') + `${this.translate.instant('dotPlot_mean')} ${'s'}\n`,
           `ID`.padEnd(8, ' ') + `${this.translate.instant('omci_values')} ${this.stdSymbol}\n`
         );
       }
@@ -1076,6 +1086,10 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
 // }
 
   confidenceInterval() {
+    if(this.noOfIntervals < 1 || this.noOfIntervals > this.sampleMeans.length) {
+      alert('Number of coverage intervals must be between 1 and the number of sample means')
+      return
+    }
     let chosenMeans = [], processedStd = []
     const noOfCoverage = this.noOfIntervals
 
@@ -1116,6 +1130,8 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
       lowers.push(MathService.roundToPlaces(lower, 2))
       uppers.push(MathService.roundToPlaces(upper, 2))
     }
+    this.lowerBounds = lowers
+    this.upperBounds = uppers
 
     it++
     tmp = inInterval.pop()
@@ -1143,4 +1159,6 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
   triggerFileInput(): void {
     this.fileInput.nativeElement.click()
   }
-}
+    }
+
+
