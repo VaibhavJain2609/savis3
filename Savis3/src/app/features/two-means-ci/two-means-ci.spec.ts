@@ -32,6 +32,10 @@ describe('TwoMeansCIComponent', () => {
     fixture = TestBed.createComponent(TwoMeansCIComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    fixture.detectChanges();
   });
 
   beforeEach(() => {
@@ -47,33 +51,35 @@ describe('TwoMeansCIComponent', () => {
     component.chart1 = {
       setScale: jest.fn(),
       setDataFromRaw: jest.fn(),
-      chart: { update: jest.fn(),tooltip:{_options:{}} },
-      options: { scales: { yAxes: [{ ticks: {} }] } }
+      chart: { update: jest.fn(), tooltip: { _options: {} } },
+      options: { scales: { yAxes: [{ ticks: {} }] } },
     };
     component.chart2 = {
       setScale: jest.fn(),
       setDataFromRaw: jest.fn(),
-      chart: { update: jest.fn(),tooltip:{_options:{}} },
-      options: { scales: { yAxes: [{ ticks: {} }] } }
+      chart: { update: jest.fn(), tooltip: { _options: {} } },
+      options: { scales: { yAxes: [{ ticks: {} }] } },
     };
     component.chart3 = {
       setScale: jest.fn(),
       setDataFromRaw: jest.fn(),
       chart: { update: jest.fn() },
-      options: { scales: { yAxes: [{ ticks: {} }] } }
+      options: { scales: { yAxes: [{ ticks: {} }] } },
     };
     component.chart4 = {
       setScale: jest.fn(),
       setDataFromRaw: jest.fn(),
       chart: { update: jest.fn() },
-      options: { scales: { yAxes: [{ ticks: {} }] } }
+      options: { scales: { yAxes: [{ ticks: {} }] } },
     };
     component.chart5 = {
       setScale: jest.fn(),
       setDataFromRaw: jest.fn(),
       chart: { update: jest.fn() },
-      options: { scales: { yAxes: [{ ticks: {} }] } }
+      options: { scales: { yAxes: [{ ticks: {} }] } },
     };
+
+    // const childRef = jest.
 
     fixture.detectChanges();
   });
@@ -108,8 +114,12 @@ describe('TwoMeansCIComponent', () => {
     component.incrementYValues('chart1'); // Call the method with chartIdentifier as 'chart1'
 
     // Assertions to check if chart1 data and options are updated correctly
-    expect(component.chart1.chart.options.scales.yAxes[0].ticks.min).toBe(Number.MAX_SAFE_INTEGER);
-    expect(component.chart1.chart.options.scales.yAxes[0].ticks.max).toBe(Number.MIN_SAFE_INTEGER);
+    expect(component.chart1.chart.options.scales.yAxes[0].ticks.min).toBe(
+      Number.MAX_SAFE_INTEGER
+    );
+    expect(component.chart1.chart.options.scales.yAxes[0].ticks.max).toBe(
+      Number.MIN_SAFE_INTEGER
+    );
   });
 
   it('should update chart2 data and options when chartIdentifier is chart2', () => {
@@ -117,10 +127,13 @@ describe('TwoMeansCIComponent', () => {
     component.incrementYValues('chart2'); // Call the method with chartIdentifier as 'chart2'
 
     // Assertions to check if chart2 data and options are updated correctly
-    expect(component.chart2.chart.options.scales.yAxes[0].ticks.min).toBe(Number.MAX_SAFE_INTEGER);
-    expect(component.chart2.chart.options.scales.yAxes[0].ticks.max).toBe(Number.MIN_SAFE_INTEGER);
+    expect(component.chart2.chart.options.scales.yAxes[0].ticks.min).toBe(
+      Number.MAX_SAFE_INTEGER
+    );
+    expect(component.chart2.chart.options.scales.yAxes[0].ticks.max).toBe(
+      Number.MIN_SAFE_INTEGER
+    );
   });
-
 
   it('should correctly update data and chart properties on updateData call', () => {
     component.updateData(null); // Assuming data isn't used within the method, based on your description
@@ -140,17 +153,19 @@ describe('TwoMeansCIComponent', () => {
     expect(component.activateSim).toBe(true);
   });
 
-  describe("resetAxis",()=>{
-
+  describe('resetAxis', () => {
     it('should reset y-axis ticks to "auto" for Chart.js 2.x', () => {
       component.resetAxis(component.chart1); // Call the method with a Chart.js 2.x chart instance
-  
-      // Assertions to check if y-axis ticks are reset to "auto" for Chart.js 2.x
-      expect(component.chart1.chart.options.scales.yAxes[0].ticks.min).toBe('auto');
-      expect(component.chart1.chart.options.scales.yAxes[0].ticks.max).toBe('auto');
-    });
 
-  })
+      // Assertions to check if y-axis ticks are reset to "auto" for Chart.js 2.x
+      expect(component.chart1.chart.options.scales.yAxes[0].ticks.min).toBe(
+        'auto'
+      );
+      expect(component.chart1.chart.options.scales.yAxes[0].ticks.max).toBe(
+        'auto'
+      );
+    });
+  });
 
   describe('calculateMean', () => {
     it('should return 0 for an empty array', () => {
@@ -176,10 +191,26 @@ describe('TwoMeansCIComponent', () => {
   describe('onResetChart', () => {
     beforeEach(() => {
       // Mock chart objects and their methods
-      component.chart1 = { clear: jest.fn(), chart: { update: jest.fn() }, options: { scales: { yAxes: [{ ticks: {} }] } } };
-      component.chart2 = { clear: jest.fn(), chart: { update: jest.fn() }, options: { scales: { yAxes: [{ ticks: {} }] } } };
-      component.chart3 = { clear: jest.fn(), chart: { update: jest.fn() }, options: { scales: { yAxes: [{ ticks: {} }] } } };
-      component.chart4 = { clear: jest.fn(), chart: { update: jest.fn() }, options: { scales: { yAxes: [{ ticks: {} }] } } };
+      component.chart1 = {
+        clear: jest.fn(),
+        chart: { update: jest.fn() },
+        options: { scales: { yAxes: [{ ticks: {} }] } },
+      };
+      component.chart2 = {
+        clear: jest.fn(),
+        chart: { update: jest.fn() },
+        options: { scales: { yAxes: [{ ticks: {} }] } },
+      };
+      component.chart3 = {
+        clear: jest.fn(),
+        chart: { update: jest.fn() },
+        options: { scales: { yAxes: [{ ticks: {} }] } },
+      };
+      component.chart4 = {
+        clear: jest.fn(),
+        chart: { update: jest.fn() },
+        options: { scales: { yAxes: [{ ticks: {} }] } },
+      };
     });
 
     it('should clear all charts and update them', () => {
@@ -548,73 +579,76 @@ describe('TwoMeansCIComponent', () => {
     beforeEach(() => {
       // Mock necessary dependencies
       component.incrementPerformed = true;
-    // Initialize mock data if needed
-    component.csv = [[1, 2, 3], [4, 5, 6]];
-    // Mock chart methods if needed
-    component.chart3 = {
-      setDataFromRaw: jest.fn(),
-      chart: { update: jest.fn() }
-    };
-    component.chart4 = {
-      setDataFromRaw: jest.fn(),
-      chart: { update: jest.fn() }
-    };
+      // Initialize mock data if needed
+      component.csv = [
+        [1, 2, 3],
+        [4, 5, 6],
+      ];
+      // Mock chart methods if needed
+      component.chart3 = {
+        setDataFromRaw: jest.fn(),
+        chart: { update: jest.fn() },
+      };
+      component.chart4 = {
+        setDataFromRaw: jest.fn(),
+        chart: { update: jest.fn() },
+      };
 
+      //   component.smp = {
+      //     randomSubset: jest.fn().mockReturnValue({
+      //       chosen: [{ datasetId: 0, value: 5 }],
+      //       unchosen: [{ datasetId: 1, value: 5 }],
+      //     }),
+      //     randomInt: jest.fn().mockReturnValue(3),
+      //     shuffle: jest.fn(),
+      //     splitUsing: jest.fn(),
+      //     splitByPredicate: jest.fn(),
+      //   };
 
-    //   component.smp = {
-    //     randomSubset: jest.fn().mockReturnValue({
-    //       chosen: [{ datasetId: 0, value: 5 }],
-    //       unchosen: [{ datasetId: 1, value: 5 }],
-    //     }),
-    //     randomInt: jest.fn().mockReturnValue(3),
-    //     shuffle: jest.fn(),
-    //     splitUsing: jest.fn(),
-    //     splitByPredicate: jest.fn(),
-    //   };
+      //   // Mock CSV data
+      //   component.csv = [
+      //     [1, 2, 3], // Sample data for group 1
+      //     [4, 5, 6], // Sample data for group 2
+      //   ];
 
-    //   // Mock CSV data
-    //   component.csv = [
-    //     [1, 2, 3], // Sample data for group 1
-    //     [4, 5, 6], // Sample data for group 2
-    //   ];
-
-    //   // Mock chart objects
-    //   component.chart3 = {
-    //     setDataFromRaw: jest.fn(),
-    //     chart: { update: jest.fn() },
-    //   };
-    //   component.chart4 = {
-    //     setDataFromRaw: jest.fn(),
-    //     chart: { update: jest.fn() },
-    //   };
+      //   // Mock chart objects
+      //   component.chart3 = {
+      //     setDataFromRaw: jest.fn(),
+      //     chart: { update: jest.fn() },
+      //   };
+      //   component.chart4 = {
+      //     setDataFromRaw: jest.fn(),
+      //     chart: { update: jest.fn() },
+      //   };
     });
     // it('should perform simulation, update chart, update summary statistics, and set samDisActive flag', () => {
     //   // Call the method
     //   component.runSim();
 
-      
     // });
 
     it('should show an alert if increment is not performed before simulation', () => {
       component.incrementPerformed = false;
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
-      
+
       component.runSim();
-  
-      expect(alertSpy).toHaveBeenCalledWith('Please increment values before running the simulation.');
+
+      expect(alertSpy).toHaveBeenCalledWith(
+        'Please increment values before running the simulation.'
+      );
       // Ensure that no further actions are taken after the alert
       expect(component.chart3.setDataFromRaw).not.toHaveBeenCalled();
       expect(component.chart4.setDataFromRaw).not.toHaveBeenCalled();
       // Add more assertions as needed
     });
-  
+
     it('should update charts and calculate statistics for each simulation', () => {
       const expectedSampleDiffOfMeans = 3; // Example value for sampleDiffOfMeans
       // Mock any additional dependencies or methods if needed
       // ...
-  
+
       component.runSim();
-  
+
       // Ensure that charts are updated with correct data
       expect(component.chart3.setDataFromRaw).toHaveBeenCalled();
       expect(component.chart4.setDataFromRaw).toHaveBeenCalled();
@@ -622,7 +656,6 @@ describe('TwoMeansCIComponent', () => {
       expect(component.chart4.chart.update).toHaveBeenCalled();
       // Add more assertions as needed
     });
-
   });
   describe('parseData', () => {
     it('should parse valid CSV data into grouped arrays', () => {
