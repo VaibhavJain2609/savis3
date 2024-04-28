@@ -487,7 +487,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
 
         if (num === 0) {
           this.scaleChart = [
-            this.minInArray(valuesArr), this.maxInArray(valuesArr)
+            this.minInArray(valuesArr), Math.ceil(this.maxInArray(valuesArr) / 10) * 10
           ]
         }
       } else {
@@ -512,7 +512,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
       }
 
       if (num < 2) {
-        dataChart = this.setScale(dataChart, this.scaleChart[0], this.scaleChart[1])
+        dataChart = this.setScale(dataChart, this.scaleChart[0], (this.scaleChart[1]-1))
       } else {
         dataChart = this.setScale(dataChart, this.minInArray(valuesArr), this.maxInArray(valuesArr))
       }
