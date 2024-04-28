@@ -267,7 +267,19 @@
    // background: linear-gradient(180deg, $secondary-color, darken($secondary-color, 5%));
    background-color: #93cb52;
   }
-
+  #data-div {
+    display: flex;
+    flex-direction: column;
+    width: 179px;
+    justify-content: center;
+    margin-left: 10px;
+  }
+  .data-display {
+    height: 130px;
+    width: 175px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+  }
   &:disabled {
     background: #bfbfbf;
     cursor: not-allowed;
@@ -333,3 +345,4 @@ input[type="checkbox"] {
   width: 100%;
   cursor: default;
 }
+
