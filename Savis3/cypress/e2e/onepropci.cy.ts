@@ -61,6 +61,10 @@ describe('One Proprtion Confidence Interval', () => {
         cy.get('#MinMax').click()
         cy.get('#min-interValue').type('{backspace}0.55')
         cy.get('#max-interValue').type('{backspace}0.75')
+
+        cy.get('#includeMin').click()
+        cy.get('#includeMax').click()
+        cy.wait(500)
     })
 
     it('Should reset input fields', () => {
@@ -88,6 +92,13 @@ describe('One Proprtion Confidence Interval', () => {
         cy.get('#sample-size').should('be.disabled')
         cy.get('#numOfSims').should('be.disabled')
         cy.get('#runSim').should('be.disabled')
+    })
+
+    it('should display error message if load button clicked with no inputs', () => {
+        cy.contains('button', 'Load Data').click()
+        cy.on('window:alert', (message) => {
+            expect(message).to.equal('The value of successes and failures must be greater than 0')
+        })
     })
 
 })
