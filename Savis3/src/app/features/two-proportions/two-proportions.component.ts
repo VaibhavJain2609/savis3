@@ -277,7 +277,7 @@ CreateChart3(): void {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: this.translate.instant('tp_diff_means'),
+                  labelString: this.translate.instant('tp_diff_mean'),
                 }
               }
             ],

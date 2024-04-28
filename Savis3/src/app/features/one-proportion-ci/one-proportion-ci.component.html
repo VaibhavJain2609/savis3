@@ -62,9 +62,9 @@
             <p>
                 {{ 'opc_numsims' | translate }}
             </p>
-            <input type="number" min="1" max="1000" [(ngModel)]="numSimulations" [disabled]="numSampleSizeDisabled">
+            <input id="numOfSims" type="number" min="1" max="1000" [(ngModel)]="numSimulations" [disabled]="numSampleSizeDisabled">
             <br>
-            <button class="btn" (click)="runSimulations()" [disabled]="runSimulationsDisabled">{{ 'opc_sims' | translate }}</button>
+            <button id="runSim" class="btn" (click)="runSimulations()" [disabled]="runSimulationsDisabled">{{ 'opc_sims' | translate }}</button>
             <br>
             <div class="stats">
                 <div>
@@ -97,11 +97,11 @@
             <p class="text-center">{{ 'opc_select' | translate }}</p>
             <form class="form-inline">
                 <div class="radio-group">
-                    <input type="radio" id="CI" value="CI" name="CI" [(ngModel)]="CiRadio" (click)="radioChange('CI')" [disabled]="radioDisabled" checked>
+                    <input id="CIinput" type="radio" id="CI" value="CI" name="CI" [(ngModel)]="CiRadio" (click)="radioChange('CI')" [disabled]="radioDisabled" checked>
                     <label for="CI">{{ 'opc_confidence_interval' | translate }}</label>
                 </div>
                 <div class="radio-group">
-                    <input type="radio" id="MinMax" value="MinMax" name="MinMax" [(ngModel)]="CiRadio" (click)="radioChange('MinMax')" [disabled]="radioDisabled">
+                    <input id="minMax" type="radio" id="MinMax" value="MinMax" name="MinMax" [(ngModel)]="CiRadio" (click)="radioChange('MinMax')" [disabled]="radioDisabled">
                     <label for="MinMax">{{ 'opc_min_max_inputs' | translate }}</label>
                 </div>
             </form>
