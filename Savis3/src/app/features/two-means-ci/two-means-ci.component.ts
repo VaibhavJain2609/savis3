@@ -303,13 +303,18 @@ export class TwoMeansCIComponent
     this.chart2.clear();
     this.chart3.clear();
     this.chart4.clear();
+    this.chart5.data.datasets[0].data = [];
+    this.chart5.data.datasets[1].data = [];
     this.chart1.chart.update(0);
     this.chart2.chart.update(0);
     this.chart3.chart.update(0);
     this.chart4.chart.update(0);
+    this.chart5.chart.update(0);
     this.chart1.options.scales.yAxes[0].ticks.min = 0;
 
     this.chart1.options.scales.yAxes[0].ticks.max = 10;
+    this.csvraw = ''
+    this.activateSim = false
   }
   resetAxis(chartInstance: any) {
     if (chartInstance.chart.options.scales.yAxes) {
