@@ -11,6 +11,12 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./two-proportions.component.scss']
 })
 export class TwoProportionsComponent implements OnInit, AfterViewInit {
+    static splitByPredicate(iterable: number[], isEven: (num: number) => boolean) {
+        throw new Error('Method not implemented.');
+    }
+    static updateInfoSampleProp(component: { simulations: any[]; totalsamples_chart3: number; extremediff_chart3: string; propextremediff_chart3: string; }, totalChosen: number, totalUnchosen: number) {
+        throw new Error('Method not implemented.');
+    }
 
   // Your existing variables
   numASuccess: number = 0;
@@ -408,7 +414,7 @@ runSim() {
 
     const dataCustomChart = this.splitByPredicate(
       this.simulations,
-      this.predicateForTail(this.tp_minTailValInput, this.tp_maxTailValInput)
+      this.predicateForTail(this.tp_minTailValInput, this.tp_maxTailValInput, this.includeValMin,this.includeValMax)
     )
 
     this.chart3.data.datasets[0].label = `${this.tp_minTailValInput} ≤ ${this.translate.instant('tp_differences')} < ${this.tp_maxTailValInput}` 
@@ -435,27 +441,27 @@ runSim() {
     }
     return { chosen, unchosen }
   }
+   
 
-  predicateForTail(left: any, right: any) {
-    const limits = {min: this.includeValMin, max: this.includeValMax}
-    if (limits.min && limits.max) {
-      return function (x: any) {
-        return x >= left && x <= right
-      }
-    } else if (limits.min && !limits.max) {
-      return function (x: any) {
-        return x >= left && x < right
-      }
-    } else if (!limits.min && limits.max) {
-      return function (x: any) {
-        return x > left && x <= right
-      }
-    } else if (!limits.min && !limits.max) {
-      return function (x: any) {
-        return x > left && x < right
-      }
-    } else return null
-  }
+  predicateForTail(left: any, right: any, includeValMin: boolean, includeValMax: boolean) {
+    if (includeValMin && includeValMax) {
+        return function (x: any) {
+            return x >= left && x <= right;
+        };
+    } else if (includeValMin && !includeValMax) {
+        return function (x: any) {
+            return x >= left && x < right;
+        };
+    } else if (!includeValMin && includeValMax) {
+        return function (x: any) {
+            return x > left && x <= right;
+        };
+    } else if (!includeValMin && !includeValMax) {
+        return function (x: any) {
+            return x > left && x < right;
+        };
+    } else return null;
+}
 
   setDataFromRaw(chart: Chart, rawDataArrays: any) {
     let scatterArrays = this.rawToScatter(rawDataArrays)
