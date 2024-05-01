@@ -34,14 +34,6 @@ describe('template spec', () => {
 
     })
 
-    it ('should check if "type of test" selector is disabled on an empty chart', () => {
-        cy.get('select.if-disabled').should('be.disabled')
-
-    })
-    it ('should check if the increment tab is disabled on an empty chart', () => {
-        cy.get('#tail-input').should('be.disabled')
-
-    })
 
     it ('should click the run simulation chart when there is data', () => {
         cy.get('.border-t-0').select("Sample 1")
@@ -57,36 +49,33 @@ describe('template spec', () => {
         cy.get('.w-3\\/12 > .mt-1').click({ force: true });
 
     })
-    it ('should select the one tails right from the option menu', () => {
+  
+    it ('should increase the min value', () => {
         cy.get('.border-t-0').select("Sample 1")
         cy.get('#loadData').click()
         cy.get('.w-3\\/12 > .mt-1').click({ force: true });
-        cy.get('select.if-disabled').select("One Tail Right", { force: true });
-
+        cy.get('#min-interValue').type('{uparrow}',{ force: true })
     })
-
-    it ('should select the one tails left from the option menu', () => {
+    it ('should increase the max value', () => {
         cy.get('.border-t-0').select("Sample 1")
         cy.get('#loadData').click()
         cy.get('.w-3\\/12 > .mt-1').click({ force: true });
-        cy.get('select.if-disabled').select("One Tail Left", { force: true });
-
+        cy.get('#max-interValue').type('{uparrow}',{ force: true })
     })
-    it ('should select the two tails  from the option menu', () => {
+    it ('should check the max box', () => {
         cy.get('.border-t-0').select("Sample 1")
         cy.get('#loadData').click()
         cy.get('.w-3\\/12 > .mt-1').click({ force: true });
-        cy.get('select.if-disabled').select("Two Tails", { force: true });
-
+        cy.get('#includeMax').click({ force: true })
     })
-    it ('should change the input value for extreme', () => {
+    it ('should check the min box', () => {
         cy.get('.border-t-0').select("Sample 1")
         cy.get('#loadData').click()
         cy.get('.w-3\\/12 > .mt-1').click({ force: true });
-        cy.get('select.if-disabled').select("Two Tails", { force: true });
-        cy.get('#tail-input').type("2",{ force: true })
-
+        cy.get('#includeMin').click({ force: true })
     })
+   
+   
     
     
 
