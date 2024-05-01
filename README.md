@@ -53,9 +53,12 @@ Run `npm run test:coverage` to execute a test for all the features with a unit t
 
 ### Running end-to-end functional test
 Before running tests, the Angular project needs to be deployed into a local server using `ng serve`. This command compiles the application and starts a development server
+
 Run `npm run cypress:open` to execute the automated tests via [Cypress] https://github.com/cypress-io/cypress
-Once cypress is open select "E2E testing" then select the preferred browser then Start. 
-Every feature/component has its on spec, clicking on them will start the automated tests for that specific feature or component.
+
+Once Cypress is open select "E2E testing" then select the preferred browser then Start. 
+
+Every feature/component has its own spec, clicking on them will start the automated tests for that specific feature or component.
 
 
 # Deployment 
