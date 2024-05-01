@@ -43,9 +43,6 @@ Two Proportion Hypothesis Testing feature first loads data and generates a graph
 ### Running unit tests
 Run `ng test` to execute the unit tests via [Jest] https://github.com/jestjs/jest.
 
-### Running end-to-end tests
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
 ### Running all test 
 Run `npm run test:coverage` to execute a test for all the features with a unit test. Once all the test has ran the results will show up in the terminal as well as in the file Savis3 -> coverage -> index.html.
 
