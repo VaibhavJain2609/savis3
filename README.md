@@ -26,6 +26,11 @@ graphs where it checks if it covers the mean of the actual in the sample collect
 <img width="1721" alt="savis_correlation" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/correlation.png">
 This Correlation feature that allows users to analyze the relationship between two sets of data. It provides both manual and file upload options for inputting data and generates correlation coefficients along with visual charts for analysis.
 
+### Two Proportion Hypothesis Testing
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two Prop.png">
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two prop 2.png">
+Two Proportion Hypothesis Testing feature first loads data and generates a graphical representation comparing two proportions. It then runs simulations to assess the significance of the observed difference, and finally, it analyzes the Sampling Distribution of Difference of Proportions to determine the likelihood of the observed results occurring by chance alone.
+
 # Timeline
 
 # Testing 
