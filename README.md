@@ -8,6 +8,12 @@ This platform provides a myriad of visualization tools, allowing users to active
 <img width="1728" alt="savis_regression" src="https://github.com/VaibhavJain2609/savis3/assets/50278167/8d038c7b-e301-4e88-b243-8b650c8ebd91">
 
 
+#  Two Proportions Confidence Interval
+A two-proportions confidence interval graph typically displays the difference between two sample proportions along with its confidence interval, often represented as a horizontal line or bar. The graph highlights the point estimate of the difference and the range within which the true difference is expected to lie, based on the specified confidence level.
+
+<img width="1728" alt="Two Proportions Confidence Interval" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/TwoProportionsCI.png">
+
+
 
 
 
