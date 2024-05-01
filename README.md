@@ -31,6 +31,9 @@ This Correlation feature that allows users to analyze the relationship between t
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two Prop 2.png">
 Two Proportion Hypothesis Testing feature first loads data and generates a graphical representation comparing two proportions. It then runs simulations to assess the significance of the observed difference, and finally, it analyzes the Sampling Distribution of Difference of Proportions to determine the likelihood of the observed results occurring by chance alone.
 
+### Linear Regression Visualization
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Linear.png">
+"Linear regression is a statistical method used to model the relationship between two or more variables by fitting a linear equation to observed data. In our project, we employ linear regression to analyze the linear relationship between a dependent variable and one or more independent variables, enabling us to make predictions and understand the underlying patterns in the data."
 # Timeline
 
 # Testing 
