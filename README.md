@@ -1,8 +1,7 @@
+# SAVIS3 Overview
 <p align="center">
     <img alt="savisLogo" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/SavisLogo.png">
 </p>
-
-# SAVIS3 Overview
 SAVIS3 is a website built at the request of Prof. Rafael Diaz who teaches at California State University, Sacramento. SAVIS3 aims to provide an open-source educational platform for students around the world to help them better understand statistics. This platform provides a myriad of visualization tools, allowing users to actively engage with various statistical concepts and enhance their comprehension. 
 
 ### One Proportion Confidence Interval
