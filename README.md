@@ -28,7 +28,7 @@ This Correlation feature that allows users to analyze the relationship between t
 
 ### Two Proportion Hypothesis Testing
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two Prop.png">
-<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two prop 2.png">
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Two Prop 2.png">
 Two Proportion Hypothesis Testing feature first loads data and generates a graphical representation comparing two proportions. It then runs simulations to assess the significance of the observed difference, and finally, it analyzes the Sampling Distribution of Difference of Proportions to determine the likelihood of the observed results occurring by chance alone.
 
 # Timeline
