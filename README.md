@@ -10,6 +10,16 @@ This platform provides a myriad of visualization tools, allowing users to active
 ### One Proportion Confidence Interval
 This feature helps in estimating a range where the true population proportion lies based on a sample proportion. Here, we take in success and failure and show the proportion of success and the calculation involves the sample size with a chosen level of confidence (eg., 95%). We are able to see mean, standard deviation, lower and upper bounds of the intervals.
 
+### One Mean Confidence Interval
+<img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS1.png">
+<img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS2.png">
+<img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS3.png">
+<img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS4.png">
+One Mean Confidence Interval calculates the confidence interval for the entered data. The first component allows for the data
+to be entered into the data. It also displays the count for each point as a scatter plot. The second part takes a sample and
+runs the desired simulation. The third section allows for custom upper and lower bound to be added. The fourth section displays
+graphs where it checks if it covers the mean of the actual in the sample collected when the bounds are added into consideration.
+
 # Timeline
 
 # Testing 
