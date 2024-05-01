@@ -22,6 +22,10 @@ to be entered into the data. It also displays the count for each point as a scat
 runs the desired simulation. The third section allows for custom upper and lower bound to be added. The fourth section displays
 graphs where it checks if it covers the mean of the actual in the sample collected when the bounds are added into consideration.
 
+###Correlation Feature
+<img width="1721" alt="savis_correlation" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/correlation.png">
+This Correlation feature that allows users to analyze the relationship between two sets of data. It provides both manual and file upload options for inputting data and generates correlation coefficients along with visual charts for analysis.
+
 # Timeline
 
 # Testing 
