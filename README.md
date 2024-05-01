@@ -1,11 +1,11 @@
+<img alt="savisLogo" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/SavisLogo.png">
+
 # SAVIS3 Overview
 SAVIS3 is a website built at the request of Prof. Rafael Diaz who teaches at California State University, Sacramento. SAVIS3 aims to provide an open-source educational platform for students around the world to help them better understand statistics. This platform provides a myriad of visualization tools, allowing users to actively engage with various statistical concepts and enhance their comprehension. 
-
 
 ### One Proportion Confidence Interval
 <img width="1721" alt="savis_regression" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OPCI.png">
 This feature helps in estimating a range where the true population proportion lies based on a sample proportion. Here, we take in success and failure and show the proportion of success and the calculation involves the sample size with a chosen level of confidence (eg. 95%). We are able to see mean, standard deviation, lower and upper bounds of the intervals.
-
 
 ### One Mean Confidence Interval
 <img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS4.png">
@@ -27,6 +27,15 @@ Two Proportion Hypothesis Testing feature first loads data and generates a graph
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Linear.png">
 Linear regression is a statistical method used to model the relationship between two or more variables by fitting a linear equation to observed data. In our project, we employ linear regression to analyze the linear relationship between a dependent variable and one or more independent variables, enabling us to make predictions and understand the underlying patterns in the data.
 
+# Pre-requisites
+* NodeJS
+* NPM
+* Angular CLI
+
+# Installation
+1. Clone to repository to your local machine.
+2. `Cd` into the `Savis3` directory.
+3. Run `npm install` to install all the dependencies.
 
 # Testing 
 ### Running unit tests
@@ -34,19 +43,27 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ### Running end-to-end tests
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-# Deployment 
-# Developer Instructions 
 
+# Deployment 
+The project is setup with Github Actions to automatically deploy the project to Github Pages. To deploy the project, simply push your changes to the `main` branch and the deployment will be triggered automatically.
+
+You can visit the deployed project at [savis3](https://savias-c1f4d.web.app/login).
+
+If you forked the repository, you can deploy the project by changing the Firebase API keys in `environment` directory and running `firebase init` and `firebase deploy` commands. A more detailed instruction video can be found here: [Firebase Deployment](https://www.youtube.com/watch?v=UNCggEPZQ0c)
+
+# Developer Instructions 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.18.
 
 ### Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` or `npm run start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ### Code scaffolding
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ### Build
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+To package the project for Linux, Windows, and Mac, run `npm run electron:package`. This will create `savis3-darwin-x64`, `savis3-linux-x64`, and `savis3-win32-x64` directories in the `Savis3` directory. Zip the contents of the directory and distribute the zip file.
 
 ### Further help
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference page](https://angular.io/cli).
