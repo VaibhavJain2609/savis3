@@ -34,6 +34,7 @@ Two Proportion Hypothesis Testing feature first loads data and generates a graph
 ### Linear Regression Visualization
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Linear.png">
 "Linear regression is a statistical method used to model the relationship between two or more variables by fitting a linear equation to observed data. In our project, we employ linear regression to analyze the linear relationship between a dependent variable and one or more independent variables, enabling us to make predictions and understand the underlying patterns in the data."
+
 # Timeline
 
 # Testing 
