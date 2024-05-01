@@ -39,11 +39,25 @@ Linear regression is a statistical method used to model the relationship between
 3. Run `npm install` to install all the dependencies.
 
 # Testing 
-### Running unit tests
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Unit Testing 
 
-### Running end-to-end tests
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Running unit tests
+Run `ng test` to execute the unit tests via [Jest] https://github.com/jestjs/jest.
+
+### Running all test 
+Run `npm run test:coverage` to execute a test for all the features with a unit test. Once all the test has ran the results will show up in the terminal as well as in the file Savis3 -> coverage -> index.html.
+
+## Functional Testing
+
+### Running end-to-end functional test
+Before running tests, the Angular project needs to be deployed into a local server using `ng serve`. This command compiles the application and starts a development server
+
+Run `npm run cypress:open` to execute the automated tests via [Cypress] https://github.com/cypress-io/cypress
+
+Once Cypress is open select "E2E testing" then select the preferred browser then Start. 
+
+Every feature/component has its own spec, clicking on them will start the automated tests for that specific feature or component.
+
 
 # Deployment 
 The project is setup with Github Actions to automatically deploy the project to Github Pages. To deploy the project, simply push your changes to the `main` branch and the deployment will be triggered automatically.
