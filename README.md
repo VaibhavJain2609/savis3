@@ -8,7 +8,9 @@ This platform provides a myriad of visualization tools, allowing users to active
 <img width="1728" alt="savis_regression" src="https://github.com/VaibhavJain2609/savis3/assets/50278167/8d038c7b-e301-4e88-b243-8b650c8ebd91">
 
 ### One Proportion Confidence Interval
+<img width="1721" alt="savis_regression" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OPCI.png">
 This feature helps in estimating a range where the true population proportion lies based on a sample proportion. Here, we take in success and failure and show the proportion of success and the calculation involves the sample size with a chosen level of confidence (eg., 95%). We are able to see mean, standard deviation, lower and upper bounds of the intervals.
+
 
 ### One Mean Confidence Interval
 <img width="1721" alt="savis_omci" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/OMCISS1.png">
