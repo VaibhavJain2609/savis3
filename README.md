@@ -28,6 +28,12 @@ Two Proportion Hypothesis Testing feature first loads data and generates a graph
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/Linear.png">
 Linear regression is a statistical method used to model the relationship between two or more variables by fitting a linear equation to observed data. In our project, we employ linear regression to analyze the linear relationship between a dependent variable and one or more independent variables, enabling us to make predictions and understand the underlying patterns in the data.
 
+### Two Mean Confidence Interval 
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/2MCI.png">
+<img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/2MCI2.png">
+Two Means Confidence Interval feature in our Angular application allows users to load, analyze, and visualize data for two distinct groups, calculating and displaying confidence intervals for their mean differences. Users can interactively adjust data, run simulations, and explore statistical results through dynamic charts, enhancing understanding of data distributions and variability.
+
+
 # Pre-requisites
 * NodeJS
 * NPM
