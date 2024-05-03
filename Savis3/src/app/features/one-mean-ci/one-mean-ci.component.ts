@@ -1,4 +1,4 @@
-import { Component, ElementRef, AfterViewInit, ViewChild, OnInit} from '@angular/core';
+import { Component, ElementRef, AfterViewInit, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import { MathService } from 'src/app/Utils/math.service';
 import { NgForm } from '@angular/forms';
 import {ChartDataSets} from 'chart.js';
@@ -6,12 +6,13 @@ import * as XLS from 'xlsx';
 import {Chart} from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { CoverageChartService } from './services/coverage-chart.service';
+import { SharedService } from '../../services/shared.service';
 @Component({
   selector: 'app-one-mean-ci',
   templateUrl: './one-mean-ci.component.html',
   styleUrls: ['./one-mean-ci.component.scss']
 })
-export class OneMeanCIComponent implements OnInit, AfterViewInit {
+export class OneMeanCIComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef
 
   minInterValInput: number = 0
@@ -91,12 +92,14 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
   upperBounds: number[] = []
   samplemean2: number[] = []
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.includeValMin = false
     this.includeValMax = false
+    this.sharedService.currentData.subscribe(data => this.csvTextArea = data)
   }
 
   ngAfterViewInit() {
@@ -1159,6 +1162,10 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit {
   triggerFileInput(): void {
     this.fileInput.nativeElement.click()
   }
-    }
+
+  ngOnDestroy():void {
+    this.sharedService.changeData('')
+  }
+}
 
 

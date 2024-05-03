@@ -22,6 +22,11 @@
             <button class="btn" id="reset-btn" (click)="totalReset()">{{ 'omci_reset' | translate }}</button>
             <button class="btn2" id="upload-btn" (click)="triggerFileInput()">{{ 'omci_upload' | translate }}</button>
             <input type="file" id="fileInput" #fileInput (change)="onFileSelected($event)" style="display: none;">
+            <app-save-load-buttons 
+                class="mx-8"
+                [data]="csvTextArea"
+                [feature]="'OneMeanCI'"
+            ></app-save-load-buttons>
             <br>
             <!-- <form>
                 <input type="radio" id="population-data-ratio" value="population" name="setData" [(ngModel)]="sampleRadio" (click)="radioChange('population')" checked>
