@@ -33,6 +33,10 @@ Linear regression is a statistical method used to model the relationship between
 <img width="1721" src="https://github.com/VaibhavJain2609/savis3/blob/main/Savis3/src/assets/2MCI2.png">
 Two Means Confidence Interval feature in our Angular application allows users to load, analyze, and visualize data for two distinct groups, calculating and displaying confidence intervals for their mean differences. Users can interactively adjust data, run simulations, and explore statistical results through dynamic charts, enhancing understanding of data distributions and variability.
 
+### Two Proportions Confidence Interval 
+<img width="1721" src="Savis3/src/assets/TwoProportionsCI.png">
+A two-proportions confidence interval graph typically displays the difference between two sample proportions along with its confidence interval, often represented as a horizontal line or bar. The graph highlights the point estimate of the difference and the range within which the true difference is expected to lie, based on the specified confidence level.
+
 
 # Pre-requisites
 * NodeJS
