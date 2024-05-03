@@ -5,6 +5,7 @@ import {
   ViewChild,
   AfterContentInit,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { ChartDataSets, ChartType, Chart, ChartPoint } from 'chart.js';
 
@@ -15,13 +16,14 @@ import { chatClass } from 'src/app/Utils/stacked-dot';
 import { Sampling } from 'src/app/Utils/sampling';
 import { TailchartService } from 'src/app/Utils/tailchart.service';
 import * as XLS from 'xlsx';
+import { SharedService } from '../../services/shared.service';
 @Component({
   selector: 'app-two-mean-ci',
   templateUrl: './two-means-ci.component.html',
   styleUrls: ['./two-means-ci.component.scss'],
 })
 export class TwoMeansCIComponent
-  implements OnInit, AfterContentInit, AfterViewInit
+  implements OnInit, AfterContentInit, AfterViewInit, OnDestroy
 {
   activateSim: boolean = false;
   dataSize1: number = 0;
@@ -110,7 +112,8 @@ export class TwoMeansCIComponent
   constructor(
     public smp: Sampling,
     public tail: TailchartService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private sharedService: SharedService
   ) {}
   toggleSection(e: any, sec: string) {
     this.sections[sec] = e.target.checked;
@@ -335,6 +338,7 @@ export class TwoMeansCIComponent
     this.chart4 = new chatClass('data-chart-4', this.datasets[3]);
     // console.log(this.chart5Ref);
     // this.chart5 = this.createChart5();
+    this.sharedService.currentData.subscribe(data => this.csvraw = data)
   }
   ngAfterContentInit() {
     let leg = [`Differences `, `NaN`];
@@ -663,5 +667,9 @@ export class TwoMeansCIComponent
     if (max > 1000) {
       chart.options.scales.yAxes[0].ticks.min = 0;
     }
+  }
+
+  ngOnDestroy(): void {
+      this.sharedService.changeData('')
   }
 }

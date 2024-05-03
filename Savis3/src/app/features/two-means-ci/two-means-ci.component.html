@@ -31,6 +31,12 @@
           for="fileInput">  {{ 'Tmci_Upload_Data_File' | translate }} </label>
         <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
       </div>
+      <div class="flex justify-center">
+        <app-save-load-buttons
+          [data]="csvraw"
+          [feature]="'TwoMeansCI'"
+        ></app-save-load-buttons>
+      </div>
       <div class="text-sm font-medium mb-1">
         <div class="flex justify-between">
           <span>{{ 'Tmci_Size_n_Group_1' | translate }}</span>
