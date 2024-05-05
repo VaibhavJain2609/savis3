@@ -29,12 +29,12 @@ describe('OneMeanCIComponent', () => {
     it('should create the component', () => {
         expect(component).toBeTruthy();
     });
-
+        // hi
     it('should have initial values set correctly', () => {
         expect(component.minInterValInput).toBe(0);
         expect(component.maxInterValInput).toBe(0);
         expect(component.csvRaw).toBeUndefined();
-        expect(component.includeValMin).toBeUndefined();
+        expect(component.includeValMin).toBe(false);
         expect(component.includeValMax).toBeUndefined();
         expect(component.coverageDataDisplay).toBe('');
         expect(component.sampleSize).toBe(10);
