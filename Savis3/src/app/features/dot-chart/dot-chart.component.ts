@@ -135,6 +135,7 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
                   fontSize: 16,
                   padding: 0,
                   min: 0,
+                  max: 10,
                   stepSize: 1
                 },
                 scaleLabel: {
@@ -345,12 +346,10 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
   resetSampleMeansChart() {
     this.sampleMeans = []
     this.sampleMeansChartLabel = ''
-    this.updateData(2)
   }
 
   resetSampleChart() {
     this.sampleDataArray = []
-    this.updateData(1)
   }
 
   totalReset() {
@@ -636,6 +635,11 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     chart.options.scales.yAxes[0].ticks.stepSize = (max > 10) ? Math.ceil(max * 0.2) : 1
+    if (max > 10) {
+      chart.options.scales.yAxes[0].ticks.max = max
+    } else {
+      chart.options.scales.yAxes[0].ticks.max = 10
+    }
 
 
     if(max > 1000) {
