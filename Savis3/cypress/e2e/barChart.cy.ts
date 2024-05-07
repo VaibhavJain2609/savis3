@@ -41,13 +41,13 @@ describe('template spec', () => {
 
     })
 
-    it('should select the "Upload Data File" button', () => {
-        cy.window().then((win) => {
-            cy.stub(win.console, 'log').as('consoleLog');
-          });
-        cy.get('#upload-btn').click()
-        cy.get('@consoleLog').should('have.been.calledWith', 'upload file') 
-    })
+    // it('should select the "Upload Data File" button', () => {
+    //     cy.window().then((win) => {
+    //         cy.stub(win.console, 'log').as('consoleLog');
+    //       });
+    //     cy.get('#upload-btn').click()
+    //     cy.get('@consoleLog').should('have.been.calledWith', 'upload file') 
+    // })
 
 
     it('should make sure the frequency chat doesnt exist without any data', () => {

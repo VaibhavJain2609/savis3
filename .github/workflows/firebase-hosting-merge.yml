@@ -22,6 +22,16 @@ jobs:
       #   run: npm uninstall -g firebase-tools
       # - name: Install Firebase Tools
       #   run: npm install -g firebase-tools@10.3.0
+      - name: Run Dev Server
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+        run: npm run start
+        working-directory: ./Savis3
+      - name: Run Tests
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+        run: npm run cypress:run
+        working-directory: ./Savis3
       - name: Build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
