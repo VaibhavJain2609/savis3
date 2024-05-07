@@ -17,9 +17,11 @@
     "electron": "electron .",
     "electron:package": "electron-packager . --platform=win32,darwin,linux --arch=x64",
     "electron:build": "electron-builder build --win --linux",
-    "electron:build-mac": "electron-builder build --mac"
+    "electron:build-mac": "electron-builder build --mac",
+    "start:ci": "npm run start && wait-on http://localhost:4200",
+    "test:ci": "start-server-and-test start:ci http://localhost:4200 npm run cypress:run"
   },
-  "build":{
+  "build": {
     "appId": "com.savis3.app",
     "directories": {
       "output": "build"
@@ -102,6 +104,7 @@
     "jsonc-parser": "^3.0.0",
     "open": "^7.0.3",
     "postcss": "^8.4.33",
+    "start-server-and-test": "^2.0.3",
     "tailwindcss": "^2.2.19",
     "typescript": "~4.3.5"
   }
