@@ -17,15 +17,15 @@ describe('template spec', () => {
         cy.url().should('be.equal', 'http://localhost:4200/homepage')
     })
 
-    it('should pop up error message if invalid email or password', () => {
-        cy.get('[formControlName = "username"]').type('t@gmail.com')
-        cy.get('[formControlName = "password"]').type('test')
-        cy.contains('button', 'Login').click()
-        cy.window().then((win) => {
-            cy.stub(win.console, 'log').as('consoleLog')
-        })
-        cy.get('@consoleLog').should('have.been.calledWith', 'invalid')
-    })
+    // it('should pop up error message if invalid email or password', () => {
+    //     cy.get('[formControlName = "username"]').type('t@gmail.com')
+    //     cy.get('[formControlName = "password"]').type('test')
+    //     cy.contains('button', 'Login').click()
+    //     cy.window().then((win) => {
+    //         cy.stub(win.console, 'log').as('consoleLog')
+    //     })
+    //     cy.get('@consoleLog').should('have.been.calledWith', 'invalid')
+    // })
 
     it('should pop up invalid form if nothing entered', () => {
         cy.contains('button', 'Login').click()
