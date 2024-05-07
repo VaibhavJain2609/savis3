@@ -18,8 +18,8 @@
     "electron:package": "electron-packager . --platform=win32,darwin,linux --arch=x64",
     "electron:build": "electron-builder build --win --linux",
     "electron:build-mac": "electron-builder build --mac",
-    "start:ci": "npm run start && wait-on http://localhost:4200",
-    "test:ci": "start-server-and-test start:ci http://localhost:4200 npm run cypress:run"
+    "start:ci": "npm start & wait-on http://localhost:4200",
+    "test:ci": "start-server-and-test start:ci 'http://localhost:4200' 'npm run cypress:run'"
   },
   "build": {
     "appId": "com.savis3.app",
