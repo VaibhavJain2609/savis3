@@ -670,7 +670,7 @@ export class OneMeanCIComponent implements OnInit, AfterViewInit, OnDestroy {
         
         dataDisplay = dataArray.reduce(
           (acc, x, idx) => acc + `${idx + 1}`.padEnd(8, ' ') + `${x} σ: ${this.sampleStds[idx]}`.padEnd(25, ' ') + `${this.translate.instant('dotPlot_mean')} ${'s'}\n`,
-          `ID`.padEnd(8, ' ') + `${this.translate.instant('omci_values')} ${this.stdSymbol}\n`
+          `ID`.padEnd(8, ' ') + `${this.translate.instant('omci_values')} s\n`
         );
       }
 
