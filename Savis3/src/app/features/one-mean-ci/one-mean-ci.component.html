@@ -174,10 +174,10 @@
               </thead>
               <tbody *ngFor="let mean of sampleMeans; let i = index">
               <tr>
-                <td>{{i+1}}</td>
-                <td>{{mean}}</td>
-                <td>{{lowerBounds[i]}}</td>
-                <td>{{upperBounds[i]}}</td>
+                <td *ngIf="meanVisible" >{{i+1}}</td>
+                <td *ngIf="meanVisible" >{{mean}}</td>
+                <td *ngIf="meanVisible" >{{lowerBounds[i]}}</td>
+                <td *ngIf="meanVisible"  >{{upperBounds[i]}}</td>
               </tr>
             </tbody>
             </table>
