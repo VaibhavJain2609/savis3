@@ -39,7 +39,7 @@
   
   
       <div class="interval-selection">
-        <h3 class="font-bold">{{ 'op_selected_interval' | translate }} {{ noOfCoin }} {{ 'op_selected_interval2' | translate }}:</h3>
+        <h3 class="font-bold">{{ 'op_selected_interval' | translate }} {{ noOfCoin }} </h3>
         <label for="minHeads">{{ 'op_min' | translate }} {{ lowerSelectedRange }}</label>
         <input type="range" id="minHeads" min="0" [max]="noOfCoin" step="1" [(ngModel)]="lowerSelectedRange" (ngModelChange)="updateSelected()">
   

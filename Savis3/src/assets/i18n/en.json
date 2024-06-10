@@ -359,6 +359,7 @@
     "//BarChart": "These are the translations for the BarChart component",
     "barChart_title": "Bar Chart",
     "barChart_inputData": "Input Data",
+    "barChart_inputdata": "Input Data", 
     "barChart_select_sample_data": "Examples",
     "barChart_sample1": "Example 1",
     "barChart_sample2": "Example 2",

@@ -80,7 +80,7 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
    */
   datasets: any[] = [
     {
-      label: this.translate.instant('barChart_inputData'),
+      label: this.translate.instant('barChart_inputdata'),
       borderColor: "orange",
       backgroundColor: "orange",
       data: []
