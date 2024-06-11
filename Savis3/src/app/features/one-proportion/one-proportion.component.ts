@@ -182,7 +182,7 @@ export class OneProportionComponent implements AfterViewInit, OnChanges{
                 // barPercentage: 1.0,
                 scaleLabel: {
                   display: true,
-                  labelString: `${this.translate.instant('op_bar_heads')} ` + this.upperSelectedRange + ` ${this.translate.instant('op_bar_heads2')}`,
+                  labelString: `${this.translate.instant('op_bar_heads')} ` + this.noOfCoin + ` ${this.translate.instant('op_bar_heads2')}`,
                   // fontColor: 'black',
                   // fontSize: 14
                 }

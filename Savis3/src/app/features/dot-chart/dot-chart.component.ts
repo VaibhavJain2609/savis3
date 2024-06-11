@@ -535,15 +535,15 @@ export class DotChartComponent implements AfterViewInit, OnInit, OnDestroy {
 
     if(this.sampleRadio === 'population' && num === 0) {
       dataStd = dataArray.length
-      ? this.roundToPlaces(this.stddev(dataArray.map(x => x.value)), 2)
+      ? this.roundToPlaces(this.stddev(dataArray.map(x => x.value)), 4)
       : 'No data'
     } else if (num === 2) {
       dataStd = dataArray.length
-      ? this.roundToPlaces(this.sampleStddev(dataArray), 2)
+      ? this.roundToPlaces(this.sampleStddev(dataArray), 4)
       : 'No data';
     } else {
       dataStd = dataArray.length
-      ? this.roundToPlaces(this.sampleStddev(dataArray.map(x => x.value)), 2)
+      ? this.roundToPlaces(this.sampleStddev(dataArray.map(x => x.value)), 4)
       : 'No data';
     }
 
