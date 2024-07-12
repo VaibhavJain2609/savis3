@@ -338,10 +338,10 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
     let valuesArr = [...this.inputDataArray.map(x => x.value)]
     this.dataCategoryArray = this.sortAlphaNumString([... new Set(valuesArr)])
     try {
-      if(this.dataCategoryArray.length > 15) throw new Error('Too many categories')
+      if(this.dataCategoryArray.length > 16) throw new Error('Too many categories')
       this.updateData(0)
     } catch (error) {
-      this.inputErrorMsg = 'ERROR: Only 16 categories are supported'
+      alert('ERROR: Only 16 categories are supported')
     }
    
   }
