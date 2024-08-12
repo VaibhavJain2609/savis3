@@ -337,10 +337,12 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
     this.inputErrorMsg = ''
     let valuesArr = [...this.inputDataArray.map(x => x.value)]
     this.dataCategoryArray = this.sortAlphaNumString([... new Set(valuesArr)])
+    console.log(this.dataCategoryArray)
     try {
       if(this.dataCategoryArray.length > 16) throw new Error('Too many categories')
       this.updateData(0)
     } catch (error) {
+      console.log(this.dataCategoryArray.length)
       alert('ERROR: Only 16 categories are supported')
     }
    
@@ -493,17 +495,17 @@ export class BarChartComponent implements AfterViewInit, OnInit, OnDestroy {
     let numbers = rawData.filter((x: any) => !isNaN(Number(x))).sort((a: any, b: any)=>a-b).map((x: any) => `${Number(x)}`)
     let strings = rawData.filter((x: any) => isNaN(Number(x))).sort( (a: any, b: any) => a.localeCompare(b))
 
-    const limit = numbers.length
-    for (let it = 0; it < limit; it++) {
-      const rest = Number(numbers[it+1]) - Number(numbers[it])
+    // const limit = numbers.length
+    // for (let it = 0; it < limit; it++) {
+    //   const rest = Number(numbers[it+1]) - Number(numbers[it])
 
-      if (rest > 1) {
-        for (let jt = 0; jt < rest-1; jt++) {
-          numbers.push(String(Number(numbers[it] + jt + 1)))
-        }
-      }
-    }
-    numbers.sort((a: any, b: any) => a -b).map((x: any) => `${Number(x)}`)
+    //   if (rest > 1) {
+    //     for (let jt = 0; jt < rest-1; jt++) {
+    //       numbers.push(String(Number(numbers[it] + jt + 1)))
+    //     }
+    //   }
+    // }
+    // numbers.sort((a: any, b: any) => a -b).map((x: any) => `${Number(x)}`)
     return numbers.concat(strings)
   }
 
