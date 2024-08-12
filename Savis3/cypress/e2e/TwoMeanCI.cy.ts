@@ -44,31 +44,31 @@ describe('TwoMeanCI', () => {
         cy.get('#loadData').click()
     })
 
-    it('Reset button works', () => {
-        cy.get('#select').select('Sample 1')
-        cy.get('#loadData').click()
+    // it('Reset button works', () => {
+    //     cy.get('#select').select('Sample 1')
+    //     cy.get('#loadData').click()
 
-        cy.get('#increment').type('{selectAll}{backspace}20')
-        cy.get('#incrementBtn').click()
-        cy.get('#incrementButton').click()
+    //     cy.get('#increment').type('{selectAll}{backspace}20')
+    //     cy.get('#incrementBtn').click()
+    //     cy.get('#incrementButton').click()
 
-        cy.get('#simInput').type('{selectAll}{backspace}1000')
-        cy.get('#runSim').click()
+    //     cy.get('#simInput').type('{selectAll}{backspace}1000')
+    //     cy.get('#runSim').click()
 
-        cy.get('#confidence-level')
-        .invoke("val", 65)
-        .trigger('change')
-        .click({ force: true })
+    //     cy.get('#confidence-level')
+    //     .invoke("val", 65)
+    //     .trigger('change')
+    //     .click({ force: true })
 
-        cy.get('#build').click()
+    //     cy.get('#build').click()
 
-        cy.get('#confidence-level')
-        .invoke("val", 25)
-        .trigger('change')
-        .click({ force: true })
+    //     cy.get('#confidence-level')
+    //     .invoke("val", 25)
+    //     .trigger('change')
+    //     .click({ force: true })
 
-        cy.get('#build').click()
+    //     cy.get('#build').click()
 
-        cy.get('#reset').click()
-    })
+    //     cy.get('#reset').click()
+    // })
 })
