@@ -33,7 +33,7 @@ jobs:
 
     - name: Run tests
       run: |
-        docker run ${{ secrets.DOCKERHUB_USERNAME }}/savis3-app:${{ github.sha }} npm test
+        docker run ${{ secrets.DOCKERHUB_USERNAME }}/savis3-app:${{ github.sha }} npm run test:ci 
 
   deploy:
     needs: build-and-push
